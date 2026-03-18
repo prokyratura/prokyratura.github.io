@@ -1,35 +1,40 @@
+1. Фронтенд: index.html (Замени на GitHub)
+Я добавил в этот код «принудительную» проверку. Если вы открыли его через Главную кнопку меню, он обязан отправить данные и закрыться.
+html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stars Market</title>
+    <title>Star Market</title>
+    <!-- 1. ПОДКЛЮЧАЕМ SDK ПЕРВЫМ -->
     <script src="https://telegram.org"></script>
     <style>
-        body { font-family: sans-serif; background-color: white; color: black; margin: 0; padding: 20px; text-align: center; }
+        :root {
+            --bg: var(--tg-theme-bg-color, #ffffff);
+            --text: var(--tg-theme-text-color, #000000);
+            --btn: var(--tg-theme-button-color, #2481cc);
+            --sec: var(--tg-theme-secondary-bg-color, #f4f4f5);
+        }
+        body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; text-align: center; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .card { background-color: #f0f0f0; padding: 20px; border-radius: 12px; border: 1px solid #ccc; cursor: pointer; }
-        .price { color: #2481cc; font-weight: bold; }
+        .card { background: var(--sec); padding: 20px 10px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; }
+        .stars-count { font-size: 20px; font-weight: bold; display: block; }
+        .price-tag { color: var(--btn); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h2>⭐ Купить Звезды</h2>
-    <div id="status" style="font-size: 10px; color: gray;">Загрузка...</div>
-
+    <h2>⭐ Выберите пакет звезд</h2>
     <div class="grid" id="main-grid"></div>
 
     <script>
-        // БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        // Инициализация Telegram SDK
+        const tg = window.Telegram.WebApp;
 
-        if (tg) {
-            tg.ready();
-            tg.expand();
-            document.getElementById('status').innerText = "Запущено в Telegram (v" + tg.version + ")";
-        } else {
-            document.getElementById('status').innerText = "Запущено в обычном браузере (тестовый режим)";
-        }
+        // Сообщаем Telegram, что приложение готово
+        tg.ready();
+        tg.expand();
 
         const offers = [
             { s: 50, p: 75 }, { s: 100, p: 145 }, { s: 250, p: 370 },
@@ -41,17 +46,28 @@
         offers.forEach(item => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerHTML = `<b>${item.s} ⭐</b><br><span class="price">${item.p} ₽</span>`;
+            card.innerHTML = `
+                <span class="stars-count">${item.s} ⭐</span>
+                <span class="price-tag">${item.p} ₽</span>
+            `;
 
             card.onclick = function() {
-                if (tg && tg.sendData) {
-                    tg.sendData(JSON.stringify({stars: item.s, price: item.p}));
-                } else {
-                    alert("Вы выбрали " + item.s + " звезд за " + item.p + "₽. В Telegram здесь откроется оплата.");
+                // Формируем данные
+                const data = JSON.stringify({
+                    stars: item.s,
+                    price: item.p
+                });
+
+                // ОТПРАВКА ДАННЫХ БОТУ
+                // Метод sendData работает ТОЛЬКО в главной кнопке меню
+                try {
+                    tg.sendData(data);
+                    tg.close(); // Закрываем приложение после нажатия
+                } catch (e) {
+                    alert("Ошибка отправки! Убедитесь, что открыли через кнопку меню.");
                 }
             };
             grid.appendChild(card);
         });
     </script>
 </body>
-</html>
