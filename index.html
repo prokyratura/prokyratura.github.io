@@ -1,77 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stars Market</title>
-    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <style>
-        /* Жестко задаем белый фон и черный текст для проверки */
-        body {
-            font-family: sans-serif;
-            background-color: white !important;
-            color: black !important;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .card {
-            background-color: #f0f0f0;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
+        body { font-family: sans-serif; background-color: white; color: black; margin: 0; padding: 20px; text-align: center; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .card { background-color: #f0f0f0; padding: 20px; border-radius: 12px; border: 1px solid #ccc; cursor: pointer; }
         .price { color: #2481cc; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <h2>⭐ Купить Звезды</h2>
-    <p id="debug" style="font-size: 10px; color: gray;">Загрузка скрипта...</p>
+    <div id="status" style="font-size: 10px; color: gray;">Загрузка...</div>
 
-    <div class="grid" id="main-grid">
-        <!-- Сюда JS вставит плитки -->
-    </div>
+    <div class="grid" id="main-grid"></div>
 
     <script>
-        try {
-            const tg = window.Telegram.WebApp;
+        // БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+
+        if (tg) {
             tg.ready();
             tg.expand();
-
-            const offers = [
-                { s: 50, p: 75 }, { s: 100, p: 145 }, { s: 250, p: 370 },
-                { s: 500, p: 730 }, { s: 1000, p: 1450 }, { s: 5000, p: 7200 }
-            ];
-
-            const grid = document.getElementById('main-grid');
-            grid.innerHTML = ''; // Чистим экран
-
-            offers.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `<b>${item.s} ⭐</b><br><span class="price">${item.p} ₽</span>`;
-
-                card.onclick = function() {
-                    tg.sendData(JSON.stringify({stars: item.s, price: item.p}));
-                };
-                grid.appendChild(card);
-            });
-
-            document.getElementById('debug').innerText = "Версия SDK: " + tg.version;
-
-        } catch (e) {
-            document.getElementById('debug').style.color = "red";
-            document.getElementById('debug').innerText = "Ошибка: " + e.message;
+            document.getElementById('status').innerText = "Запущено в Telegram (v" + tg.version + ")";
+        } else {
+            document.getElementById('status').innerText = "Запущено в обычном браузере (тестовый режим)";
         }
+
+        const offers = [
+            { s: 50, p: 75 }, { s: 100, p: 145 }, { s: 250, p: 370 },
+            { s: 500, p: 730 }, { s: 1000, p: 1450 }, { s: 5000, p: 7200 }
+        ];
+
+        const grid = document.getElementById('main-grid');
+
+        offers.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<b>${item.s} ⭐</b><br><span class="price">${item.p} ₽</span>`;
+
+            card.onclick = function() {
+                if (tg && tg.sendData) {
+                    tg.sendData(JSON.stringify({stars: item.s, price: item.p}));
+                } else {
+                    alert("Вы выбрали " + item.s + " звезд за " + item.p + "₽. В Telegram здесь откроется оплата.");
+                }
+            };
+            grid.appendChild(card);
+        });
     </script>
 </body>
 </html>
