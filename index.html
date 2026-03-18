@@ -3,100 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Star Market</title>
-    <!-- ПРАВИЛЬНОЕ ПОДКЛЮЧЕНИЕ SDK (ОБЯЗАТЕЛЬНО) -->
+    <title>Star Market Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com"/>
     <script src="https://telegram.org"></script>
     <style>
         :root {
             --bg: var(--tg-theme-bg-color, #ffffff);
             --text: var(--tg-theme-text-color, #000000);
-            --hint: var(--tg-theme-hint-color, #999999);
             --btn: var(--tg-theme-button-color, #2481cc);
             --sec: var(--tg-theme-secondary-bg-color, #f4f4f5);
+            --hint: var(--tg-theme-hint-color, #999999);
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0; padding: 16px;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        h2 { font-size: 22px; margin-bottom: 20px; }
+        body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; overflow-x: hidden; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 
-        /* Сетка плиток */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Две колонки */
-            gap: 12px;
-            width: 100%;
-            max-width: 400px;
-        }
+        /* VIP Progress Bar */
+        .vip-card { background: var(--sec); padding: 15px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); }
+        .progress-bg { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; margin: 10px 0; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--btn); transition: 1s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
 
-        /* Стиль плитки */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card {
-            background: var(--sec);
-            padding: 20px 10px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: all 0.1s ease;
-            cursor: pointer;
+            background: var(--sec); padding: 20px 10px; border-radius: 16px;
+            text-align: center; border: 1px solid rgba(0,0,0,0.05);
+            transition: 0.2s; cursor: pointer;
         }
-        .card:active { transform: scale(0.95); background: rgba(0,0,0,0.05); }
+        .card:active { transform: scale(0.95); }
+        .stars-count { font-size: 22px; font-weight: bold; display: block; }
+        .price-tag { color: var(--btn); font-weight: bold; }
 
-        .stars-count { font-size: 24px; font-weight: bold; display: block; margin-bottom: 4px; }
-        .price-tag { color: var(--btn); font-weight: 600; font-size: 16px; }
+        .skeleton { background: #eee; height: 100px; border-radius: 16px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h2 style="margin:0">⭐ Stars Shop</h2>
+        <div id="balance-tag" style="color:var(--btn); font-weight:bold;">0 ₽</div>
+    </div>
 
-    <h2>⭐ Купить Звезды</h2>
-    <div class="grid" id="main-grid"></div>
+    <div class="vip-card animate__animated animate__fadeIn">
+        <div style="display:flex; justify-content:space-between; font-size:12px;">
+            <span id="vip-status">До VIP статуса</span>
+            <span id="vip-percent">0%</span>
+        </div>
+        <div class="progress-bg"><div id="progress-fill" class="progress-fill"></div></div>
+        <div id="vip-desc" style="font-size:10px; color:var(--hint);">Купите еще на <span id="vip-left">50 000</span> ₽ для скидки 10%</div>
+    </div>
+
+    <div id="skeletons" class="grid">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+
+    <div id="main-grid" class="grid hidden"></div>
 
     <script>
         const tg = window.Telegram.WebApp;
+        const params = new URLSearchParams(window.location.search);
+        const spent = parseFloat(params.get('spent')) || 0;
+        const isVip = params.get('vip') === '1';
+        const balance = params.get('balance') || '0';
 
-        // 1. Убираем надпись "Ожидание загрузки"
-        tg.ready();
-        tg.expand();
-
-        // Данные для плиток
         const offers = [
-            { stars: 50, price: 75 },
-            { stars: 100, price: 145 },
-            { stars: 250, price: 370 },
-            { stars: 500, price: 730 },
-            { stars: 1000, price: 1450 },
-            { stars: 2500, price: 3600 },
-            { stars: 5000, price: 7200 }
+            { s: 50, p: 75 }, { s: 100, p: 145 }, { s: 250, p: 370 },
+            { s: 500, p: 730 }, { s: 1000, p: 1450 }, { s: 5000, p: 7200 }
         ];
 
-        const gridContainer = document.getElementById('main-grid');
+        function init() {
+            document.getElementById('balance-tag').innerText = balance + ' ₽';
+            const grid = document.getElementById('main-grid');
 
-        // Отрисовка плиток
-        offers.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <span class="stars-count">${item.stars} ⭐</span>
-                <span class="price-tag">${item.price} ₽</span>
-            `;
+            // VIP UI
+            const fill = document.getElementById('progress-fill');
+            const left = Math.max(0, 50000 - spent);
+            if(isVip) {
+                fill.style.width = '100%';
+                fill.style.background = 'gold';
+                document.getElementById('vip-status').innerText = '👑 ВЫ VIP КЛИЕНТ';
+                document.getElementById('vip-desc').innerText = 'Ваша вечная скидка 10% активирована!';
+            } else {
+                fill.style.width = (spent / 50000 * 100) + '%';
+                document.getElementById('vip-percent').innerText = Math.floor(spent/50000*100) + '%';
+                document.getElementById('vip-left').innerText = left.toLocaleString();
+            }
 
-            // Клик по плитке
-            card.onclick = () => {
-                // Отправляем данные боту
-                tg.sendData(JSON.stringify({
-                    action: "buy_stars",
-                    amount: item.stars,
-                    price: item.price
-                }));
-            };
+            // Render cards
+            offers.forEach(item => {
+                const finalPrice = isVip ? Math.round(item.p * 0.9) : item.p;
+                const card = document.createElement('div');
+                card.className = 'card animate__animated animate__fadeInUp';
+                card.innerHTML = `<span class="stars-count">${item.s} ⭐</span><span class="price-tag">${finalPrice} ₽</span>`;
+                card.onclick = () => {
+                    tg.HapticFeedback.impactOccurred('medium');
+                    tg.sendData(JSON.stringify({stars: item.s, price: finalPrice}));
+                };
+                grid.appendChild(card);
+            });
 
-            gridContainer.appendChild(card);
-        });
-
-        // Настраиваем цвета основной кнопки (опционально)
-        tg.MainButton.setText("ВЫБЕРИТЕ ПАКЕТ").hide();
+            setTimeout(() => {
+                document.getElementById('skeletons').classList.add('hidden');
+                grid.classList.remove('hidden');
+                tg.ready(); tg.expand();
+            }, 800);
+        }
+        init();
     </script>
 </body>
 </html>
