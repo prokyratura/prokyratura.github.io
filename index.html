@@ -1,52 +1,77 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stars Shop</title>
+    <title>Stars Market</title>
+    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <style>
-        :root {
-            --bg: var(--tg-theme-bg-color, #ffffff);
-            --text: var(--tg-theme-text-color, #000000);
-            --btn: var(--tg-theme-button-color, #2481cc);
-            --sec: var(--tg-theme-secondary-bg-color, #f4f4f5);
+        /* Жестко задаем белый фон и черный текст для проверки */
+        body {
+            font-family: sans-serif;
+            background-color: white !important;
+            color: black !important;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
         }
-        body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-        .card { background: var(--sec); padding: 20px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(0,0,0,0.05); }
-        .stars-count { font-size: 22px; font-weight: bold; display: block; }
-        .price-tag { color: var(--btn); font-weight: bold; }
-        .vip-card { background: var(--sec); padding: 15px; border-radius: 16px; margin-bottom: 15px; border: 1px solid gold; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .card {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .price { color: #2481cc; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div id="vip-panel" class="vip-card" style="display:none;">👑 VIP СТАТУС АКТИВИРОВАН (Скидка 10%)</div>
-    <div class="grid" id="main-grid"></div>
+
+    <h2>⭐ Купить Звезды</h2>
+    <p id="debug" style="font-size: 10px; color: gray;">Загрузка скрипта...</p>
+
+    <div class="grid" id="main-grid">
+        <!-- Сюда JS вставит плитки -->
+    </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+        try {
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
 
-        const params = new URLSearchParams(window.location.search);
-        const isVip = params.get('vip') === '1';
-        if(isVip) document.getElementById('vip-panel').style.display = 'block';
+            const offers = [
+                { s: 50, p: 75 }, { s: 100, p: 145 }, { s: 250, p: 370 },
+                { s: 500, p: 730 }, { s: 1000, p: 1450 }, { s: 5000, p: 7200 }
+            ];
 
-        const offers = [
-            { s: 50, p: 75 }, { s: 100, p: 145 }, { s: 250, p: 370 },
-            { s: 500, p: 730 }, { s: 1000, p: 1450 }, { s: 5000, p: 7200 }
-        ];
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = ''; // Чистим экран
 
-        const grid = document.getElementById('main-grid');
-        offers.forEach(item => {
-            const finalPrice = isVip ? Math.round(item.p * 0.9) : item.p;
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `<span class="stars-count">${item.s} ⭐</span><span class="price-tag">${finalPrice} ₽</span>`;
-            card.onclick = () => tg.sendData(JSON.stringify({stars: item.s, price: finalPrice}));
-            grid.appendChild(card);
-        });
+            offers.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<b>${item.s} ⭐</b><br><span class="price">${item.p} ₽</span>`;
+
+                card.onclick = function() {
+                    tg.sendData(JSON.stringify({stars: item.s, price: item.p}));
+                };
+                grid.appendChild(card);
+            });
+
+            document.getElementById('debug').innerText = "Версия SDK: " + tg.version;
+
+        } catch (e) {
+            document.getElementById('debug').style.color = "red";
+            document.getElementById('debug').innerText = "Ошибка: " + e.message;
+        }
     </script>
 </body>
 </html>
