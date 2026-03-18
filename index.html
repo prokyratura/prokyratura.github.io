@@ -13,83 +13,40 @@
             --sec: var(--tg-theme-secondary-bg-color, #f4f4f5);
         }
         body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .vip-card { background: var(--sec); padding: 15px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); }
-        .progress-bg { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; margin: 10px 0; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--btn); width: 0%; transition: width 0.5s; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card { background: var(--sec); padding: 20px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .card { background: var(--sec); padding: 20px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(0,0,0,0.05); }
         .stars-count { font-size: 22px; font-weight: bold; display: block; }
         .price-tag { color: var(--btn); font-weight: bold; }
+        .vip-card { background: var(--sec); padding: 15px; border-radius: 16px; margin-bottom: 15px; border: 1px solid gold; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2 style="margin:0">⭐ Stars Shop</h2>
-        <div id="balance-tag" style="color:var(--btn); font-weight:bold;">0 ₽</div>
-    </div>
-
-    <div class="vip-card">
-        <div style="display:flex; justify-content:space-between; font-size:12px;">
-            <span id="vip-status">До VIP статуса</span>
-            <span id="vip-percent">0%</span>
-        </div>
-        <div class="progress-bg"><div id="progress-fill" class="progress-fill"></div></div>
-        <div id="vip-desc" style="font-size:10px; color:gray;">Купите еще на <span id="vip-left">50 000</span> ₽</div>
-    </div>
-
-    <div id="main-grid" class="grid">
-        <!-- Плитки появятся здесь сразу -->
-    </div>
+    <div id="vip-panel" class="vip-card" style="display:none;">👑 VIP СТАТУС АКТИВИРОВАН (Скидка 10%)</div>
+    <div class="grid" id="main-grid"></div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        // Безопасное получение параметров
         const params = new URLSearchParams(window.location.search);
-        const spent = parseFloat(params.get('spent')) || 0;
         const isVip = params.get('vip') === '1';
-        const balance = params.get('balance') || '0';
+        if(isVip) document.getElementById('vip-panel').style.display = 'block';
 
         const offers = [
             { s: 50, p: 75 }, { s: 100, p: 145 }, { s: 250, p: 370 },
             { s: 500, p: 730 }, { s: 1000, p: 1450 }, { s: 5000, p: 7200 }
         ];
 
-        function render() {
-            document.getElementById('balance-tag').innerText = balance + ' ₽';
-            const grid = document.getElementById('main-grid');
-
-            // VIP логика
-            const fill = document.getElementById('progress-fill');
-            if(isVip) {
-                fill.style.width = '100%';
-                fill.style.background = 'gold';
-                document.getElementById('vip-status').innerText = '👑 ВЫ VIP КЛИЕНТ';
-                document.getElementById('vip-desc').innerText = 'Скидка 10% включена!';
-            } else {
-                let perc = Math.min(100, (spent / 50000) * 100);
-                fill.style.width = perc + '%';
-                document.getElementById('vip-percent').innerText = Math.floor(perc) + '%';
-                document.getElementById('vip-left').innerText = (50000 - spent).toLocaleString() + ' ₽';
-            }
-
-            // Плитки
-            offers.forEach(item => {
-                const finalPrice = isVip ? Math.round(item.p * 0.9) : item.p;
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `<span class="stars-count">${item.s} ⭐</span><span class="price-tag">${finalPrice} ₽</span>`;
-                card.onclick = () => {
-                    tg.sendData(JSON.stringify({stars: item.s, price: finalPrice}));
-                };
-                grid.appendChild(card);
-            });
-        }
-
-        render();
+        const grid = document.getElementById('main-grid');
+        offers.forEach(item => {
+            const finalPrice = isVip ? Math.round(item.p * 0.9) : item.p;
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<span class="stars-count">${item.s} ⭐</span><span class="price-tag">${finalPrice} ₽</span>`;
+            card.onclick = () => tg.sendData(JSON.stringify({stars: item.s, price: finalPrice}));
+            grid.appendChild(card);
+        });
     </script>
 </body>
 </html>
