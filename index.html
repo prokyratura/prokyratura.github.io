@@ -4,32 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stars Market</title>
+    <!-- ПРАВИЛЬНЫЙ СКРИПТ TELEGRAM -->
     <script src="https://telegram.org"></script>
     <style>
-        body { font-family: sans-serif; background-color: white; color: black; margin: 0; padding: 20px; text-align: center; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .card { background-color: #f0f0f0; padding: 20px; border-radius: 12px; border: 1px solid #ccc; cursor: pointer; }
-        .price { color: #2481cc; font-weight: bold; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #1c1c1e);
+            color: var(--tg-theme-text-color, #ffffff);
+            margin: 0; padding: 20px; text-align: center;
+        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .card {
+            background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            padding: 20px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; transition: transform 0.1s;
+        }
+        .card:active { transform: scale(0.95); background: var(--tg-theme-button-color, #2481cc); }
+        .stars { font-size: 20px; font-weight: bold; display: block; margin-bottom: 5px; }
+        .price { color: #34c759; font-weight: bold; font-size: 16px; }
     </style>
 </head>
 <body>
 
     <h2>⭐ Купить Звезды</h2>
-    <div id="status" style="font-size: 10px; color: gray;">Загрузка...</div>
 
     <div class="grid" id="main-grid"></div>
 
     <script>
-        // БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-
-        if (tg) {
-            tg.ready();
-            tg.expand();
-            document.getElementById('status').innerText = "Запущено в Telegram (v" + tg.version + ")";
-        } else {
-            document.getElementById('status').innerText = "Запущено в обычном браузере (тестовый режим)";
-        }
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
 
         const offers = [
             { s: 50, p: 75 }, { s: 100, p: 145 }, { s: 250, p: 370 },
@@ -41,14 +46,14 @@
         offers.forEach(item => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerHTML = `<b>${item.s} ⭐</b><br><span class="price">${item.p} ₽</span>`;
+            card.innerHTML = `<span class="stars">${item.s} ⭐</span><span class="price">${item.p} ₽</span>`;
 
             card.onclick = function() {
-                if (tg && tg.sendData) {
-                    tg.sendData(JSON.stringify({stars: item.s, price: item.p}));
-                } else {
-                    alert("Вы выбрали " + item.s + " звезд за " + item.p + "₽. В Telegram здесь откроется оплата.");
-                }
+                // Данные, которые полетят в бот
+                const data = JSON.stringify({stars: item.s, price: item.p});
+
+                // Метод sendData ПЕРЕДАЕТ данные боту и ЗАКРЫВАЕТ приложение
+                tg.sendData(data);
             };
             grid.appendChild(card);
         });
