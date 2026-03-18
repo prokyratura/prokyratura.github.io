@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Star Market</title>
+    <title>Star Market Store</title>
+    <!-- Подключаем скрипт Телеграма первым -->
     <script src="https://telegram.org"></script>
     <style>
         :root {
@@ -14,12 +15,14 @@
             --sec: var(--tg-theme-secondary-bg-color, #f4f4f5);
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
             color: var(--text);
             margin: 0; padding: 15px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        h2 { font-size: 20px; margin-bottom: 20px; text-align: center; }
+        h2 { font-size: 20px; margin-bottom: 20px; text-align: center; font-weight: 600; }
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -31,58 +34,74 @@
             border-radius: 16px;
             text-align: center;
             cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.1s ease;
         }
-        .card:active { transform: scale(0.95); opacity: 0.8; }
-        .stars { font-size: 24px; display: block; margin-bottom: 5px; }
+        .card:active { transform: scale(0.96); opacity: 0.8; }
+        .stars { font-size: 26px; display: block; margin-bottom: 5px; }
         .price { font-weight: bold; color: var(--btn); font-size: 18px; }
+        #error-log { color: red; font-size: 12px; text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
     <h2>⭐ Выберите пакет звезд</h2>
     <div class="grid" id="grid">
-        <!-- Кнопки будут созданы здесь -->
+        <!-- Кнопки появятся здесь -->
     </div>
+    <div id="error-log"></div>
 
     <script>
-        try {
-            const tg = window.Telegram.WebApp;
-            tg.expand(); // Развернуть приложение
-            tg.ready();  // Сообщить TG, что мы готовы
-
-            // Данные для карточек
-            const prices = {
-                "50": 75,
-                "100": 145,
-                "250": 370,
-                "500": 730,
-                "1000": 1450,
-                "2500": 3600,
-                "5000": 7200
-            };
-
+        // Функция инициализации приложения
+        function initApp() {
             const grid = document.getElementById('grid');
+            const log = document.getElementById('error-log');
 
-            // Создаем карточки через цикл
-            Object.keys(prices).forEach(stars => {
-                const price = prices[stars];
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <span class="stars">${stars} ⭐</span>
-                    <span class="price">${price} ₽</span>
-                `;
+            try {
+                // Проверяем, загрузился ли объект Telegram
+                if (!window.Telegram || !window.Telegram.WebApp) {
+                    log.innerText = "Ожидание загрузки Telegram SDK...";
+                    setTimeout(initApp, 200); // Пробуем снова через 200мс
+                    return;
+                }
 
-                card.onclick = function() {
-                    const data = JSON.stringify({stars: stars, price: price});
-                    tg.sendData(data); // Отправка данных в бот
+                const tg = window.Telegram.WebApp;
+                tg.ready();
+                tg.expand();
+                log.innerText = ""; // Очищаем лог, если всё ок
+
+                const prices = {
+                    "50": 75, "100": 145, "250": 370,
+                    "500": 730, "1000": 1450, "2500": 3600, "5000": 7200
                 };
 
-                grid.appendChild(card);
-            });
-        } catch (e) {
-            document.body.innerHTML += `<p style="color:red">Ошибка: ${e.message}</p>`;
+                grid.innerHTML = ''; // Очищаем сетку перед отрисовкой
+
+                Object.keys(prices).forEach(stars => {
+                    const price = prices[stars];
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <span class="stars">${stars} ⭐</span>
+                        <span class="price">${price} ₽</span>
+                    `;
+
+                    card.onclick = function() {
+                        // Важно: данные должны быть строкой
+                        const data = JSON.stringify({stars: stars, price: price});
+                        tg.sendData(data);
+                        tg.close();
+                    };
+
+                    grid.appendChild(card);
+                });
+
+            } catch (err) {
+                log.innerText = "Ошибка: " + err.message;
+            }
         }
+
+        // Запускаем при загрузке окна
+        window.onload = initApp;
     </script>
 </body>
 </html>
