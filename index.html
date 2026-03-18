@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Star Market Store</title>
+    <script src="https://telegram.org"></script>
+    <style>
+        :root { --bg: var(--tg-theme-bg-color); --text: var(--tg-theme-text-color); --btn: var(--tg-theme-button-color); --sec: var(--tg-theme-secondary-bg-color); }
+        body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; user-select: none; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .card { background: var(--sec); padding: 20px; border-radius: 16px; text-align: center; border: 1px solid transparent; transition: 0.2s; }
+        .card:active { transform: scale(0.95); border-color: var(--btn); }
+        .stars { font-size: 26px; display: block; margin-bottom: 8px; }
+        .price { font-weight: bold; color: var(--btn); font-size: 18px; }
+        h2 { font-size: 22px; margin: 5px 0 0 5px; }
+    </style>
+</head>
+<body>
+    <h2>⭐ Выберите пакет</h2>
+    <div class="grid" id="grid"></div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+
+        const prices = {50: 75, 100: 145, 250: 370, 500: 730, 1000: 1450, 2500: 3600, 5000: 7200};
+        const grid = document.getElementById('grid');
+
+        Object.entries(prices).forEach(([stars, price]) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<span class="stars">${stars} ⭐</span><span class="price">${price} ₽</span>`;
+            card.onclick = () => {
+                tg.sendData(JSON.stringify({stars: stars, price: price}));
+                tg.close();
+            };
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
