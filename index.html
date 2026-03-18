@@ -3,105 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Star Market Store</title>
-    <!-- Подключаем скрипт Телеграма первым -->
-    <script src="https://cdn.jsdelivr.net"></script>
+    <title>Star Market</title>
+    <!-- ПРАВИЛЬНОЕ ПОДКЛЮЧЕНИЕ SDK (ОБЯЗАТЕЛЬНО) -->
+    <script src="https://telegram.org"></script>
     <style>
         :root {
             --bg: var(--tg-theme-bg-color, #ffffff);
             --text: var(--tg-theme-text-color, #000000);
+            --hint: var(--tg-theme-hint-color, #999999);
             --btn: var(--tg-theme-button-color, #2481cc);
-            --btn-text: var(--tg-theme-button-text-color, #ffffff);
             --sec: var(--tg-theme-secondary-bg-color, #f4f4f5);
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            margin: 0; padding: 15px;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            margin: 0; padding: 16px;
+            display: flex; flex-direction: column; align-items: center;
         }
-        h2 { font-size: 20px; margin-bottom: 20px; text-align: center; font-weight: 600; }
+        h2 { font-size: 22px; margin-bottom: 20px; }
+
+        /* Сетка плиток */
         .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr; /* Две колонки */
             gap: 12px;
+            width: 100%;
+            max-width: 400px;
         }
+
+        /* Стиль плитки */
         .card {
             background: var(--sec);
-            padding: 20px;
+            padding: 20px 10px;
             border-radius: 16px;
             text-align: center;
-            cursor: pointer;
             border: 1px solid rgba(0,0,0,0.05);
-            transition: transform 0.1s ease;
+            transition: all 0.1s ease;
+            cursor: pointer;
         }
-        .card:active { transform: scale(0.96); opacity: 0.8; }
-        .stars { font-size: 26px; display: block; margin-bottom: 5px; }
-        .price { font-weight: bold; color: var(--btn); font-size: 18px; }
-        #error-log { color: red; font-size: 12px; text-align: center; margin-top: 20px; }
+        .card:active { transform: scale(0.95); background: rgba(0,0,0,0.05); }
+
+        .stars-count { font-size: 24px; font-weight: bold; display: block; margin-bottom: 4px; }
+        .price-tag { color: var(--btn); font-weight: 600; font-size: 16px; }
     </style>
 </head>
 <body>
-    <h2>⭐ Выберите пакет звезд</h2>
-    <div class="grid" id="grid">
-        <!-- Кнопки появятся здесь -->
-    </div>
-    <div id="error-log"></div>
+
+    <h2>⭐ Купить Звезды</h2>
+    <div class="grid" id="main-grid"></div>
 
     <script>
-        // Функция инициализации приложения
-        function initApp() {
-            const grid = document.getElementById('grid');
-            const log = document.getElementById('error-log');
+        const tg = window.Telegram.WebApp;
 
-            try {
-                // Проверяем, загрузился ли объект Telegram
-                if (!window.Telegram || !window.Telegram.WebApp) {
-                    log.innerText = "Ожидание загрузки Telegram SDK...";
-                    setTimeout(initApp, 200); // Пробуем снова через 200мс
-                    return;
-                }
+        // 1. Убираем надпись "Ожидание загрузки"
+        tg.ready();
+        tg.expand();
 
-                const tg = window.Telegram.WebApp;
-                tg.ready();
-                tg.expand();
-                log.innerText = ""; // Очищаем лог, если всё ок
+        // Данные для плиток
+        const offers = [
+            { stars: 50, price: 75 },
+            { stars: 100, price: 145 },
+            { stars: 250, price: 370 },
+            { stars: 500, price: 730 },
+            { stars: 1000, price: 1450 },
+            { stars: 2500, price: 3600 },
+            { stars: 5000, price: 7200 }
+        ];
 
-                const prices = {
-                    "50": 75, "100": 145, "250": 370,
-                    "500": 730, "1000": 1450, "2500": 3600, "5000": 7200
-                };
+        const gridContainer = document.getElementById('main-grid');
 
-                grid.innerHTML = ''; // Очищаем сетку перед отрисовкой
+        // Отрисовка плиток
+        offers.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <span class="stars-count">${item.stars} ⭐</span>
+                <span class="price-tag">${item.price} ₽</span>
+            `;
 
-                Object.keys(prices).forEach(stars => {
-                    const price = prices[stars];
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <span class="stars">${stars} ⭐</span>
-                        <span class="price">${price} ₽</span>
-                    `;
+            // Клик по плитке
+            card.onclick = () => {
+                // Отправляем данные боту
+                tg.sendData(JSON.stringify({
+                    action: "buy_stars",
+                    amount: item.stars,
+                    price: item.price
+                }));
+            };
 
-                    card.onclick = function() {
-                        // Важно: данные должны быть строкой
-                        const data = JSON.stringify({stars: stars, price: price});
-                        tg.sendData(data);
-                        tg.close();
-                    };
+            gridContainer.appendChild(card);
+        });
 
-                    grid.appendChild(card);
-                });
-
-            } catch (err) {
-                log.innerText = "Ошибка: " + err.message;
-            }
-        }
-
-        // Запускаем при загрузке окна
-        window.onload = initApp;
+        // Настраиваем цвета основной кнопки (опционально)
+        tg.MainButton.setText("ВЫБЕРИТЕ ПАКЕТ").hide();
     </script>
 </body>
 </html>
