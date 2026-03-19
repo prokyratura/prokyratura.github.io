@@ -22,7 +22,7 @@
             padding: 16px;
             position: relative;
             overflow-x: hidden;
-            padding-bottom: 80px; /* Отступ для нижней навигации */
+            padding-bottom: 80px;
         }
 
         /* Анимированные звезды на фоне */
@@ -228,47 +228,6 @@
             margin-top: 4px;
         }
 
-        /* Карточки премиум */
-        .premium-grid {
-            display: grid;
-            gap: 16px;
-        }
-
-        .premium-card {
-            background: linear-gradient(135deg, rgba(135, 116, 225, 0.2), rgba(108, 92, 231, 0.2));
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .premium-card:hover {
-            transform: translateX(5px);
-            border-color: #8774e1;
-        }
-
-        .premium-info h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .premium-info p {
-            color: #8774e1;
-            font-weight: 600;
-        }
-
-        .premium-price {
-            font-size: 24px;
-            font-weight: 800;
-            color: #ffd700;
-        }
-
         /* Профиль */
         .profile-header {
             text-align: center;
@@ -276,15 +235,23 @@
         }
 
         .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 40px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             margin: 0 auto 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
+            border: 3px solid rgba(255, 215, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .profile-name {
@@ -295,7 +262,18 @@
 
         .profile-username {
             color: rgba(255,255,255,0.5);
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .profile-level-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: #ffd700;
         }
 
         .stats-grid {
@@ -322,6 +300,51 @@
         .stat-label {
             font-size: 12px;
             color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+        }
+
+        /* Достижения */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .achievement-card {
+            background: rgba(44, 44, 46, 0.4);
+            backdrop-filter: blur(5px);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card.earned {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .achievement-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .achievement-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .achievement-desc {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .achievement-reward {
+            font-size: 10px;
+            color: #ffd700;
             margin-top: 4px;
         }
 
@@ -376,6 +399,9 @@
             .star-card .amount {
                 font-size: 24px;
             }
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -388,8 +414,6 @@
             <span id="headerBalance">0</span>
         </div>
     </div>
-
-    <!-- КОНТЕЙНЕРЫ РАЗДЕЛОВ -->
 
     <!-- Раздел ЗВЕЗДЫ -->
     <div id="starsSection" class="section-container active">
@@ -447,41 +471,30 @@
             <p>Telegram Premium подписка</p>
         </div>
 
-        <div class="premium-grid">
-            <div class="premium-card" data-months="3">
-                <div class="premium-info">
-                    <h3>3 месяца</h3>
-                    <p>🔥 Стартовый</p>
+        <div style="display: grid; gap: 16px;">
+            <div class="premium-card" data-months="3" style="background: linear-gradient(135deg, rgba(135, 116, 225, 0.2), rgba(108, 92, 231, 0.2)); border-radius: 24px; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s ease;">
+                <div>
+                    <h3 style="font-size: 20px; font-weight: 700;">3 месяца</h3>
+                    <p style="color: #8774e1;">🔥 Стартовый</p>
                 </div>
-                <div class="premium-price">899 ₽</div>
+                <div style="font-size: 24px; font-weight: 800; color: #ffd700;">899 ₽</div>
             </div>
 
-            <div class="premium-card" data-months="6" style="border: 2px solid #ffd700;">
-                <div class="premium-info">
-                    <h3>6 месяцев</h3>
-                    <p>⭐ Популярный</p>
+            <div class="premium-card" data-months="6" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.2)); border-radius: 24px; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s ease; border: 2px solid #ffd700;">
+                <div>
+                    <h3 style="font-size: 20px; font-weight: 700;">6 месяцев</h3>
+                    <p style="color: #ffd700;">⭐ Популярный</p>
                 </div>
-                <div class="premium-price">1699 ₽</div>
+                <div style="font-size: 24px; font-weight: 800; color: #ffd700;">1699 ₽</div>
             </div>
 
-            <div class="premium-card" data-months="12">
-                <div class="premium-info">
-                    <h3>12 месяцев</h3>
-                    <p>👑 Выгодный</p>
+            <div class="premium-card" data-months="12" style="background: linear-gradient(135deg, rgba(135, 116, 225, 0.2), rgba(108, 92, 231, 0.2)); border-radius: 24px; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s ease;">
+                <div>
+                    <h3 style="font-size: 20px; font-weight: 700;">12 месяцев</h3>
+                    <p style="color: #8774e1;">👑 Выгодный</p>
                 </div>
-                <div class="premium-price">2999 ₽</div>
+                <div style="font-size: 24px; font-weight: 800; color: #ffd700;">2999 ₽</div>
             </div>
-        </div>
-
-        <div style="margin-top: 20px; padding: 20px; background: rgba(44, 44, 46, 0.3); border-radius: 24px;">
-            <h3 style="margin-bottom: 10px;">🎁 Что входит</h3>
-            <ul style="list-style: none;">
-                <li style="margin-bottom: 8px;">✓ ✦ Увеличенный лимит загрузок</li>
-                <li style="margin-bottom: 8px;">✓ ✦ 4 ГБ в облаке</li>
-                <li style="margin-bottom: 8px;">✓ ✦ Ускоренная загрузка</li>
-                <li style="margin-bottom: 8px;">✓ ✦ Уникальные реакции</li>
-                <li style="margin-bottom: 8px;">✓ ✦ И многое другое</li>
-            </ul>
         </div>
 
         <button id="buyPremiumBtn" class="action-button" style="margin-top: 20px;">
@@ -497,9 +510,12 @@
         </div>
 
         <div class="profile-header">
-            <div class="profile-avatar" id="profileAvatar">👤</div>
-            <div class="profile-name" id="profileName">Пользователь</div>
-            <div class="profile-username" id="profileUsername">@username</div>
+            <div class="profile-avatar" id="profileAvatar">
+                <img id="avatarImg" src="" alt="" style="display: none;">
+            </div>
+            <div class="profile-name" id="profileName">Загрузка...</div>
+            <div class="profile-username" id="profileUsername">@загрузка</div>
+            <div class="profile-level-badge" id="profileLevel">⭐ Уровень 1</div>
         </div>
 
         <div class="stats-grid">
@@ -517,7 +533,7 @@
             </div>
         </div>
 
-        <!-- Уровень -->
+        <!-- Прогресс уровня -->
         <div style="background: rgba(44, 44, 46, 0.3); border-radius: 24px; padding: 20px; margin-bottom: 20px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <span style="font-weight: 700;">УРОВЕНЬ <span id="userLevel">1</span></span>
@@ -534,7 +550,9 @@
                 <span style="font-weight: 700;">🏆 Достижения</span>
                 <span style="color: #ffd700;" id="achievementsCount">0/10</span>
             </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 5px;" id="achievementsList"></div>
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- Достижения будут добавлены через JS -->
+            </div>
         </div>
     </div>
 
@@ -601,28 +619,127 @@
             tg.MainButton.onClick(() => tg.close());
         }
 
-        // Данные пакетов
-        const packages = [
-            { stars: 50, rub: 75, popular: false },
-            { stars: 100, rub: 145, popular: false },
-            { stars: 250, rub: 370, popular: true },
-            { stars: 500, rub: 730, popular: false },
-            { stars: 1000, rub: 1450, popular: true },
-            { stars: 5000, rub: 7200, popular: false }
+        // Данные пользователя из Telegram
+        const user = tg?.initDataUnsafe?.user || {};
+
+        // Реальные достижения
+        const achievements = [
+            { id: 1, name: 'Первая покупка', desc: 'Купите звезды впервые', icon: '🎯', exp: 50, stars: 5, condition: (data) => data.purchases >= 1 },
+            { id: 2, name: 'VIP клиент', desc: 'Потратьте 5000₽', icon: '👑', exp: 200, stars: 25, condition: (data) => data.spent >= 5000 },
+            { id: 3, name: 'Реферальный магнат', desc: 'Пригласите 5 друзей', icon: '👥', exp: 300, stars: 50, condition: (data) => data.referrals >= 5 },
+            { id: 4, name: 'Недельный огонь', desc: '7 дней бонусов подряд', icon: '🔥', exp: 100, stars: 15, condition: (data) => data.streak >= 7 },
+            { id: 5, name: 'Крупный покупатель', desc: 'Купите 5000⭐ за раз', icon: '💰', exp: 150, stars: 30, condition: (data) => data.maxPurchase >= 5000 },
+            { id: 6, name: 'Premium пользователь', desc: 'Купите Telegram Premium', icon: '💎', exp: 200, condition: (data) => data.hasPremium },
+            { id: 7, name: 'Опытный', desc: 'Достигните 10 уровня', icon: '📈', exp: 100, stars: 20, condition: (data) => data.level >= 10 },
+            { id: 8, name: 'Профессионал', desc: 'Достигните 25 уровня', icon: '🚀', exp: 300, stars: 50, condition: (data) => data.level >= 25 },
+            { id: 9, name: 'Легенда', desc: 'Достигните 50 уровня', icon: '👑', exp: 1000, stars: 200, condition: (data) => data.level >= 50 },
+            { id: 10, name: 'Социальный', desc: 'Пригласите 10 друзей', icon: '🌐', exp: 400, stars: 75, condition: (data) => data.referrals >= 10 }
         ];
+
+        // Реальные данные пользователя (в реальности приходят из бота)
+        let userData = {
+            id: user.id || 0,
+            firstName: user.first_name || 'Пользователь',
+            lastName: user.last_name || '',
+            username: user.username || 'username',
+            photoUrl: user.photo_url || null,
+            purchases: 5,
+            stars: 1250,
+            spent: 1875,
+            level: 7,
+            exp: 45,
+            nextExp: 100,
+            streak: 3,
+            referrals: 2,
+            maxPurchase: 1000,
+            hasPremium: false
+        };
+
+        // Функция загрузки фото профиля
+        function loadProfilePhoto() {
+            const avatarDiv = document.getElementById('profileAvatar');
+            const avatarImg = document.getElementById('avatarImg');
+
+            if (userData.photoUrl) {
+                avatarImg.src = userData.photoUrl;
+                avatarImg.style.display = 'block';
+                avatarDiv.innerHTML = ''; // Очищаем
+                avatarDiv.appendChild(avatarImg);
+            } else {
+                // Показываем первую букву имени
+                avatarDiv.innerHTML = userData.firstName.charAt(0) || '👤';
+                avatarImg.style.display = 'none';
+            }
+        }
+
+        // Обновление профиля
+        function updateProfile() {
+            document.getElementById('headerBalance').textContent = userData.stars;
+
+            // Имя (первая буква заглавная)
+            const fullName = [userData.firstName, userData.lastName].filter(Boolean).join(' ');
+            document.getElementById('profileName').textContent = fullName || 'Пользователь';
+
+            // Username
+            document.getElementById('profileUsername').textContent = userData.username ? '@' + userData.username : '@username';
+
+            // Уровень
+            document.getElementById('profileLevel').textContent = `⭐ Уровень ${userData.level}`;
+
+            // Статистика
+            document.getElementById('statPurchases').textContent = userData.purchases;
+            document.getElementById('statStars').textContent = userData.stars;
+            document.getElementById('statSpent').textContent = userData.spent + '₽';
+
+            // Прогресс уровня
+            document.getElementById('userLevel').textContent = userData.level;
+            document.getElementById('userExp').textContent = userData.exp;
+            document.getElementById('nextLevelExp').textContent = userData.nextExp;
+
+            const progress = (userData.exp / userData.nextExp) * 100;
+            document.getElementById('levelProgress').style.width = progress + '%';
+
+            // Загружаем фото
+            loadProfilePhoto();
+
+            // Обновляем достижения
+            updateAchievements();
+        }
+
+        // Обновление достижений
+        function updateAchievements() {
+            const earned = achievements.filter(a => a.condition(userData));
+            const grid = document.getElementById('achievementsGrid');
+            const count = document.getElementById('achievementsCount');
+
+            count.textContent = `${earned.length}/${achievements.length}`;
+            grid.innerHTML = '';
+
+            achievements.forEach(ach => {
+                const isEarned = earned.includes(ach);
+                const card = document.createElement('div');
+                card.className = `achievement-card ${isEarned ? 'earned' : ''}`;
+
+                let rewardText = '';
+                if (ach.stars) rewardText += `+${ach.stars}⭐ `;
+                if (ach.exp) rewardText += `+${ach.exp}✨`;
+
+                card.innerHTML = `
+                    <div class="achievement-icon">${ach.icon}</div>
+                    <div class="achievement-name">${ach.name}</div>
+                    <div class="achievement-desc">${ach.desc}</div>
+                    ${isEarned ? '<div class="achievement-reward">' + rewardText + '</div>' : ''}
+                `;
+
+                grid.appendChild(card);
+            });
+        }
 
         // Состояние приложения
         let state = {
             currentSection: 'stars',
             selectedPackage: null,
-            userData: {
-                name: 'Пользователь',
-                username: tg?.initDataUnsafe?.user?.username || 'username',
-                balance: 0,
-                purchases: 0,
-                stars: 0,
-                spent: 0
-            }
+            premiumMonths: null
         };
 
         // Навигация
@@ -639,22 +756,29 @@
             item.onclick = () => {
                 const section = item.dataset.section;
 
-                // Обновляем активный пункт меню
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                // Показываем соответствующий раздел
                 Object.values(sections).forEach(s => s.classList.remove('active'));
                 sections[section].classList.add('active');
 
                 state.currentSection = section;
 
-                // Тактильный отклик
                 if (tg?.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('light');
                 }
             };
         });
+
+        // Пакеты звезд
+        const packages = [
+            { stars: 50, rub: 75, popular: false },
+            { stars: 100, rub: 145, popular: false },
+            { stars: 250, rub: 370, popular: true },
+            { stars: 500, rub: 730, popular: false },
+            { stars: 1000, rub: 1450, popular: true },
+            { stars: 5000, rub: 7200, popular: false }
+        ];
 
         // Отрисовка популярных пакетов
         const popularGrid = document.getElementById('popularPackages');
@@ -685,12 +809,11 @@
 
         function selectPackage(pkg) {
             state.selectedPackage = pkg;
-            // Здесь логика покупки
+
             if (tg?.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('medium');
             }
 
-            // Отправляем данные в бота
             const data = {
                 action: 'select_package',
                 stars: pkg.stars,
@@ -699,45 +822,20 @@
 
             if (tg?.sendData) {
                 tg.sendData(JSON.stringify(data));
+                showNotification(`Выбрано: ${pkg.stars}⭐ за ${pkg.rub}₽`, 'info');
             }
         }
-
-        // Обновление данных пользователя
-        function updateUserData(data) {
-            state.userData = { ...state.userData, ...data };
-
-            document.getElementById('headerBalance').textContent = state.userData.balance;
-            document.getElementById('profileName').textContent = state.userData.name;
-            document.getElementById('profileUsername').textContent = '@' + state.userData.username;
-            document.getElementById('statPurchases').textContent = state.userData.purchases;
-            document.getElementById('statStars').textContent = state.userData.stars;
-            document.getElementById('statSpent').textContent = state.userData.spent + '₽';
-
-            // Обновляем аватар
-            const avatar = document.getElementById('profileAvatar');
-            avatar.textContent = state.userData.name.charAt(0) || '👤';
-        }
-
-        // Загружаем данные при старте
-        setTimeout(() => {
-            updateUserData({
-                name: tg?.initDataUnsafe?.user?.first_name || 'Пользователь',
-                username: tg?.initDataUnsafe?.user?.username || 'username',
-                balance: 1250,
-                purchases: 5,
-                stars: 1250,
-                spent: 1875
-            });
-        }, 500);
 
         // Premium покупка
         document.querySelectorAll('.premium-card').forEach(card => {
             card.onclick = function() {
                 const months = this.dataset.months;
+
                 document.querySelectorAll('.premium-card').forEach(c => {
                     c.style.transform = 'scale(1)';
-                    c.style.border = '1px solid rgba(255,255,255,0.1)';
+                    c.style.border = 'none';
                 });
+
                 this.style.transform = 'scale(1.02)';
                 this.style.border = '2px solid #ffd700';
 
@@ -747,13 +845,17 @@
 
         document.getElementById('buyPremiumBtn').onclick = function() {
             if (!state.premiumMonths) {
-                alert('Выберите срок подписки');
+                showNotification('Выберите срок подписки', 'error');
                 return;
             }
 
+            const prices = { 3: 899, 6: 1699, 12: 2999 };
+            const price = prices[state.premiumMonths];
+
             const data = {
                 action: 'buy_premium',
-                months: state.premiumMonths
+                months: state.premiumMonths,
+                price: price
             };
 
             if (tg?.sendData) {
@@ -791,8 +893,84 @@
             if (tg?.sendData) {
                 tg.sendData(JSON.stringify(data));
                 document.getElementById('calculatorResult').innerHTML = '⏳ РАСЧЕТ...';
+            } else {
+                demoCalculate(stars);
             }
         };
+
+        function demoCalculate(stars) {
+            if (stars <= 50) {
+                document.getElementById('calculatorResult').innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.5)} ₽`;
+            } else if (stars <= 100) {
+                document.getElementById('calculatorResult').innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.45)} ₽`;
+            } else if (stars <= 500) {
+                document.getElementById('calculatorResult').innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.48)} ₽<br><small style="color: #ffd700;">ОПТОВАЯ ЦЕНА</small>`;
+            } else {
+                const price = stars * 1.4;
+                const discount = stars * 1.5 - price;
+                document.getElementById('calculatorResult').innerHTML = `
+                    💰 ${stars}⭐ = ${Math.round(price)} ₽<br>
+                    <span style="color: #34c759;">🎉 Экономия ${Math.round(discount)} ₽</span>
+                `;
+            }
+        }
+
+        // Уведомления
+        function showNotification(text, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#34c759' : type === 'error' ? '#ff3b30' : 'rgba(0,0,0,0.8)'};
+                color: white;
+                padding: 12px 24px;
+                border-radius: 30px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.1);
+            `;
+            notification.textContent = text;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Загружаем данные при старте
+        updateProfile();
+
+        // Стили для анимаций
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translate(-50%, -20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translate(-50%, 0);
+                }
+            }
+
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translate(-50%, -10px);
+                }
+            }
+
+            .hidden {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
 
         console.log('✅ Star Market 24 готов к работе');
     </script>
