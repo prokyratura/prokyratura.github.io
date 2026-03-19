@@ -4,65 +4,200 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stars Market</title>
-    <script src="https://telegram.org"></script>
+    <!-- ИСПРАВЛЕНО: правильный URL для Telegram WebApp -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --bg: var(--tg-theme-bg-color, #1c1c1e);
-            --text: var(--tg-theme-text-color, #ffffff);
-            --sec-bg: var(--tg-theme-secondary-bg-color, #2c2c2e);
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
+
         body {
-            font-family: sans-serif; background-color: var(--bg); color: var(--text);
-            margin: 0; padding: 20px; text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #1c1c1e);
+            color: var(--tg-theme-text-color, white);
+            margin: 0;
+            padding: 16px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+
+        h2 {
+            font-weight: 600;
+            font-size: 24px;
+            margin: 8px 0 16px 0;
+            color: var(--tg-theme-text-color, white);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+            flex: 1;
+        }
+
         .card {
-            background-color: var(--sec-bg); padding: 20px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+            background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            padding: 20px 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.1s ease, background-color 0.1s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .card:active { transform: scale(0.95); opacity: 0.8; }
-        .s { font-size: 20px; font-weight: bold; display: block; }
-        .p { color: #34c759; font-weight: bold; margin-top: 5px; display: block; }
-        #error-log { color: red; font-size: 10px; margin-top: 20px; }
+
+        .card:active {
+            transform: scale(0.97);
+            background-color: var(--tg-theme-hint-color, #3a3a3c);
+        }
+
+        .stars {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--tg-theme-text-color, white);
+        }
+
+        .price {
+            color: var(--tg-theme-button-color, #34c759);
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .price::before {
+            content: '💰 ';
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--tg-theme-hint-color, #8e8e93);
+            display: none;
+        }
+
+        .status.visible {
+            display: block;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--tg-theme-hint-color, #8e8e93);
+        }
     </style>
 </head>
 <body>
 
-    <h2>⭐ Купить Звезды</h2>
+    <h2>⭐ Выберите пакет звезд</h2>
+
     <div class="grid" id="main-grid"></div>
-    <div id="error-log"></div>
+
+    <div class="status" id="statusMessage">
+        ✅ Выберите количество звезд для покупки
+    </div>
+
+    <div class="footer" id="footer">
+        Магазин работает через Telegram Stars
+    </div>
 
     <script>
+        // ИНИЦИАЛИЗАЦИЯ TELEGRAM WEBAPP
+        let tg = null;
         try {
-            const tg = window.Telegram.WebApp;
-            tg.ready();
-            tg.expand();
+            tg = window.Telegram?.WebApp;
+            if (tg) {
+                tg.ready();
+                tg.expand(); // Раскрываем на весь экран
+                tg.enableClosingConfirmation(); // Подтверждение закрытия
 
-            const offers = [
-                { stars: 50, price: 75 }, { stars: 100, price: 145 },
-                { stars: 250, price: 370 }, { stars: 500, price: 730 },
-                { stars: 1000, price: 1450 }, { stars: 5000, price: 7200 }
-            ];
-
-            const grid = document.getElementById('main-grid');
-
-            offers.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `<span class="s">${item.stars} ⭐</span><span class="p">${item.price} ₽</span>`;
-
-                card.onclick = function() {
-                    const data = JSON.stringify({stars: item.stars, price: item.price});
-                    if (tg.sendData) {
-                        tg.sendData(data);
-                    } else {
-                        alert("Запустите через кнопку в боте!");
-                    }
-                };
-                grid.appendChild(card);
-            });
+                // Настройка главной кнопки
+                tg.MainButton.text = "Продолжить в боте";
+                tg.MainButton.onClick(() => {
+                    tg.close();
+                });
+            }
         } catch (e) {
-            document.getElementById('error-log').innerText = "Ошибка JS: " + e.message;
+            console.log('Вне Telegram WebApp');
+        }
+
+        // АССОРТИМЕНТ
+        const offers = [
+            { stars: 50, price: 75 },
+            { stars: 100, price: 145 },
+            { stars: 250, price: 370 },
+            { stars: 500, price: 730 },
+            { stars: 1000, price: 1450 },
+            { stars: 5000, price: 7200 }
+        ];
+
+        // ОТРИСОВКА
+        const grid = document.getElementById('main-grid');
+        const statusEl = document.getElementById('statusMessage');
+        const footerEl = document.getElementById('footer');
+
+        offers.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <span class="stars">${item.stars} ⭐</span>
+                <span class="price">${item.price} ₽</span>
+            `;
+
+            card.onclick = function() {
+                // Данные для отправки
+                const data = JSON.stringify({
+                    stars: item.stars,
+                    price: item.price,
+                    action: 'buy'
+                });
+
+                // Отправка через Telegram WebApp
+                if (tg && tg.sendData) {
+                    tg.sendData(data); // Отправляем в бот
+
+                    // Показываем статус
+                    statusEl.textContent = `✅ Заказ: ${item.stars}⭐ на ${item.price}₽ отправлен!`;
+                    statusEl.classList.add('visible');
+
+                    // Вибрация (если поддерживается)
+                    if (tg.HapticFeedback) {
+                        tg.HapticFeedback.impactOccurred('medium');
+                    }
+                } else {
+                    // Режим отладки вне Telegram
+                    statusEl.textContent = `🔄 Тест: ${item.stars}⭐ за ${item.price}₽ (только в Telegram)`;
+                    statusEl.classList.add('visible');
+                    alert(`Демо: ${item.stars} звезд за ${item.price}₽\nОткройте через бота для реальной покупки!`);
+                }
+            };
+
+            grid.appendChild(card);
+        });
+
+        // Обновляем тему при изменении (Telegram может менять тему динамически)
+        if (tg) {
+            tg.onEvent('themeChanged', function() {
+                document.body.style.backgroundColor = tg.themeParams.bg_color || '#1c1c1e';
+                document.body.style.color = tg.themeParams.text_color || 'white';
+            });
+        }
+
+        // Если не в Telegram, показываем подсказку
+        if (!tg) {
+            statusEl.textContent = '🔔 Откройте через бота в Telegram для покупки';
+            statusEl.classList.add('visible');
+            footerEl.textContent = 'Режим предпросмотра';
         }
     </script>
 </body>
