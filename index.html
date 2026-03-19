@@ -313,7 +313,7 @@
             font-size: 14px;
         }
 
-        /* Сетка пакетов */
+        /* Сетка пакетов звезд */
         .packages-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -350,25 +350,6 @@
             font-size: 18px;
             color: #fff;
             margin-top: 8px;
-        }
-
-        .package-card .old-price {
-            font-size: 14px;
-            color: rgba(255,255,255,0.4);
-            text-decoration: line-through;
-            margin-top: 4px;
-        }
-
-        .package-card .discount-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff3b30;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
         }
 
         /* Кастомный ввод */
@@ -466,7 +447,7 @@
             border-color: #ffd700;
         }
 
-        /* Модальное окно */
+        /* Модальное окно для ввода получателя */
         .modal {
             position: fixed;
             top: 0;
@@ -521,12 +502,6 @@
         .modal-package .price {
             font-size: 20px;
             color: #fff;
-        }
-
-        .modal-package .discount-info {
-            font-size: 12px;
-            color: #34c759;
-            margin-top: 5px;
         }
 
         .modal-recipient {
@@ -591,6 +566,30 @@
             color: #fff;
         }
 
+        /* Premium карточки */
+        .premium-card {
+            background: linear-gradient(135deg, rgba(135, 116, 225, 0.2), rgba(108, 92, 231, 0.2));
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 12px;
+        }
+
+        .premium-card:hover {
+            transform: translateX(5px);
+            border-color: #ffd700;
+        }
+
+        .premium-card.selected {
+            border: 2px solid #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
         /* История покупок */
         .history-table {
             width: 100%;
@@ -638,7 +637,7 @@
         .order-action.support { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
         .order-action.repeat { background: rgba(52, 199, 89, 0.2); color: #34c759; }
 
-        /* Сетка подарков */
+        /* Сетка подарков Portals */
         .gifts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -721,6 +720,12 @@
             margin: 10px 0;
         }
 
+        .gift-price-ton {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+        }
+
         .gift-count {
             font-size: 11px;
             color: rgba(255,255,255,0.4);
@@ -744,12 +749,7 @@
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
         }
 
-        .gift-buy-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Фильтры подарков */
+        /* Фильтры Portals */
         .filters-section {
             background: rgba(44, 44, 46, 0.3);
             border-radius: 24px;
@@ -784,41 +784,6 @@
         .filter-select:focus {
             outline: none;
             border-color: #ffd700;
-        }
-
-        .attribute-filters {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .attribute-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 20px;
-        }
-
-        .attribute-btn:hover {
-            background: rgba(255, 215, 0, 0.2);
-            border-color: #ffd700;
-        }
-
-        .attribute-btn.active {
-            background: rgba(255, 215, 0, 0.3);
-            border-color: #ffd700;
-        }
-
-        .attribute-btn span {
-            display: block;
-            font-size: 10px;
-            margin-top: 4px;
-            color: rgba(255,255,255,0.7);
         }
 
         .stats-row {
@@ -892,6 +857,19 @@
             font-size: 12px;
             color: rgba(255,255,255,0.5);
             margin-top: 4px;
+        }
+
+        .level-progress {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .level-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffaa00);
+            transition: width 0.5s;
         }
 
         .achievements-grid {
@@ -997,35 +975,6 @@
             margin-bottom: 24px;
         }
 
-        .premium-card {
-            background: linear-gradient(135deg, rgba(135, 116, 225, 0.2), rgba(108, 92, 231, 0.2));
-            border-radius: 24px;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .premium-card:hover {
-            transform: translateX(5px);
-        }
-
-        .level-progress {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            height: 10px;
-            overflow: hidden;
-        }
-
-        .level-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ffaa00);
-            transition: width 0.5s;
-        }
-
         @media (max-width: 380px) {
             .package-card .stars {
                 font-size: 24px;
@@ -1034,9 +983,6 @@
                 flex-wrap: wrap;
             }
             .gifts-grid {
-                grid-template-columns: 1fr;
-            }
-            .attribute-filters {
                 grid-template-columns: 1fr;
             }
         }
@@ -1090,7 +1036,7 @@
             </button>
         </div>
 
-        <!-- Все пакеты -->
+        <!-- Пакеты звезд -->
         <div style="margin-bottom: 20px;">
             <h3 style="margin-bottom: 12px;">📦 Пакеты звезд</h3>
             <div class="packages-grid" id="allPackages"></div>
@@ -1128,35 +1074,97 @@
             <p>Telegram Premium подписка</p>
         </div>
 
-        <div style="display: grid; gap: 16px;">
-            <div class="premium-card" data-months="3">
-                <div>
-                    <h3 style="font-size: 20px; font-weight: 700;">3 месяца</h3>
-                    <p style="color: #8774e1;">🔥 Стартовый</p>
-                </div>
-                <div style="font-size: 24px; font-weight: 800; color: #ffd700;">899 ₽</div>
+        <div class="premium-card" data-months="3">
+            <div>
+                <h3 style="font-size: 20px; font-weight: 700;">3 месяца</h3>
+                <p style="color: #8774e1;">🔥 Стартовый</p>
             </div>
+            <div style="font-size: 24px; font-weight: 800; color: #ffd700;">899 ₽</div>
+        </div>
 
-            <div class="premium-card" data-months="6" style="border: 2px solid #ffd700;">
-                <div>
-                    <h3 style="font-size: 20px; font-weight: 700;">6 месяцев</h3>
-                    <p style="color: #ffd700;">⭐ Популярный</p>
-                </div>
-                <div style="font-size: 24px; font-weight: 800; color: #ffd700;">1699 ₽</div>
+        <div class="premium-card" data-months="6">
+            <div>
+                <h3 style="font-size: 20px; font-weight: 700;">6 месяцев</h3>
+                <p style="color: #ffd700;">⭐ Популярный</p>
             </div>
+            <div style="font-size: 24px; font-weight: 800; color: #ffd700;">1699 ₽</div>
+        </div>
 
-            <div class="premium-card" data-months="12">
-                <div>
-                    <h3 style="font-size: 20px; font-weight: 700;">12 месяцев</h3>
-                    <p style="color: #8774e1;">👑 Выгодный</p>
-                </div>
-                <div style="font-size: 24px; font-weight: 800; color: #ffd700;">2999 ₽</div>
+        <div class="premium-card" data-months="12">
+            <div>
+                <h3 style="font-size: 20px; font-weight: 700;">12 месяцев</h3>
+                <p style="color: #8774e1;">👑 Выгодный</p>
             </div>
+            <div style="font-size: 24px; font-weight: 800; color: #ffd700;">2999 ₽</div>
         </div>
 
         <button id="buyPremiumBtn" class="action-button" style="margin-top: 20px;">
             💎 КУПИТЬ PREMIUM
         </button>
+    </div>
+
+    <!-- Раздел ПОДАРКИ (Portals) -->
+    <div id="giftsSection" class="section-container">
+        <div class="section-header">
+            <h2>🎁 Подарки</h2>
+            <p>Коллекционные предметы из Portals</p>
+        </div>
+
+        <!-- Фильтры -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label class="filter-label">🔍 ПОИСК</label>
+                <input type="text" id="giftSearch" class="filter-select" placeholder="Название подарка...">
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">🎨 МОДЕЛЬ</label>
+                <select id="modelFilter" class="filter-select">
+                    <option value="">Все модели</option>
+                    <option value="wizard">🧙 Wizard</option>
+                    <option value="dragon">🐉 Dragon</option>
+                    <option value="pepe">🐸 Pepe</option>
+                    <option value="skull">💀 Skull</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">✨ ФОН</label>
+                <select id="backdropFilter" class="filter-select">
+                    <option value="">Все фоны</option>
+                    <option value="gold">🌟 Gold</option>
+                    <option value="silver">⚪ Silver</option>
+                    <option value="space">🌌 Space</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">📊 СОРТИРОВКА</label>
+                <select id="sortFilter" class="filter-select">
+                    <option value="default">По умолчанию</option>
+                    <option value="price_asc">💰 Цена (сначала дешевые)</option>
+                    <option value="price_desc">💰 Цена (сначала дорогие)</option>
+                    <option value="name_asc">📝 По названию</option>
+                </select>
+            </div>
+
+            <div class="stats-row">
+                <span>📦 Всего: <span id="totalGiftsCount">0</span></span>
+                <span>💰 От <span id="minPrice">0</span> до <span id="maxPrice">0</span> ₽</span>
+            </div>
+        </div>
+
+        <!-- Индикатор загрузки -->
+        <div id="giftsLoader" class="loader" style="display: none;"></div>
+
+        <!-- Сообщение об ошибке/отсутствии подарков -->
+        <div id="noGiftsMessage" class="error-message" style="display: none;">
+            <i>🎁</i>
+            <span>На данный момент подарки отсутствуют</span>
+        </div>
+
+        <!-- Сетка подарков -->
+        <div class="gifts-grid" id="giftsGrid"></div>
     </div>
 
     <!-- Раздел ПРОФИЛЬ -->
@@ -1213,22 +1221,6 @@
             </div>
         </div>
 
-        <!-- История покупок -->
-        <div style="margin-bottom: 20px;">
-            <h3 style="margin-bottom: 12px;">📋 История покупок</h3>
-            <div class="history-table">
-                <div class="history-header">
-                    <span>Дата</span>
-                    <span>ID заказа</span>
-                    <span>Сумма</span>
-                    <span>Товар</span>
-                    <span>Статус</span>
-                    <span>Действия</span>
-                </div>
-                <div id="historyRows"></div>
-            </div>
-        </div>
-
         <!-- Достижения -->
         <div style="background: rgba(44, 44, 46, 0.3); border-radius: 24px; padding: 20px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
@@ -1237,89 +1229,6 @@
             </div>
             <div class="achievements-grid" id="achievementsGrid"></div>
         </div>
-    </div>
-
-    <!-- Раздел ПОДАРКИ (с фильтрами как на Fragment) -->
-    <div id="giftsSection" class="section-container">
-        <div class="section-header">
-            <h2>🎁 Подарки</h2>
-            <p>Коллекционные предметы с Fragment</p>
-        </div>
-
-        <!-- Фильтры -->
-        <div class="filters-section">
-            <!-- Выбор коллекции -->
-            <div class="filter-group">
-                <label class="filter-label">📚 КОЛЛЕКЦИЯ</label>
-                <select id="collectionFilter" class="filter-select">
-                    <option value="all">Все коллекции</option>
-                </select>
-            </div>
-
-            <!-- Фильтры атрибутов (появляются при выборе коллекции) -->
-            <div id="attributeFilters" style="display: none;">
-                <div class="filter-group">
-                    <label class="filter-label">🎨 ФОН</label>
-                    <div class="attribute-filters" id="backgroundFilters"></div>
-                </div>
-
-                <div class="filter-group">
-                    <label class="filter-label">🖌️ УЗОР</label>
-                    <div class="attribute-filters" id="patternFilters"></div>
-                </div>
-
-                <div class="filter-group">
-                    <label class="filter-label">🎭 МОДЕЛЬ</label>
-                    <div class="attribute-filters" id="modelFilters"></div>
-                </div>
-            </div>
-
-            <!-- Дополнительные фильтры -->
-            <div class="filter-group">
-                <label class="filter-label">🔍 ПОИСК</label>
-                <input type="text" id="giftSearch" class="filter-select" placeholder="Название подарка..." style="padding: 12px;">
-            </div>
-
-            <div class="filter-group">
-                <label class="filter-label">✨ РЕДКОСТЬ</label>
-                <select id="rarityFilter" class="filter-select">
-                    <option value="all">Все</option>
-                    <option value="common">🟢 Обычные</option>
-                    <option value="rare">🔵 Редкие</option>
-                    <option value="epic">🟣 Эпические</option>
-                    <option value="legendary">🟠 Легендарные</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label class="filter-label">📊 СОРТИРОВКА</label>
-                <select id="sortFilter" class="filter-select">
-                    <option value="default">По умолчанию</option>
-                    <option value="price_asc">💰 Цена (сначала дешевые)</option>
-                    <option value="price_desc">💰 Цена (сначала дорогие)</option>
-                    <option value="rarity_desc">✨ По редкости</option>
-                    <option value="name_asc">📝 По названию</option>
-                </select>
-            </div>
-
-            <!-- Статистика -->
-            <div class="stats-row">
-                <span>📦 Всего: <span id="totalGiftsCount">0</span></span>
-                <span>💰 Цены: <span id="minPrice">0</span> - <span id="maxPrice">0</span> ₽</span>
-            </div>
-        </div>
-
-        <!-- Индикатор загрузки -->
-        <div id="giftsLoader" class="loader" style="display: none;"></div>
-
-        <!-- Сообщение об ошибке/отсутствии подарков -->
-        <div id="noGiftsMessage" class="error-message" style="display: none;">
-            <i>🎁</i>
-            <span>На данный момент подарки отсутствуют</span>
-        </div>
-
-        <!-- Сетка подарков -->
-        <div class="gifts-grid" id="giftsGrid"></div>
     </div>
 
     <!-- Раздел ПОМОЩЬ -->
@@ -1344,7 +1253,7 @@
             </div>
             <div style="margin-bottom: 20px;">
                 <h3 style="margin-bottom: 8px;">❓ Что такое подарки?</h3>
-                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Уникальные коллекционные предметы с Fragment. Каждый подарок имеет свои атрибуты: фон, узор и модель. Можно дарить друзьям!</p>
+                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Уникальные коллекционные предметы из маркетплейса Portals. Каждый подарок имеет свои атрибуты: модель, фон, символ.</p>
             </div>
         </div>
 
@@ -1377,7 +1286,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно для ввода получателя (с кнопкой "Купить себе") -->
+    <!-- Модальное окно для ввода получателя -->
     <div id="recipientModal" class="modal">
         <div class="modal-content">
             <div class="modal-title">⭐ Получатель</div>
@@ -1408,7 +1317,7 @@
         // Данные пользователя из Telegram
         const user = tg?.initDataUnsafe?.user || {};
 
-        // Цены на звезды (из скриншота конкурентов)
+        // Цены на звезды
         const packages = [
             { stars: 50, rub: 79 },
             { stars: 75, rub: 119 },
@@ -1425,7 +1334,7 @@
             { stars: 10000, rub: 15999 }
         ];
 
-        // Состояние
+        // Состояние приложения
         let state = {
             currentSection: 'stars',
             selectedPackage: null,
@@ -1433,14 +1342,21 @@
             customPrice: null,
             premiumMonths: null,
             allGifts: [],
-            filteredGifts: [],
-            selectedCollection: 'all',
-            selectedBackground: null,
-            selectedPattern: null,
-            selectedModel: null
+            userData: {
+                purchases: 5,
+                stars: 1250,
+                spent: 1875,
+                level: 7,
+                exp: 45,
+                nextExp: 100,
+                discount: 2,
+                referralPercent: 2,
+                referralEarned: 1750,
+                referralNext: 3250
+            }
         };
 
-        // Элементы
+        // Элементы DOM
         const sections = {
             stars: document.getElementById('starsSection'),
             premium: document.getElementById('premiumSection'),
@@ -1468,7 +1384,7 @@
                 sections[section].classList.add('active');
                 state.currentSection = section;
 
-                // Если открыт раздел подарков, загружаем их
+                // Загружаем подарки при открытии раздела
                 if (section === 'gifts' && state.allGifts.length === 0) {
                     loadGifts();
                 }
@@ -1488,11 +1404,12 @@
             }
         };
 
-        // Создание карточки пакета
+        // Отрисовка пакетов звезд
+        const allGrid = document.getElementById('allPackages');
+
         function createPackageCard(pkg) {
             const card = document.createElement('div');
             card.className = 'package-card';
-
             card.innerHTML = `
                 <div class="stars">${pkg.stars} ⭐</div>
                 <div class="price">${pkg.rub} ₽</div>
@@ -1512,8 +1429,6 @@
             return card;
         }
 
-        // Отрисовка всех пакетов
-        const allGrid = document.getElementById('allPackages');
         packages.forEach(pkg => {
             allGrid.appendChild(createPackageCard(pkg));
         });
@@ -1526,7 +1441,6 @@
             stars = parseInt(stars);
             if (stars < 1) return null;
 
-            // Находим ближайший пакет для расчета цены
             const closest = packages.reduce((prev, curr) => {
                 return (Math.abs(curr.stars - stars) < Math.abs(prev.stars - stars) ? curr : prev);
             });
@@ -1620,28 +1534,7 @@
             state.customStars = null;
         };
 
-        // ========== ПОДАРКИ ==========
-
-        // Коллекции подарков
-        const collections = [
-            { slug: 'astralshard', name: '✨ Astral Shard' },
-            { slug: 'homemadecake', name: '🍰 Homemade Cake' },
-            { slug: 'bdaycandle', name: '🕯️ Birthday Candle' },
-            { slug: 'sweetpresent', name: '🎁 Sweet Present' },
-            { slug: 'magicorn', name: '🦄 Magicorn' },
-            { slug: 'crystalgem', name: '💎 Crystal Gem' }
-        ];
-
-        // Заполняем селект коллекций
-        const collectionFilter = document.getElementById('collectionFilter');
-        collections.forEach(col => {
-            const option = document.createElement('option');
-            option.value = col.slug;
-            option.textContent = col.name;
-            collectionFilter.appendChild(option);
-        });
-
-        // Загрузка подарков
+        // Загрузка подарков из Portals
         async function loadGifts() {
             const loader = document.getElementById('giftsLoader');
             const grid = document.getElementById('giftsGrid');
@@ -1651,82 +1544,69 @@
             grid.innerHTML = '';
             noMessage.style.display = 'none';
 
-            try {
-                const data = { action: 'get_gifts' };
+            const data = {
+                action: 'get_gifts',
+                gift_name: document.getElementById('giftSearch').value,
+                model: document.getElementById('modelFilter').value,
+                backdrop: document.getElementById('backdropFilter').value,
+                limit: 50
+            };
 
-                if (tg?.sendData) {
-                    // Отправляем запрос и ждем ответ через callback
-                    tg.sendData(JSON.stringify(data));
+            if (tg?.sendData) {
+                tg.sendData(JSON.stringify(data));
 
-                    // Устанавливаем таймаут на случай ошибки
-                    setTimeout(() => {
-                        if (state.allGifts.length === 0) {
-                            loader.style.display = 'none';
-                            noMessage.style.display = 'block';
-                            noMessage.innerHTML = '<i>🎁</i><span>На данный момент подарки отсутствуют</span>';
-                        }
-                    }, 10000);
-                } else {
-                    // Демо-режим
-                    setTimeout(() => {
-                        state.allGifts = generateDemoGifts();
-                        updateGiftsDisplay();
-                        updateGiftsStats();
+                // Таймаут на случай ошибки
+                setTimeout(() => {
+                    if (state.allGifts.length === 0) {
                         loader.style.display = 'none';
-                    }, 1000);
-                }
-            } catch (error) {
-                console.error('Error loading gifts:', error);
-                loader.style.display = 'none';
-                noMessage.style.display = 'block';
-                noMessage.innerHTML = '<i>🎁</i><span>На данный момент подарки отсутствуют</span>';
+                        noMessage.style.display = 'block';
+                    }
+                }, 10000);
+            } else {
+                // Демо-режим
+                setTimeout(() => {
+                    state.allGifts = generateDemoGifts();
+                    updateGiftsDisplay();
+                    updateGiftsStats();
+                    loader.style.display = 'none';
+                }, 1000);
             }
         }
 
-        // Генерация демо-подарков (для тестирования)
+        // Генерация демо-подарков
         function generateDemoGifts() {
             const gifts = [];
             const rarities = ['common', 'rare', 'epic', 'legendary'];
-            const backgrounds = ['🌟', '✨', '💫', '⭐', '🌙', '☀️'];
-            const patterns = ['🎨', '🖌️', '✏️', '🖍️', '📐', '🔮'];
-            const models = ['🎭', '👤', '🐉', '🦊', '🐼', '🦁'];
+            const models = ['wizard', 'dragon', 'pepe', 'skull'];
+            const backdrops = ['gold', 'silver', 'space'];
 
-            collections.forEach((col, colIndex) => {
-                for (let i = 0; i < 5; i++) {
-                    const rarity = rarities[Math.floor(Math.random() * rarities.length)];
-                    const price = rarity === 'common' ? Math.floor(Math.random() * 1000) + 500 :
-                                 rarity === 'rare' ? Math.floor(Math.random() * 4000) + 2000 :
-                                 rarity === 'epic' ? Math.floor(Math.random() * 10000) + 5000 :
-                                 Math.floor(Math.random() * 40000) + 10000;
+            for (let i = 0; i < 20; i++) {
+                const rarity = rarities[Math.floor(Math.random() * rarities.length)];
+                const price = rarity === 'common' ? Math.floor(Math.random() * 1000) + 500 :
+                             rarity === 'rare' ? Math.floor(Math.random() * 4000) + 2000 :
+                             rarity === 'epic' ? Math.floor(Math.random() * 10000) + 5000 :
+                             Math.floor(Math.random() * 40000) + 10000;
 
-                    gifts.push({
-                        id: `${col.slug}-${i}`,
-                        name: `${col.name} #${i+1}`,
-                        emoji: col.name.split(' ')[0],
-                        collection: col.slug,
-                        collection_name: col.name,
-                        rarity: rarity,
-                        price: price,
-                        stars: Math.floor(price * 0.85),
-                        count: rarity === 'legendary' ? Math.floor(Math.random() * 10) + 1 :
-                               rarity === 'epic' ? Math.floor(Math.random() * 50) + 10 :
-                               rarity === 'rare' ? Math.floor(Math.random() * 200) + 50 :
-                               Math.floor(Math.random() * 1000) + 500,
-                        attributes: {
-                            'Фон': backgrounds[Math.floor(Math.random() * backgrounds.length)],
-                            'Узор': patterns[Math.floor(Math.random() * patterns.length)],
-                            'Модель': models[Math.floor(Math.random() * models.length)]
-                        }
-                    });
-                }
-            });
+                gifts.push({
+                    id: `gift-${i}`,
+                    name: `Collection #${i+1}`,
+                    collection: 'Demo Collection',
+                    emoji: '🎁',
+                    rarity: rarity,
+                    price_rub: price,
+                    price_ton: Math.round(price / 85 / 1.43 * 100) / 100,
+                    model: models[Math.floor(Math.random() * models.length)],
+                    backdrop: backdrops[Math.floor(Math.random() * backdrops.length)],
+                    count: Math.floor(Math.random() * 100) + 1
+                });
+            }
 
             return gifts;
         }
 
         // Обновление статистики подарков
         function updateGiftsStats() {
-            const prices = state.allGifts.map(g => g.price);
+            const prices = state.allGifts.map(g => g.price_rub);
             const minPrice = Math.min(...prices);
             const maxPrice = Math.max(...prices);
 
@@ -1739,46 +1619,28 @@
         function filterGifts() {
             let filtered = [...state.allGifts];
 
-            // Фильтр по коллекции
-            if (state.selectedCollection !== 'all') {
-                filtered = filtered.filter(g => g.collection === state.selectedCollection);
-            }
-
-            // Фильтр по атрибутам
-            if (state.selectedBackground) {
-                filtered = filtered.filter(g => g.attributes['Фон'] === state.selectedBackground);
-            }
-            if (state.selectedPattern) {
-                filtered = filtered.filter(g => g.attributes['Узор'] === state.selectedPattern);
-            }
-            if (state.selectedModel) {
-                filtered = filtered.filter(g => g.attributes['Модель'] === state.selectedModel);
-            }
-
-            // Фильтр по поиску
             const searchTerm = document.getElementById('giftSearch').value.toLowerCase();
             if (searchTerm) {
                 filtered = filtered.filter(g => g.name.toLowerCase().includes(searchTerm));
             }
 
-            // Фильтр по редкости
-            const rarity = document.getElementById('rarityFilter').value;
-            if (rarity !== 'all') {
-                filtered = filtered.filter(g => g.rarity === rarity);
+            const model = document.getElementById('modelFilter').value;
+            if (model) {
+                filtered = filtered.filter(g => g.model === model);
             }
 
-            // Сортировка
+            const backdrop = document.getElementById('backdropFilter').value;
+            if (backdrop) {
+                filtered = filtered.filter(g => g.backdrop === backdrop);
+            }
+
             const sort = document.getElementById('sortFilter').value;
             switch(sort) {
                 case 'price_asc':
-                    filtered.sort((a, b) => a.price - b.price);
+                    filtered.sort((a, b) => a.price_rub - b.price_rub);
                     break;
                 case 'price_desc':
-                    filtered.sort((a, b) => b.price - a.price);
-                    break;
-                case 'rarity_desc':
-                    const rarityOrder = { 'legendary': 4, 'epic': 3, 'rare': 2, 'common': 1 };
-                    filtered.sort((a, b) => rarityOrder[b.rarity] - rarityOrder[a.rarity]);
+                    filtered.sort((a, b) => b.price_rub - a.price_rub);
                     break;
                 case 'name_asc':
                     filtered.sort((a, b) => a.name.localeCompare(b.name));
@@ -1815,145 +1677,49 @@
                 const card = document.createElement('div');
                 card.className = 'gift-card';
 
-                // Цвет границы в зависимости от редкости
-                const rarityColors = {
-                    'common': '#a0a0a0',
-                    'rare': '#0070dd',
-                    'epic': '#a335ee',
-                    'legendary': '#ff8000'
-                };
-
-                card.style.borderColor = rarityColors[gift.rarity];
-
                 card.innerHTML = `
                     <div class="gift-rarity ${gift.rarity}">${gift.rarity}</div>
                     <div style="font-size: 48px; margin: 10px 0;">${gift.emoji}</div>
                     <div class="gift-name">${gift.name}</div>
-                    <div class="gift-collection">${gift.collection_name}</div>
+                    <div class="gift-collection">${gift.collection}</div>
                     <div class="gift-attributes">
-                        <span title="Фон">${gift.attributes['Фон']}</span>
-                        <span title="Узор">${gift.attributes['Узор']}</span>
-                        <span title="Модель">${gift.attributes['Модель']}</span>
+                        <span title="Модель">${gift.model || '✨'}</span>
+                        <span title="Фон">${gift.backdrop || '🎨'}</span>
                     </div>
-                    <div class="gift-price">${gift.price.toLocaleString()} ₽</div>
+                    <div class="gift-price">${gift.price_rub.toLocaleString()} ₽</div>
+                    <div class="gift-price-ton">≈ ${gift.price_ton} TON</div>
                     <div class="gift-count">📦 В наличии: ${gift.count}</div>
-                    <button class="gift-buy-btn" data-gift='${JSON.stringify(gift)}'>
+                    <button class="gift-buy-btn" onclick="buyGift('${gift.id}', '${gift.name}', ${gift.price_rub})">
                         Купить подарок
                     </button>
                 `;
-
-                card.querySelector('button').onclick = () => {
-                    const data = {
-                        action: 'buy_gift',
-                        gift_id: gift.id,
-                        name: gift.name,
-                        price: gift.price,
-                        rarity: gift.rarity
-                    };
-
-                    if (tg?.sendData) {
-                        tg.sendData(JSON.stringify(data));
-                        showNotification(`⏳ Покупка ${gift.name}...`, 'info');
-                    } else {
-                        showNotification(`✅ ДЕМО: Покупка ${gift.name}`, 'success');
-                    }
-                };
 
                 grid.appendChild(card);
             });
         }
 
-        // Обработчик смены коллекции
-        collectionFilter.onchange = () => {
-            state.selectedCollection = collectionFilter.value;
+        // Покупка подарка
+        window.buyGift = function(giftId, giftName, price) {
+            const data = {
+                action: 'buy_gift',
+                gift_id: giftId,
+                name: giftName,
+                price: price
+            };
 
-            // Показываем/скрываем фильтры атрибутов
-            const attrFilters = document.getElementById('attributeFilters');
-            if (state.selectedCollection !== 'all') {
-                attrFilters.style.display = 'block';
-                generateAttributeFilters();
+            if (tg?.sendData) {
+                tg.sendData(JSON.stringify(data));
+                showNotification(`⏳ Покупка ${giftName}...`, 'info');
             } else {
-                attrFilters.style.display = 'none';
+                showNotification(`✅ ДЕМО: Покупка ${giftName}`, 'success');
             }
-
-            updateGiftsDisplay();
         };
-
-        // Генерация фильтров атрибутов
-        function generateAttributeFilters() {
-            // Собираем уникальные атрибуты из подарков выбранной коллекции
-            const collectionGifts = state.allGifts.filter(g => g.collection === state.selectedCollection);
-
-            const backgrounds = [...new Set(collectionGifts.map(g => g.attributes['Фон']))];
-            const patterns = [...new Set(collectionGifts.map(g => g.attributes['Узор']))];
-            const models = [...new Set(collectionGifts.map(g => g.attributes['Модель']))];
-
-            // Заполняем фильтры фонов
-            const bgContainer = document.getElementById('backgroundFilters');
-            bgContainer.innerHTML = '<div class="attribute-btn" data-attr="bg-all"><span>✨</span><span>Все</span></div>';
-            backgrounds.forEach(bg => {
-                const btn = document.createElement('div');
-                btn.className = 'attribute-btn';
-                btn.setAttribute('data-attr', 'bg-' + bg);
-                btn.innerHTML = `<span>${bg}</span><span>Фон</span>`;
-                btn.onclick = () => {
-                    document.querySelectorAll('#backgroundFilters .attribute-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    state.selectedBackground = bg;
-                    updateGiftsDisplay();
-                };
-                bgContainer.appendChild(btn);
-            });
-
-            // Заполняем фильтры узоров
-            const patternContainer = document.getElementById('patternFilters');
-            patternContainer.innerHTML = '<div class="attribute-btn" data-attr="pattern-all"><span>🖌️</span><span>Все</span></div>';
-            patterns.forEach(pattern => {
-                const btn = document.createElement('div');
-                btn.className = 'attribute-btn';
-                btn.setAttribute('data-attr', 'pattern-' + pattern);
-                btn.innerHTML = `<span>${pattern}</span><span>Узор</span>`;
-                btn.onclick = () => {
-                    document.querySelectorAll('#patternFilters .attribute-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    state.selectedPattern = pattern;
-                    updateGiftsDisplay();
-                };
-                patternContainer.appendChild(btn);
-            });
-
-            // Заполняем фильтры моделей
-            const modelContainer = document.getElementById('modelFilters');
-            modelContainer.innerHTML = '<div class="attribute-btn" data-attr="model-all"><span>🎭</span><span>Все</span></div>';
-            models.forEach(model => {
-                const btn = document.createElement('div');
-                btn.className = 'attribute-btn';
-                btn.setAttribute('data-attr', 'model-' + model);
-                btn.innerHTML = `<span>${model}</span><span>Модель</span>`;
-                btn.onclick = () => {
-                    document.querySelectorAll('#modelFilters .attribute-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    state.selectedModel = model;
-                    updateGiftsDisplay();
-                };
-                modelContainer.appendChild(btn);
-            });
-        }
 
         // Обработчики фильтров
         document.getElementById('giftSearch').addEventListener('input', updateGiftsDisplay);
-        document.getElementById('rarityFilter').addEventListener('change', updateGiftsDisplay);
+        document.getElementById('modelFilter').addEventListener('change', updateGiftsDisplay);
+        document.getElementById('backdropFilter').addEventListener('change', updateGiftsDisplay);
         document.getElementById('sortFilter').addEventListener('change', updateGiftsDisplay);
-
-        // Обработчик ответа от бота
-        window.handleGiftsResponse = function(data) {
-            if (data.action === 'gifts_data' && data.gifts) {
-                state.allGifts = data.gifts;
-                updateGiftsDisplay();
-                updateGiftsStats();
-                document.getElementById('giftsLoader').style.display = 'none';
-            }
-        };
 
         // Premium покупка
         document.querySelectorAll('.premium-card').forEach(card => {
@@ -1961,13 +1727,10 @@
                 const months = this.dataset.months;
 
                 document.querySelectorAll('.premium-card').forEach(c => {
-                    c.style.transform = 'scale(1)';
-                    c.style.border = '1px solid rgba(255,255,255,0.1)';
+                    c.classList.remove('selected');
                 });
 
-                this.style.transform = 'scale(1.02)';
-                this.style.border = '2px solid #ffd700';
-
+                this.classList.add('selected');
                 state.premiumMonths = months;
             };
         });
@@ -2023,75 +1786,43 @@
 
         // Обновление профиля
         function updateProfile() {
-            document.getElementById('headerBalance').textContent = '1250';
+            document.getElementById('headerBalance').textContent = state.userData.stars;
             document.getElementById('profileName').textContent = user.first_name || 'Пользователь';
             document.getElementById('profileUsername').textContent = user.username ? '@' + user.username : '@username';
 
-            document.getElementById('statPurchases').textContent = '5';
-            document.getElementById('statStars').textContent = '1250';
-            document.getElementById('statSpent').textContent = '1875₽';
+            document.getElementById('statPurchases').textContent = state.userData.purchases;
+            document.getElementById('statStars').textContent = state.userData.stars;
+            document.getElementById('statSpent').textContent = state.userData.spent + '₽';
 
-            document.getElementById('userLevel').textContent = '7';
-            document.getElementById('userDiscount').textContent = '2%';
-            document.getElementById('userExp').textContent = '45';
-            document.getElementById('nextLevelExp').textContent = '100';
+            document.getElementById('userLevel').textContent = state.userData.level;
+            document.getElementById('userDiscount').textContent = state.userData.discount + '%';
+            document.getElementById('userExp').textContent = state.userData.exp;
+            document.getElementById('nextLevelExp').textContent = state.userData.nextExp;
 
-            const progress = (45 / 100) * 100;
+            const progress = (state.userData.exp / state.userData.nextExp) * 100;
             document.getElementById('levelProgress').style.width = progress + '%';
 
-            document.getElementById('referralPercent').textContent = '2%';
-            document.getElementById('referralEarned').textContent = '1,750₽';
-            document.getElementById('referralNext').textContent = '3,250₽';
-            document.getElementById('referralProgress').style.width = '35%';
+            document.getElementById('referralPercent').textContent = state.userData.referralPercent + '%';
+            document.getElementById('referralEarned').textContent = state.userData.referralEarned + '₽';
+            document.getElementById('referralNext').textContent = state.userData.referralNext + '₽';
+
+            const referralProgress = (state.userData.referralEarned / (state.userData.referralEarned + state.userData.referralNext)) * 100;
+            document.getElementById('referralProgress').style.width = referralProgress + '%';
 
             // Достижения
-            const achievements = ['Первая покупка', 'VIP клиент', 'Коллекционер'];
-            const grid = document.getElementById('achievementsGrid');
-            grid.innerHTML = '';
-            achievements.forEach(ach => {
+            const achievementsGrid = document.getElementById('achievementsGrid');
+            achievementsGrid.innerHTML = '';
+            const achievements = ['Первая покупка', 'VIP клиент', 'Реферальный магнат'];
+            achievements.forEach((ach, i) => {
                 const card = document.createElement('div');
                 card.className = 'achievement-card earned';
                 card.innerHTML = `
                     <div style="font-size: 24px;">🏆</div>
                     <div style="font-size: 12px;">${ach}</div>
                 `;
-                grid.appendChild(card);
+                achievementsGrid.appendChild(card);
             });
-        }
-
-        // История покупок
-        function updateHistory() {
-            const historyRows = document.getElementById('historyRows');
-            const orders = [
-                { date: '18.03.2026', id: 'b_yTwIGGz6', price: 83, stars: 50, status: 'pending' },
-                { date: '18.03.2026', id: 'b_ieWWAHug', price: 82, stars: 50, status: 'pending' },
-                { date: '18.03.2026', id: 'b_7IMxrhvW', price: 82, stars: 50, status: 'cancelled' }
-            ];
-
-            historyRows.innerHTML = '';
-            orders.forEach(order => {
-                const row = document.createElement('div');
-                row.className = 'history-row';
-
-                const statusClass = order.status === 'paid' ? 'status-paid' :
-                                   order.status === 'pending' ? 'status-pending' : 'status-cancelled';
-                const statusText = order.status === 'paid' ? 'Оплачен' :
-                                  order.status === 'pending' ? 'Ожидает' : 'Отменён';
-
-                row.innerHTML = `
-                    <span>${order.date}</span>
-                    <span style="font-size: 10px;">${order.id}</span>
-                    <span>${order.price}₽</span>
-                    <span>${order.stars}⭐</span>
-                    <span class="${statusClass}">${statusText}</span>
-                    <div style="display: flex; gap: 5px;">
-                        ${order.status === 'pending' ? '<div class="order-action cancel">✕</div>' : ''}
-                        <div class="order-action support">🆘</div>
-                        ${order.status === 'paid' ? '<div class="order-action repeat">🔄</div>' : ''}
-                    </div>
-                `;
-                historyRows.appendChild(row);
-            });
+            document.getElementById('achievementsCount').textContent = `3/${achievements.length}`;
         }
 
         // Уведомления
@@ -2134,11 +1865,10 @@
 
         // Инициализация
         updateProfile();
-        updateHistory();
         customStarsInput.value = "150";
         updateCustomPrice();
 
-        console.log('✅ Star Market 24 готов к работе с новыми функциями!');
+        console.log('✅ Star Market 24 готов к работе с Portals!');
     </script>
 </body>
 </html>
