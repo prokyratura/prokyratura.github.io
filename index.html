@@ -6,6 +6,7 @@
     <title>Star Market 24 ✦ Premium Stars</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* ========== СТИЛИ ========== */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -1008,7 +1009,7 @@
 
     <!-- Уровень со скидкой -->
     <div class="level-badge" id="levelBadge">
-        ✦ УРОВЕНЬ <span id="userLevel">1</span>
+        ✦ УРОВЕНЬ <span id="userLevelBadge">1</span>
         <span>🔥 СКИДКА <span id="userDiscount">0%</span></span>
     </div>
 
@@ -1305,7 +1306,7 @@
     </div>
 
     <script>
-        // Инициализация Telegram WebApp
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
@@ -1374,7 +1375,7 @@
         const selfBtn = document.getElementById('selfBtn');
         const customPriceDisplay = document.getElementById('customPriceDisplay');
 
-        // Навигация
+        // ========== НАВИГАЦИЯ ==========
         navItems.forEach(item => {
             item.onclick = () => {
                 const section = item.dataset.section;
@@ -1404,7 +1405,7 @@
             }
         };
 
-        // Отрисовка пакетов звезд
+        // ========== ЗВЕЗДЫ ==========
         const allGrid = document.getElementById('allPackages');
 
         function createPackageCard(pkg) {
@@ -1534,46 +1535,9 @@
             state.customStars = null;
         };
 
-        // Загрузка подарков из Portals
-        async function loadGifts() {
-            const loader = document.getElementById('giftsLoader');
-            const grid = document.getElementById('giftsGrid');
-            const noMessage = document.getElementById('noGiftsMessage');
+        // ========== ПОДАРКИ (Portals) ==========
 
-            loader.style.display = 'block';
-            grid.innerHTML = '';
-            noMessage.style.display = 'none';
-
-            const data = {
-                action: 'get_gifts',
-                gift_name: document.getElementById('giftSearch').value,
-                model: document.getElementById('modelFilter').value,
-                backdrop: document.getElementById('backdropFilter').value,
-                limit: 50
-            };
-
-            if (tg?.sendData) {
-                tg.sendData(JSON.stringify(data));
-
-                // Таймаут на случай ошибки
-                setTimeout(() => {
-                    if (state.allGifts.length === 0) {
-                        loader.style.display = 'none';
-                        noMessage.style.display = 'block';
-                    }
-                }, 10000);
-            } else {
-                // Демо-режим
-                setTimeout(() => {
-                    state.allGifts = generateDemoGifts();
-                    updateGiftsDisplay();
-                    updateGiftsStats();
-                    loader.style.display = 'none';
-                }, 1000);
-            }
-        }
-
-        // Генерация демо-подарков
+        // Генерация демо-подарков (для теста, пока API не работает)
         function generateDemoGifts() {
             const gifts = [];
             const rarities = ['common', 'rare', 'epic', 'legendary'];
@@ -1602,6 +1566,49 @@
             }
 
             return gifts;
+        }
+
+        // Загрузка подарков
+        async function loadGifts() {
+            const loader = document.getElementById('giftsLoader');
+            const grid = document.getElementById('giftsGrid');
+            const noMessage = document.getElementById('noGiftsMessage');
+
+            loader.style.display = 'block';
+            grid.innerHTML = '';
+            noMessage.style.display = 'none';
+
+            // ВРЕМЕННО: используем демо-данные для теста
+            setTimeout(() => {
+                state.allGifts = generateDemoGifts();
+                updateGiftsDisplay();
+                updateGiftsStats();
+                loader.style.display = 'none';
+            }, 1000);
+
+            // РЕАЛЬНЫЙ ЗАПРОС (раскомментируй, когда заработает API)
+            /*
+            const data = {
+                action: 'get_gifts',
+                gift_name: document.getElementById('giftSearch').value,
+                model: document.getElementById('modelFilter').value,
+                backdrop: document.getElementById('backdropFilter').value,
+                limit: 50
+            };
+
+            if (tg?.sendData) {
+                console.log('📤 Отправка запроса на подарки:', data);
+                tg.sendData(JSON.stringify(data));
+            } else {
+                console.log('⚠️ Не в Telegram, используем демо-данные');
+                setTimeout(() => {
+                    state.allGifts = generateDemoGifts();
+                    updateGiftsDisplay();
+                    updateGiftsStats();
+                    loader.style.display = 'none';
+                }, 1000);
+            }
+            */
         }
 
         // Обновление статистики подарков
@@ -1715,13 +1722,28 @@
             }
         };
 
+        // Обработчик ответа от бота
+        window.handleGiftsResponse = function(data) {
+            console.log('📥 Получен ответ с подарками:', data);
+            if (data.gifts) {
+                state.allGifts = data.gifts;
+                updateGiftsDisplay();
+                updateGiftsStats();
+                document.getElementById('giftsLoader').style.display = 'none';
+            } else if (data.error) {
+                console.error('Ошибка загрузки подарков:', data.error);
+                document.getElementById('noGiftsMessage').style.display = 'block';
+                document.getElementById('giftsLoader').style.display = 'none';
+            }
+        };
+
         // Обработчики фильтров
         document.getElementById('giftSearch').addEventListener('input', updateGiftsDisplay);
         document.getElementById('modelFilter').addEventListener('change', updateGiftsDisplay);
         document.getElementById('backdropFilter').addEventListener('change', updateGiftsDisplay);
         document.getElementById('sortFilter').addEventListener('change', updateGiftsDisplay);
 
-        // Premium покупка
+        // ========== PREMIUM ==========
         document.querySelectorAll('.premium-card').forEach(card => {
             card.onclick = function() {
                 const months = this.dataset.months;
@@ -1758,7 +1780,7 @@
             }
         };
 
-        // Ежедневный бонус
+        // ========== ЕЖЕДНЕВНЫЙ БОНУС ==========
         document.getElementById('claimBonusBtn').onclick = function() {
             const data = { action: 'claim_bonus' };
 
@@ -1774,7 +1796,7 @@
             }
         };
 
-        // Уведомления
+        // ========== УВЕДОМЛЕНИЯ ==========
         document.getElementById('notificationsCenter').onclick = (e) => {
             e.stopPropagation();
             document.getElementById('notificationsPanel').classList.toggle('show');
@@ -1784,7 +1806,7 @@
             document.getElementById('notificationsPanel').classList.remove('show');
         });
 
-        // Обновление профиля
+        // ========== ПРОФИЛЬ ==========
         function updateProfile() {
             document.getElementById('headerBalance').textContent = state.userData.stars;
             document.getElementById('profileName').textContent = user.first_name || 'Пользователь';
@@ -1794,7 +1816,7 @@
             document.getElementById('statStars').textContent = state.userData.stars;
             document.getElementById('statSpent').textContent = state.userData.spent + '₽';
 
-            document.getElementById('userLevel').textContent = state.userData.level;
+            document.getElementById('userLevelBadge').textContent = state.userData.level;
             document.getElementById('userDiscount').textContent = state.userData.discount + '%';
             document.getElementById('userExp').textContent = state.userData.exp;
             document.getElementById('nextLevelExp').textContent = state.userData.nextExp;
@@ -1825,7 +1847,7 @@
             document.getElementById('achievementsCount').textContent = `3/${achievements.length}`;
         }
 
-        // Уведомления
+        // ========== УВЕДОМЛЕНИЯ ==========
         function showNotification(text, type = 'info') {
             const notification = document.createElement('div');
             notification.style.cssText = `
@@ -1863,7 +1885,7 @@
         `;
         document.head.appendChild(style);
 
-        // Инициализация
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
         updateProfile();
         customStarsInput.value = "150";
         updateCustomPrice();
