@@ -3,55 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Star Market</title>
-    <script src="https://telegram.org"></script>
+    <title>Star Market 24</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            font-family: sans-serif; background-color: #1c1c1e; color: white;
-            margin: 0; padding: 20px; text-align: center;
-        }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, system-ui, sans-serif; }
+        body { background: var(--tg-theme-bg-color, #1c1c1e); color: var(--tg-theme-text-color, #fff); padding: 16px; }
+        h1 { text-align: center; margin-bottom: 24px; font-size: 28px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card {
-            background: #2c2c2e; padding: 20px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+            background: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            border-radius: 16px; padding: 20px; text-align: center;
+            border: 2px solid transparent; cursor: pointer;
         }
-        .card:active { transform: scale(0.95); background: #3a3a3c; }
-        .s { font-size: 20px; font-weight: bold; display: block; }
-        .p { color: #34c759; font-weight: bold; margin-top: 5px; display: block; }
+        .card.selected { border-color: var(--tg-theme-button-color, #34c759); }
+        .stars { font-size: 24px; font-weight: 700; display: block; }
+        .price { color: var(--tg-theme-button-color, #34c759); font-size: 20px; font-weight: 700; }
+        .price-usdt { color: var(--tg-theme-hint-color, #8e8e93); font-size: 14px; margin-top: 4px; }
+        .payment { display: flex; gap: 12px; margin: 20px 0; }
+        .method { flex: 1; background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 12px; padding: 12px; text-align: center; border: 2px solid transparent; cursor: pointer; }
+        .method.selected { border-color: var(--tg-theme-button-color, #34c759); }
+        .recipient { background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 12px; padding: 12px; margin: 16px 0; display: flex; gap: 8px; }
+        .recipient input { background: none; border: none; color: var(--tg-theme-text-color, #fff); flex: 1; outline: none; }
+        .btn {
+            background: var(--tg-theme-button-color, #34c759); color: var(--tg-theme-button-text-color, #fff);
+            border: none; border-radius: 12px; padding: 16px; font-size: 18px; font-weight: 600; width: 100%;
+            cursor: pointer; margin-top: 20px;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <h2>⭐ Магазин Звезд</h2>
-    <div class="grid" id="main-grid"></div>
+    <h1>⭐ Star Market 24</h1>
+
+    <div class="grid" id="packages"></div>
+
+    <div class="recipient hidden" id="recipientBlock">
+        <span>👤</span>
+        <input type="text" id="recipient" placeholder="@username получателя">
+    </div>
+
+    <div class="payment hidden" id="paymentBlock"></div>
+
+    <button class="btn hidden" id="payBtn" onclick="processPayment()">💳 Оплатить</button>
 
     <script>
-        // Безопасно получаем WebApp
-        const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
+        const tg = Telegram?.WebApp;
+        tg?.ready();
+        tg?.expand();
 
-        const offers = [
-            { stars: 50, price: 75 }, { stars: 100, price: 145 },
-            { stars: 250, price: 370 }, { stars: 500, price: 730 },
-            { stars: 1000, price: 1450 }, { stars: 5000, price: 7200 }
+        const packages = [
+            { stars: 50, rub: 75, usdt: 0.83 },
+            { stars: 100, rub: 145, usdt: 1.61 },
+            { stars: 250, rub: 370, usdt: 4.11 },
+            { stars: 500, rub: 730, usdt: 8.11 },
+            { stars: 1000, rub: 1450, usdt: 16.11 },
+            { stars: 5000, rub: 7200, usdt: 80 }
         ];
 
-        const container = document.getElementById('main-grid');
+        let selectedPackage = null;
+        let selectedPayment = null;
 
-        offers.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.innerHTML = `<span class="s">${item.stars} ⭐</span><span class="p">${item.price} ₽</span>`;
+        const packagesGrid = document.getElementById('packages');
 
-            div.onclick = () => {
-                const data = JSON.stringify({stars: item.stars, price: item.price});
-                if (tg && tg.sendData) {
-                    tg.sendData(data); // Отправка боту
-                } else {
-                    alert("Запустите через меню бота!");
-                }
+        packages.forEach(pkg => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <span class="stars">${pkg.stars} ⭐</span>
+                <span class="price">${pkg.rub} ₽</span>
+                <div class="price-usdt">≈ ${pkg.usdt} USDT</div>
+            `;
+            card.onclick = () => {
+                document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedPackage = pkg;
+                document.getElementById('recipientBlock').classList.remove('hidden');
+                document.getElementById('paymentBlock').classList.remove('hidden');
+                document.getElementById('payBtn').classList.remove('hidden');
+                renderPaymentMethods();
             };
-            container.appendChild(div);
+            packagesGrid.appendChild(card);
         });
+
+        function renderPaymentMethods() {
+            const block = document.getElementById('paymentBlock');
+            block.innerHTML = '';
+
+            const methods = [
+                { id: 'crypto', name: '💰 Crypto Bot', desc: 'USDT' },
+                { id: 'lava', name: '💳 LAVA', desc: 'Рубли' }
+            ];
+
+            methods.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'method';
+                div.innerHTML = `<div>${m.name}</div><small>${m.desc}</small>`;
+                div.onclick = () => {
+                    document.querySelectorAll('.method').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    selectedPayment = m.id;
+                };
+                block.appendChild(div);
+            });
+        }
+
+        window.processPayment = function() {
+            if (!selectedPackage || !selectedPayment) return;
+
+            const recipient = document.getElementById('recipient').value.trim();
+            if (!recipient) {
+                alert('Укажите получателя');
+                return;
+            }
+
+            const data = {
+                action: 'create_invoice',
+                stars: selectedPackage.stars,
+                price_rub: selectedPackage.rub,
+                price_usdt: selectedPackage.usdt,
+                payment_method: selectedPayment,
+                recipient: recipient.replace('@', '')
+            };
+
+            tg?.sendData(JSON.stringify(data));
+            tg?.close();
+        };
     </script>
 </body>
 </html>
