@@ -3,139 +3,1359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Star Market 24</title>
+    <title>Star Market 24 ✦ Premium Stars</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, system-ui, sans-serif; }
-        body { background: var(--tg-theme-bg-color, #1c1c1e); color: var(--tg-theme-text-color, #fff); padding: 16px; }
-        h1 { text-align: center; margin-bottom: 24px; font-size: 28px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card { background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 16px; padding: 20px; text-align: center; border: 2px solid transparent; cursor: pointer; }
-        .card.selected { border-color: var(--tg-theme-button-color, #34c759); }
-        .stars { font-size: 24px; font-weight: 700; display: block; }
-        .price { color: var(--tg-theme-button-color, #34c759); font-size: 20px; font-weight: 700; }
-        .recipient { background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 12px; padding: 12px; margin: 16px 0; display: none; gap: 8px; }
-        .recipient.visible { display: flex; }
-        .recipient input { background: none; border: none; color: var(--tg-theme-text-color, #fff); flex: 1; outline: none; }
-        .btn { background: var(--tg-theme-button-color, #34c759); color: var(--tg-theme-button-text-color, #fff); border: none; border-radius: 12px; padding: 16px; font-size: 18px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 20px; display: none; }
-        .btn.visible { display: block; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .error { color: #ff3b30; margin-top: 8px; text-align: center; display: none; }
-        .error.visible { display: block; }
-        .payment-info { background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 12px; padding: 12px; margin: 16px 0; display: none; text-align: center; }
-        .payment-info.visible { display: block; }
-        .payment-method { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--tg-theme-button-color, #34c759); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Анимированный градиентный фон */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(125deg, #0a0b1e 0%, #1a1b2e 50%, #2a1b3a 100%);
+            color: var(--tg-theme-text-color, #ffffff);
+            padding: 16px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Анимированные звезды на фоне */
+        body::before {
+            content: '';
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #ffd700, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 80px 120px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 120px 200px, #ffaa00, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 250px, #fff, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 200px 300px, #ffd700, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 240px 380px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 280px 450px, #ffaa00, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 320px 520px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 360px 600px, #ffd700, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 400px 680px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 440px 750px, #ffaa00, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 480px 820px, #ffd700, rgba(0,0,0,0));
+            background-repeat: repeat;
+            opacity: 0.5;
+            animation: starsFloat 20s linear infinite;
+        }
+
+        /* Вторая волна звезд с разной скоростью */
+        body::after {
+            content: '';
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(2px 2px at 100px 50px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 200px 150px, #ffd700, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 300px 250px, #fff, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 400px 350px, #ffaa00, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 500px 450px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 600px 550px, #ffd700, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 700px 650px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 800px 750px, #ffaa00, rgba(0,0,0,0));
+            background-repeat: repeat;
+            opacity: 0.3;
+            animation: starsFloat 15s linear infinite reverse;
+        }
+
+        @keyframes starsFloat {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-100px) translateX(20px); }
+        }
+
+        /* Анимированная неоновая подсветка для заголовка */
+        .neon-header {
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .neon-header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #ffd700 50%, #ffaa00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            animation: glowPulse 2s ease-in-out infinite;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 170, 0, 0.4); }
+        }
+
+        .neon-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeSlide 3s ease-in-out infinite;
+        }
+
+        @keyframes fadeSlide {
+            0%, 100% { opacity: 0.7; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+
+        /* Карточка баланса с эффектом стекла */
+        .balance-card {
+            background: rgba(44, 44, 46, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideInUp 0.6s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .balance-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.2);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .balance-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-value {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: countUp 2s ease-out;
+        }
+
+        /* Секции с заголовками */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #ffd700, #ffaa00, transparent);
+            border-radius: 2px;
+            animation: titleUnderline 1.5s ease-in-out infinite;
+        }
+
+        @keyframes titleUnderline {
+            0%, 100% { width: 40px; opacity: 0.8; }
+            50% { width: 60px; opacity: 1; }
+        }
+
+        /* Сетка пакетов с 3D эффектом */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .package-card {
+            background: rgba(44, 44, 46, 0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: cardAppear 0.5s ease-out backwards;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .package-card:hover::before {
+            left: 100%;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.15);
+        }
+
+        .package-card.selected {
+            border: 2px solid #ffd700;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            animation: selectedPulse 2s infinite;
+        }
+
+        @keyframes selectedPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.5); }
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .package-card:nth-child(1) { animation-delay: 0.1s; }
+        .package-card:nth-child(2) { animation-delay: 0.2s; }
+        .package-card:nth-child(3) { animation-delay: 0.3s; }
+        .package-card:nth-child(4) { animation-delay: 0.4s; }
+        .package-card:nth-child(5) { animation-delay: 0.5s; }
+        .package-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .package-stars {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .package-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #000;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+            animation: badgePop 1s infinite;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes badgePop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Поля ввода с эффектом */
+        .input-block {
+            margin-bottom: 20px;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .input-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(28, 28, 30, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus-within {
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        .input-field input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            flex: 1;
+            outline: none;
+        }
+
+        .input-field input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* Кнопки с эффектами */
+        .action-button {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #000;
+            border: none;
+            border-radius: 16px;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        .action-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .action-button.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+        }
+
+        .action-button.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Карточка бонуса с градиентом */
+        .bonus-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.1));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+            animation: glowPulse 3s infinite;
+        }
+
+        /* Карточка Premium */
+        .premium-section {
+            margin-top: 30px;
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .premium-card {
+            background: linear-gradient(135deg, #8774e1, #6c5ce7);
+            border-radius: 24px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+        }
+
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            animation: shimmer 6s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Прогресс-бар уровня */
+        .level-progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .level-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffaa00);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            animation: progressGlow 2s infinite;
+        }
+
+        @keyframes progressGlow {
+            0%, 100% { box-shadow: 0 0 10px #ffd700; }
+            50% { box-shadow: 0 0 20px #ffd700, 0 0 30px #ffaa00; }
+        }
+
+        /* Достижения */
+        .achievement-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 8px 12px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0 5px 5px 0;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: achievementPop 0.5s ease-out;
+        }
+
+        .achievement-item:hover {
+            transform: scale(1.05);
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        @keyframes achievementPop {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Анимация загрузки */
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #ffd700;
+            animation: spin 1s ease-in-out infinite;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .loader::before,
+        .loader::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: rgba(255, 215, 0, 0.3);
+            animation: spin 2s linear infinite;
+        }
+
+        .loader::after {
+            border-top-color: rgba(255, 170, 0, 0.2);
+            animation: spin 3s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Анимация для чисел */
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Эффект появления */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Калькулятор */
+        .calculator-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(44, 44, 46, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideInUp 0.7s ease-out;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 380px) {
+            .package-stars {
+                font-size: 24px;
+            }
+            .package-price {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>⭐ Star Market 24</h1>
-
-    <div class="grid" id="packages"></div>
-
-    <div class="recipient" id="recipientBlock">
-        <span>👤 @</span>
-        <input type="text" id="recipient" placeholder="username" autocomplete="off">
+    <div class="neon-header">
+        <h1>✦ STAR MARKET ✦</h1>
+        <p>PREMIUM TELEGRAM STARS</p>
     </div>
 
-    <div class="payment-info" id="paymentInfo">
-        <div class="payment-method">
-            <span>💳 ROBOKASSA</span>
+    <!-- Баланс с анимацией -->
+    <div class="balance-card" id="balanceCard">
+        <span class="balance-label">Ваш баланс</span>
+        <div>
+            <span class="balance-value" id="balanceValue">0</span>
+            <span style="font-size: 18px; color: #ffd700;">⭐</span>
         </div>
-        <small>СБП, карты РФ, электронные кошельки</small>
     </div>
 
-    <div class="error" id="errorMsg"></div>
+    <!-- Ежедневный бонус -->
+    <div class="bonus-card" id="bonusCard">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div>
+                <span style="font-size: 14px; opacity: 0.8;">🎁 ЕЖЕДНЕВНЫЙ БОНУС</span>
+                <div style="font-size: 28px; font-weight: 800; color: #ffd700;" id="bonusAmount">0.0 ⭐</div>
+            </div>
+            <div style="text-align: right;">
+                <span style="font-size: 14px; opacity: 0.8;">🔥 STREAK</span>
+                <div style="font-size: 24px; font-weight: 700;" id="bonusStreak">0</div>
+            </div>
+        </div>
+        <button id="claimBonusBtn" class="action-button" style="margin-bottom: 0;">
+            🎁 ЗАБРАТЬ БОНУС
+        </button>
+    </div>
 
-    <button class="btn" id="payBtn">💳 Оплатить через ROBOKASSA</button>
+    <!-- ШАГ 1: Выбор пакета -->
+    <div id="step1" class="fade-in">
+        <div class="section-title">🔥 ВЫБЕРИТЕ ПАКЕТ</div>
+        <div class="packages-grid" id="packagesGrid"></div>
+    </div>
 
+    <!-- ШАГ 2: Данные получателя -->
+    <div id="step2" class="hidden fade-in">
+        <div class="section-title">👤 ДАННЫЕ ПОЛУЧАТЕЛЯ</div>
+
+        <div class="input-block">
+            <div class="input-label">USERNAME</div>
+            <div class="input-field">
+                <span style="color: #ffd700;">@</span>
+                <input type="text" id="recipientInput" placeholder="username" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="input-block">
+            <div class="input-label">ПРОМОКОД / РЕФЕРАЛ</div>
+            <div class="input-field">
+                <span style="color: #ffd700;">🎫</span>
+                <input type="text" id="promoInput" placeholder="Введите код" autocomplete="off">
+            </div>
+        </div>
+
+        <div id="promoInfo" class="hidden" style="margin-bottom: 20px; padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 16px; border: 1px solid rgba(255, 215, 0, 0.3); animation: slideInUp 0.3s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="promo-code" id="promoCodeDisplay"></span>
+                <span class="promo-discount" id="promoDiscountDisplay"></span>
+            </div>
+        </div>
+
+        <div id="finalPriceDisplay" class="final-price" style="margin-bottom: 20px;"></div>
+
+        <button class="action-button" id="continueBtn">ПРОДОЛЖИТЬ</button>
+        <button class="action-button secondary" id="backBtn">◀️ НАЗАД</button>
+    </div>
+
+    <!-- ШАГ 3: Оплата -->
+    <div id="step3" class="hidden fade-in">
+        <div class="section-title">💳 ВЫБЕРИТЕ СПОСОБ</div>
+
+        <div class="payment-method selected" style="margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span style="font-size: 40px;">💳</span>
+                <div>
+                    <div style="font-weight: 700;">ЮKassa</div>
+                    <div style="font-size: 12px; opacity: 0.6;">Банковские карты, СБП</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="final-price" id="paymentAmount" style="margin-bottom: 20px;"></div>
+
+        <button class="action-button" id="payBtn">💳 ПЕРЕЙТИ К ОПЛАТЕ</button>
+        <button class="action-button secondary" id="backToStep2Btn">◀️ НАЗАД</button>
+    </div>
+
+    <!-- ШАГ 4: Ожидание оплаты -->
+    <div id="step4" class="hidden">
+        <div class="loader"></div>
+        <div style="text-align: center; font-size: 20px; font-weight: 700; margin: 20px 0;">⏳ ОЖИДАНИЕ ОПЛАТЫ</div>
+        <div class="status-message" id="paymentStatusMessage" style="text-align: center; color: rgba(255,255,255,0.7);">
+            Мы ждем подтверждение от платежной системы...
+        </div>
+        <button class="action-button" id="checkPaymentBtn" style="margin-top: 20px;">🔄 ПРОВЕРИТЬ СТАТУС</button>
+        <button class="action-button secondary" id="cancelPaymentBtn">ОТМЕНИТЬ</button>
+    </div>
+
+    <!-- ШАГ 5: Результат -->
+    <div id="step5" class="hidden">
+        <div style="text-align: center;">
+            <div style="font-size: 80px; margin: 30px 0; animation: glowPulse 2s infinite;" id="resultEmoji">✅</div>
+            <div style="font-size: 28px; font-weight: 800; margin-bottom: 20px;" id="resultTitle">УСПЕШНО!</div>
+            <div class="status-message success" id="resultMessage" style="margin-bottom: 30px;"></div>
+            <button class="action-button" id="newPurchaseBtn">🛒 НОВАЯ ПОКУПКА</button>
+            <button class="action-button secondary" id="closeBtn">✖️ ЗАКРЫТЬ</button>
+        </div>
+    </div>
+
+    <!-- Premium секция -->
+    <div class="premium-section" id="premiumSection">
+        <div class="section-title">💎 TELEGRAM PREMIUM</div>
+        <div class="premium-card">
+            <div style="position: relative; z-index: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <span style="font-size: 28px; font-weight: 800;">PREMIUM</span>
+                        <div style="font-size: 14px; opacity: 0.9;">Уникальные возможности</div>
+                    </div>
+                    <div style="font-size: 60px;">💎</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                    <div style="text-align: center; background: rgba(255,255,255,0.15); border-radius: 16px; padding: 15px 10px; transition: all 0.3s ease; cursor: pointer;" class="premium-option" data-months="3">
+                        <div style="font-size: 24px; font-weight: 800;">3</div>
+                        <div style="font-size: 12px;">месяца</div>
+                        <div style="font-weight: 700; margin-top: 5px; color: #ffd700;">899 ₽</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(255,215,0,0.2); border-radius: 16px; padding: 15px 10px; border: 2px solid #ffd700; transition: all 0.3s ease; cursor: pointer; transform: scale(1.05);" class="premium-option" data-months="6">
+                        <div style="font-size: 24px; font-weight: 800;">6</div>
+                        <div style="font-size: 12px;">месяцев</div>
+                        <div style="font-weight: 700; margin-top: 5px; color: #ffd700;">1699 ₽</div>
+                        <div style="font-size: 10px; color: #ffd700; margin-top: 5px;">🔥 ПОПУЛЯРНОЕ</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(255,255,255,0.15); border-radius: 16px; padding: 15px 10px; transition: all 0.3s ease; cursor: pointer;" class="premium-option" data-months="12">
+                        <div style="font-size: 24px; font-weight: 800;">12</div>
+                        <div style="font-size: 12px;">месяцев</div>
+                        <div style="font-weight: 700; margin-top: 5px; color: #ffd700;">2999 ₽</div>
+                    </div>
+                </div>
+
+                <button id="buyPremiumBtn" class="action-button" style="margin-bottom: 0;">
+                    💎 КУПИТЬ PREMIUM
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Калькулятор -->
+    <div class="calculator-section">
+        <div class="section-title">🧮 КАЛЬКУЛЯТОР ЗВЕЗД</div>
+        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+            <div class="input-field" style="flex: 1;">
+                <input type="number" id="calculatorInput" placeholder="Введите количество" min="1">
+            </div>
+            <button id="calculateBtn" class="action-button" style="width: auto; padding: 0 25px; margin-bottom: 0;">=</button>
+        </div>
+        <div id="calculatorResult" style="font-size: 18px; text-align: center; min-height: 60px; display: flex; flex-direction: column; justify-content: center; background: rgba(0,0,0,0.2); border-radius: 16px; padding: 15px;">
+            Введите количество звезд для расчета
+        </div>
+    </div>
+
+    <!-- Профиль с уровнями -->
+    <div class="profile-section" style="margin-top: 30px;">
+        <div class="section-title">📊 МОЙ ПРОГРЕСС</div>
+        <div style="background: rgba(44, 44, 46, 0.3); backdrop-filter: blur(10px); border-radius: 24px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span style="font-size: 20px; font-weight: 700;">УРОВЕНЬ <span id="userLevel">1</span></span>
+                <span style="color: #ffd700;">✨ <span id="userExp">0</span>/<span id="nextLevelExp">100</span></span>
+            </div>
+            <div class="level-progress">
+                <div class="level-progress-fill" id="levelProgress" style="width: 0%;"></div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-weight: 600;">🏆 ДОСТИЖЕНИЯ</span>
+                    <span style="color: #ffd700;" id="achievementsCount">0/10</span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;" id="achievementsList"></div>
+            </div>
+        </div>
+    </div>
     <script>
-        console.log('🚀 Star Market 24 приложение загружено');
+    // Инициализация Telegram WebApp
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+        tg.ready();
+        tg.expand();
 
-        const tg = window.Telegram?.WebApp;
-        if (tg) {
-            console.log('✅ Telegram WebApp доступен');
-            tg.ready();
-            tg.expand();
+        // Настраиваем главную кнопку
+        tg.MainButton.text = "Закрыть";
+        tg.MainButton.onClick(() => tg.close());
+    }
+
+    // Данные пакетов
+    const packages = [
+        { stars: 50, rub: 75, popular: false },
+        { stars: 100, rub: 145, popular: false },
+        { stars: 250, rub: 370, popular: true },
+        { stars: 500, rub: 730, popular: false },
+        { stars: 1000, rub: 1450, popular: false },
+        { stars: 5000, rub: 7200, popular: true }
+    ];
+
+    // Состояние приложения
+    let state = {
+        step: 1,
+        selectedPackage: null,
+        recipient: '',
+        promoCode: '',
+        promoData: null,
+        finalPrice: 0,
+        paymentId: null,
+        paymentUrl: null,
+        checkInterval: null,
+        userLevel: 1,
+        userExp: 0,
+        nextLevelExp: 100
+    };
+
+    // Элементы DOM
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const step4 = document.getElementById('step4');
+    const step5 = document.getElementById('step5');
+
+    const packagesGrid = document.getElementById('packagesGrid');
+    const recipientInput = document.getElementById('recipientInput');
+    const promoInput = document.getElementById('promoInput');
+    const promoInfo = document.getElementById('promoInfo');
+    const promoCodeDisplay = document.getElementById('promoCodeDisplay');
+    const promoDiscountDisplay = document.getElementById('promoDiscountDisplay');
+    const finalPriceDisplay = document.getElementById('finalPriceDisplay');
+    const paymentAmount = document.getElementById('paymentAmount');
+    const paymentStatusMessage = document.getElementById('paymentStatusMessage');
+    const resultEmoji = document.getElementById('resultEmoji');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultMessage = document.getElementById('resultMessage');
+
+    // Элементы профиля
+    const userLevelEl = document.getElementById('userLevel');
+    const userExpEl = document.getElementById('userExp');
+    const nextLevelExpEl = document.getElementById('nextLevelExp');
+    const levelProgressEl = document.getElementById('levelProgress');
+    const achievementsCountEl = document.getElementById('achievementsCount');
+    const achievementsListEl = document.getElementById('achievementsList');
+
+    // Кнопки
+    const continueBtn = document.getElementById('continueBtn');
+    const backBtn = document.getElementById('backBtn');
+    const payBtn = document.getElementById('payBtn');
+    const backToStep2Btn = document.getElementById('backToStep2Btn');
+    const checkPaymentBtn = document.getElementById('checkPaymentBtn');
+    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+    const newPurchaseBtn = document.getElementById('newPurchaseBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const claimBonusBtn = document.getElementById('claimBonusBtn');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const calculatorInput = document.getElementById('calculatorInput');
+    const calculatorResult = document.getElementById('calculatorResult');
+    const buyPremiumBtn = document.getElementById('buyPremiumBtn');
+
+    // Отрисовка пакетов с анимацией
+    packages.forEach((pkg, index) => {
+        const card = document.createElement('div');
+        card.className = 'package-card';
+        card.setAttribute('data-stars', pkg.stars);
+        card.setAttribute('data-rub', pkg.rub);
+        card.style.animationDelay = `${index * 0.1}s`;
+
+        let badgeHtml = '';
+        if (pkg.popular) {
+            badgeHtml = '<div class="popular-badge">🔥 ПОПУЛЯРНОЕ</div>';
         }
 
-        const packages = [
-            { stars: 50, rub: 75 },
-            { stars: 100, rub: 145 },
-            { stars: 250, rub: 370 },
-            { stars: 500, rub: 730 },
-            { stars: 1000, rub: 1450 },
-            { stars: 5000, rub: 7200 }
-        ];
+        card.innerHTML = `
+            ${badgeHtml}
+            <div class="package-stars">${pkg.stars} ⭐</div>
+            <div class="package-price">${pkg.rub} ₽</div>
+        `;
 
-        let selectedPackage = null;
+        card.onclick = (e) => {
+            document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+            e.currentTarget.classList.add('selected');
 
-        const packagesGrid = document.getElementById('packages');
-        const recipientBlock = document.getElementById('recipientBlock');
-        const paymentInfo = document.getElementById('paymentInfo');
-        const payBtn = document.getElementById('payBtn');
-        const errorMsg = document.getElementById('errorMsg');
-        const recipientInput = document.getElementById('recipient');
+            state.selectedPackage = pkg;
+            state.finalPrice = pkg.rub;
 
-        packages.forEach(pkg => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <span class="stars">${pkg.stars} ⭐</span>
-                <span class="price">${pkg.rub} ₽</span>
+            // Тактильный отклик
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+
+            showStep(2);
+        };
+
+        packagesGrid.appendChild(card);
+    });
+
+    // Функция смены шага
+    function showStep(step) {
+        state.step = step;
+
+        step1.classList.add('hidden');
+        step2.classList.add('hidden');
+        step3.classList.add('hidden');
+        step4.classList.add('hidden');
+        step5.classList.add('hidden');
+
+        switch(step) {
+            case 1:
+                step1.classList.remove('hidden');
+                break;
+            case 2:
+                step2.classList.remove('hidden');
+                updatePriceDisplay();
+                recipientInput.focus();
+                break;
+            case 3:
+                step3.classList.remove('hidden');
+                paymentAmount.innerHTML = `💰 ${state.finalPrice} ₽`;
+                break;
+            case 4:
+                step4.classList.remove('hidden');
+                startPaymentCheck();
+                break;
+            case 5:
+                step5.classList.remove('hidden');
+                if (tg?.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
+                break;
+        }
+    }
+
+    // Обновление цены с промокодом
+    function updatePriceDisplay() {
+        let price = state.selectedPackage.rub;
+        const promo = promoInput.value.trim().toUpperCase();
+
+        if (promo) {
+            finalPriceDisplay.innerHTML = `
+                <span class="old-price">${price} ₽</span>
+                <span>${price} ₽</span>
+                <div style="font-size: 14px; margin-top: 8px; color: #ffd700;">🎫 ПРОВЕРКА ПРОМОКОДА...</div>
             `;
-            card.onclick = () => {
-                document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-                selectedPackage = pkg;
-                recipientBlock.classList.add('visible');
-                paymentInfo.classList.add('visible');
-                payBtn.classList.add('visible');
-                console.log('✅ Выбран пакет:', pkg);
-            };
-            packagesGrid.appendChild(card);
+        } else {
+            finalPriceDisplay.innerHTML = `💰 ${price} ₽`;
+        }
+
+        finalPriceDisplay.classList.remove('hidden');
+    }
+
+    // Применение промокода (вызывается из бота)
+    window.applyPromo = function(data) {
+        if (data.valid) {
+            state.finalPrice = data.final_price;
+            state.promoData = data;
+
+            promoCodeDisplay.textContent = data.code;
+            promoDiscountDisplay.textContent = `-${data.discount}%`;
+            promoInfo.classList.remove('hidden');
+
+            finalPriceDisplay.innerHTML = `
+                <span class="old-price">${state.selectedPackage.rub} ₽</span>
+                <span style="color: #ffd700; font-size: 24px;">${data.final_price} ₽</span>
+                <div style="font-size: 14px; margin-top: 8px; color: #34c759;">🎫 ПРОМОКОД ПРИМЕНЕН</div>
+            `;
+
+            if (data.is_referral) {
+                const info = document.createElement('div');
+                info.style.fontSize = '12px';
+                info.style.marginTop = '8px';
+                info.style.color = '#ffd700';
+                info.innerHTML = '👥 Реферальный код применен! Вы получите бонус при покупке';
+                finalPriceDisplay.appendChild(info);
+            }
+        } else {
+            state.promoData = null;
+            promoInfo.classList.add('hidden');
+            finalPriceDisplay.innerHTML = `💰 ${state.selectedPackage.rub} ₽`;
+
+            if (data.error) {
+                const error = document.createElement('div');
+                error.style.fontSize = '12px';
+                error.style.marginTop = '8px';
+                error.style.color = '#ff3b30';
+                error.innerHTML = data.error;
+                finalPriceDisplay.appendChild(error);
+            }
+        }
+    };
+
+    // Обновление уровня
+    window.updateLevelDisplay = function(data) {
+        state.userLevel = data.level;
+        state.userExp = data.exp;
+        state.nextLevelExp = data.next_exp;
+
+        userLevelEl.textContent = data.level;
+        userExpEl.textContent = data.exp;
+        nextLevelExpEl.textContent = data.next_exp;
+        levelProgressEl.style.width = data.progress + '%';
+    };
+
+    // Обновление достижений
+    window.updateAchievementsDisplay = function(data) {
+        const earned = data.earned || [];
+        const total = earned.length + (data.available?.length || 0);
+
+        achievementsCountEl.textContent = earned.length + '/' + total;
+        achievementsListEl.innerHTML = '';
+
+        earned.slice(0, 5).forEach(ach => {
+            const div = document.createElement('div');
+            div.className = 'achievement-item';
+            div.innerHTML = `${ach.icon || '🏆'} ${ach.name}`;
+            achievementsListEl.appendChild(div);
         });
 
-        payBtn.onclick = function() {
-            errorMsg.classList.remove('visible');
+        if (earned.length > 5) {
+            const more = document.createElement('div');
+            more.className = 'achievement-item';
+            more.innerHTML = `+${earned.length - 5}`;
+            achievementsListEl.appendChild(more);
+        }
+    };
 
-            if (!selectedPackage) {
-                errorMsg.textContent = '❌ Выберите пакет';
-                errorMsg.classList.add('visible');
-                return;
-            }
+    // Обработчики кнопок
+    continueBtn.onclick = function() {
+        const recipient = recipientInput.value.trim();
+        if (!recipient) {
+            alert('Введите username получателя');
+            return;
+        }
 
-            const recipient = recipientInput.value.trim();
-            if (!recipient) {
-                errorMsg.textContent = '❌ Введите username получателя';
-                errorMsg.classList.add('visible');
-                return;
-            }
+        state.recipient = recipient;
+        state.promoCode = promoInput.value.trim().toUpperCase() || null;
 
-            const data = {
-                action: 'create_invoice',
-                stars: selectedPackage.stars,
-                price_rub: selectedPackage.rub,
-                recipient: recipient.replace('@', '')
-            };
-
-            console.log('📤 Отправка данных в бота:', data);
-
-            if (tg && tg.sendData) {
-                tg.sendData(JSON.stringify(data));
-                console.log('✅ Данные отправлены');
-
-                payBtn.disabled = true;
-                payBtn.textContent = '✅ Отправлено!';
-
-                setTimeout(() => {
-                    tg.close();
-                }, 1000);
-            } else {
-                console.log('⚠️ Демо-режим:', data);
-                errorMsg.textContent = '⚠️ Демо-режим (не в Telegram)';
-                errorMsg.classList.add('visible');
-            }
+        const data = {
+            action: 'create_invoice',
+            stars: state.selectedPackage.stars,
+            price_rub: state.selectedPackage.rub,
+            recipient: state.recipient,
+            promo: state.promoCode
         };
+
+        if (tg && tg.sendData) {
+            tg.sendData(JSON.stringify(data));
+            showStep(4);
+            paymentStatusMessage.textContent = '⏳ СОЗДАНИЕ ПЛАТЕЖА...';
+        } else {
+            console.log('ДЕМО:', data);
+            showStep(3);
+        }
+    };
+
+    backBtn.onclick = () => showStep(1);
+
+    payBtn.onclick = function() {
+        if (state.paymentUrl) {
+            tg.openLink(state.paymentUrl);
+            showStep(4);
+            startPaymentCheck();
+        }
+    };
+
+    backToStep2Btn.onclick = () => showStep(2);
+
+    checkPaymentBtn.onclick = checkPaymentStatus;
+
+    cancelPaymentBtn.onclick = function() {
+        if (state.checkInterval) {
+            clearInterval(state.checkInterval);
+        }
+        showStep(2);
+    };
+
+    newPurchaseBtn.onclick = function() {
+        state = {
+            step: 1,
+            selectedPackage: null,
+            recipient: '',
+            promoCode: '',
+            promoData: null,
+            finalPrice: 0,
+            paymentId: null,
+            paymentUrl: null,
+            checkInterval: null,
+            userLevel: state.userLevel,
+            userExp: state.userExp,
+            nextLevelExp: state.nextLevelExp
+        };
+        recipientInput.value = '';
+        promoInput.value = '';
+        promoInfo.classList.add('hidden');
+        showStep(1);
+    };
+
+    closeBtn.onclick = () => tg?.close();
+
+    // Ежедневный бонус
+    claimBonusBtn.onclick = function() {
+        const data = { action: 'claim_bonus' };
+
+        if (tg && tg.sendData) {
+            tg.sendData(JSON.stringify(data));
+            this.disabled = true;
+            this.textContent = '⏳ ПОЛУЧЕНИЕ...';
+        }
+    };
+
+    // Калькулятор
+    calculateBtn.onclick = function() {
+        const stars = parseInt(calculatorInput.value);
+
+        if (!stars || stars < 1) {
+            calculatorResult.innerHTML = '❌ Введите корректное число';
+            calculatorResult.style.color = '#ff3b30';
+            return;
+        }
+
+        const data = {
+            action: 'calculate_price',
+            stars: stars
+        };
+
+        if (tg && tg.sendData) {
+            tg.sendData(JSON.stringify(data));
+            calculatorResult.innerHTML = '⏳ РАСЧЕТ...';
+        } else {
+            // Демо-режим
+            demoCalculate(stars);
+        }
+    };
+
+    function demoCalculate(stars) {
+        if (stars <= 50) {
+            calculatorResult.innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.5)} ₽`;
+        } else if (stars <= 100) {
+            calculatorResult.innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.45)} ₽`;
+        } else if (stars <= 500) {
+            calculatorResult.innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.48)} ₽<br><small style="color: #ffd700;">ОПТОВАЯ ЦЕНА</small>`;
+        } else {
+            const price = stars * 1.4;
+            const discount = stars * 1.5 - price;
+            calculatorResult.innerHTML = `
+                💰 ${stars}⭐ = ${Math.round(price)} ₽<br>
+                <span style="color: #34c759;">🎉 Экономия ${Math.round(discount)} ₽</span>
+            `;
+        }
+        calculatorResult.style.color = '#fff';
+    }
+
+    // Premium покупка
+    document.querySelectorAll('.premium-option').forEach(option => {
+        option.onclick = function() {
+            document.querySelectorAll('.premium-option').forEach(opt => {
+                opt.style.transform = 'scale(1)';
+                opt.style.background = 'rgba(255,255,255,0.15)';
+                opt.style.border = 'none';
+            });
+
+            this.style.transform = 'scale(1.05)';
+            this.style.background = 'rgba(255,215,0,0.2)';
+            this.style.border = '2px solid #ffd700';
+
+            state.premiumMonths = parseInt(this.dataset.months);
+        };
+    });
+
+    buyPremiumBtn.onclick = function() {
+        if (!state.premiumMonths) {
+            alert('Выберите срок подписки');
+            return;
+        }
+
+        const data = {
+            action: 'buy_premium',
+            months: state.premiumMonths
+        };
+
+        if (tg && tg.sendData) {
+            tg.sendData(JSON.stringify(data));
+            showNotification('⏳ СОЗДАНИЕ ЗАКАЗА...');
+        }
+    };
+
+    // Проверка статуса платежа
+    function startPaymentCheck() {
+        paymentStatusMessage.textContent = '⏳ ОЖИДАЕМ ПОДТВЕРЖДЕНИЕ...';
+
+        state.checkInterval = setInterval(() => {
+            checkPaymentStatus();
+        }, 3000);
+    }
+
+    function checkPaymentStatus() {
+        const data = {
+            action: 'check_payment',
+            payment_id: state.paymentId
+        };
+
+        if (tg && tg.sendData) {
+            tg.sendData(JSON.stringify(data));
+        }
+    }
+
+    // Обработка ответа от бота
+    window.handlePaymentResponse = function(data) {
+        if (data.success) {
+            state.paymentId = data.payment_id;
+            state.paymentUrl = data.payment_url;
+            state.finalPrice = data.amount;
+
+            if (data.promo_applied) {
+                state.promoData = data.promo_data;
+            }
+
+            showStep(3);
+        } else {
+            if (state.checkInterval) {
+                clearInterval(state.checkInterval);
+            }
+
+            resultEmoji.textContent = '❌';
+            resultTitle.textContent = 'ОШИБКА';
+            resultMessage.textContent = data.error || 'Платеж не создан';
+            showStep(5);
+        }
+    };
+
+    window.paymentSuccess = function() {
+        if (state.checkInterval) {
+            clearInterval(state.checkInterval);
+        }
+
+        resultEmoji.textContent = '✅';
+        resultTitle.textContent = 'ОПЛАТА ПОЛУЧЕНА!';
+        resultMessage.textContent = `⭐ ${state.selectedPackage.stars} звезд отправлены @${state.recipient}`;
+        showStep(5);
+    };
+
+    window.paymentError = function(error) {
+        if (state.checkInterval) {
+            clearInterval(state.checkInterval);
+        }
+
+        resultEmoji.textContent = '❌';
+        resultTitle.textContent = 'ОШИБКА ОПЛАТЫ';
+        resultMessage.textContent = error || 'Платеж не прошел';
+        showStep(5);
+    };
+
+    // Уведомления
+    function showNotification(text, type = 'info') {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${type === 'success' ? '#34c759' : type === 'error' ? '#ff3b30' : 'rgba(0,0,0,0.8)'};
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+            animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        `;
+        notification.textContent = text;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
+    // Добавляем стили для анимаций
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translate(-50%, -10px);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Экспортируем функции для бота
+    window.TelegramWebApp = {
+        applyPromo: window.applyPromo,
+        handlePaymentResponse: window.handlePaymentResponse,
+        paymentSuccess: window.paymentSuccess,
+        paymentError: window.paymentError,
+        updateLevelDisplay: window.updateLevelDisplay,
+        updateAchievementsDisplay: window.updateAchievementsDisplay
+    };
+
+    // Загружаем данные при старте
+    setTimeout(() => {
+        const data = { action: 'get_level_info' };
+        if (tg && tg.sendData) {
+            tg.sendData(JSON.stringify(data));
+        }
+    }, 500);
+
+    console.log('✅ Star Market 24 готов к работе');
     </script>
 </body>
 </html>
