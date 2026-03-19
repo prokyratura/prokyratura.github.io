@@ -3,201 +3,617 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stars Market</title>
-    <!-- ИСПРАВЛЕНО: правильный URL для Telegram WebApp -->
+    <title>Star Market 24</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--tg-theme-bg-color, #1c1c1e);
-            color: var(--tg-theme-text-color, white);
-            margin: 0;
-            padding: 16px;
-            text-align: center;
+            color: var(--tg-theme-text-color, #ffffff);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding: 16px;
         }
 
-        h2 {
-            font-weight: 600;
-            font-size: 24px;
-            margin: 8px 0 16px 0;
-            color: var(--tg-theme-text-color, white);
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 16px;
-            flex: 1;
-        }
-
-        .card {
-            background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
-            padding: 20px 12px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.1s ease, background-color 0.1s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .card:active {
-            transform: scale(0.97);
-            background-color: var(--tg-theme-hint-color, #3a3a3c);
-        }
-
-        .stars {
-            font-size: 24px;
+        .header h1 {
+            font-size: 32px;
             font-weight: 700;
-            color: var(--tg-theme-text-color, white);
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
         }
 
-        .price {
-            color: var(--tg-theme-button-color, #34c759);
-            font-weight: 700;
-            font-size: 20px;
-        }
-
-        .price::before {
-            content: '💰 ';
+        .header p {
+            color: var(--tg-theme-hint-color, #8e8e93);
             font-size: 16px;
-            opacity: 0.8;
         }
 
-        .status {
-            margin-top: 20px;
-            padding: 12px;
+        .balance-card {
             background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
-            border-radius: 12px;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .balance-label {
             font-size: 14px;
             color: var(--tg-theme-hint-color, #8e8e93);
+        }
+
+        .balance-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--tg-theme-text-color, #ffffff);
+        }
+
+        .balance-currency {
+            font-size: 14px;
+            color: var(--tg-theme-hint-color, #8e8e93);
+            margin-left: 4px;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .package-card {
+            background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            border-radius: 16px;
+            padding: 20px 12px;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card.selected {
+            border-color: var(--tg-theme-button-color, #34c759);
+            transform: scale(1.02);
+            background-color: var(--tg-theme-bg-color, #1c1c1e);
+        }
+
+        .package-card:active {
+            transform: scale(0.98);
+        }
+
+        .package-stars {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--tg-theme-text-color, #ffffff);
+            margin-bottom: 8px;
+        }
+
+        .package-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--tg-theme-button-color, #34c759);
+            margin-bottom: 4px;
+        }
+
+        .package-price::before {
+            content: '💰 ';
+            font-size: 16px;
+        }
+
+        .package-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .package-badge.popular {
+            background: #ffd700;
+            color: #000;
+        }
+
+        .package-badge.best {
+            background: #ff3b30;
+            color: #fff;
+        }
+
+        .order-summary {
+            background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .summary-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--tg-theme-text-color, #ffffff);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: var(--tg-theme-hint-color, #8e8e93);
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-weight: 700;
+            color: var(--tg-theme-text-color, #ffffff);
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .payment-method {
+            flex: 1;
+            background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .payment-method.selected {
+            border-color: var(--tg-theme-button-color, #34c759);
+            background-color: var(--tg-theme-bg-color, #1c1c1e);
+        }
+
+        .payment-method:active {
+            transform: scale(0.97);
+        }
+
+        .payment-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .payment-name {
+            font-size: 14px;
+            color: var(--tg-theme-hint-color, #8e8e93);
+        }
+
+        .payment-name.selected {
+            color: var(--tg-theme-button-color, #34c759);
+        }
+
+        .action-button {
+            background-color: var(--tg-theme-button-color, #34c759);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 12px;
+        }
+
+        .action-button:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .action-button:disabled {
+            background-color: var(--tg-theme-hint-color, #8e8e93);
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
+            background-color: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            color: var(--tg-theme-hint-color, #8e8e93);
+            font-size: 14px;
+            margin-bottom: 16px;
             display: none;
         }
 
-        .status.visible {
+        .status-message.visible {
             display: block;
         }
 
+        .status-message.success {
+            color: var(--tg-theme-button-color, #34c759);
+        }
+
+        .status-message.error {
+            color: #ff3b30;
+        }
+
         .footer {
-            margin-top: 20px;
-            font-size: 13px;
+            text-align: center;
+            font-size: 12px;
             color: var(--tg-theme-hint-color, #8e8e93);
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .modal.visible {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--tg-theme-bg-color, #1c1c1e);
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-text {
+            color: var(--tg-theme-hint-color, #8e8e93);
+            margin-bottom: 24px;
+        }
+
+        .modal-button {
+            background-color: var(--tg-theme-button-color, #34c759);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-
-    <h2>⭐ Выберите пакет звезд</h2>
-
-    <div class="grid" id="main-grid"></div>
-
-    <div class="status" id="statusMessage">
-        ✅ Выберите количество звезд для покупки
+    <div class="header">
+        <h1>Star Market 24</h1>
+        <p>⭐ Покупка Telegram Stars</p>
     </div>
 
+    <div class="balance-card" id="balanceCard">
+        <span class="balance-label">Ваш баланс</span>
+        <div>
+            <span class="balance-value" id="balanceValue">0</span>
+            <span class="balance-currency">⭐</span>
+        </div>
+    </div>
+
+    <h3 style="margin-bottom: 12px;">Выберите пакет звезд</h3>
+
+    <div class="packages-grid" id="packagesGrid"></div>
+
+    <div class="order-summary" id="orderSummary" style="display: none;">
+        <div class="summary-title">📦 Ваш заказ</div>
+        <div class="summary-row">
+            <span>Пакет:</span>
+            <span id="selectedPackage">-</span>
+        </div>
+        <div class="summary-row">
+            <span>Цена:</span>
+            <span id="selectedPrice">-</span>
+        </div>
+        <div class="summary-total">
+            <span>К оплате:</span>
+            <span id="totalAmount">-</span>
+        </div>
+    </div>
+
+    <h3 style="margin-bottom: 12px;">Способ оплаты</h3>
+
+    <div class="payment-methods" id="paymentMethods">
+        <div class="payment-method" data-method="crypto" onclick="selectPayment('crypto')">
+            <div class="payment-icon">💰</div>
+            <div class="payment-name">Crypto Bot</div>
+        </div>
+        <div class="payment-method" data-method="lava" onclick="selectPayment('lava')">
+            <div class="payment-icon">💳</div>
+            <div class="payment-name">LAVA</div>
+        </div>
+        <div class="payment-method" data-method="stars" onclick="selectPayment('stars')">
+            <div class="payment-icon">⭐</div>
+            <div class="payment-name">Telegram Stars</div>
+        </div>
+    </div>
+
+    <button class="action-button" id="payButton" onclick="processPayment()" disabled>
+        💳 Оплатить
+    </button>
+
+    <div class="status-message" id="statusMessage"></div>
+
     <div class="footer" id="footer">
-        Магазин работает через Telegram Stars
+        @StarMarket24Bot • Магазин работает через Telegram Stars
+    </div>
+
+    <!-- Модальное окно успеха -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">✅</div>
+            <div class="modal-title">Заказ оформлен!</div>
+            <div class="modal-text" id="modalText">Спасибо за покупку!</div>
+            <button class="modal-button" onclick="closeModal()">Готово</button>
+        </div>
     </div>
 
     <script>
-        // ИНИЦИАЛИЗАЦИЯ TELEGRAM WEBAPP
+        // Инициализация Telegram WebApp
         let tg = null;
+        let selectedPackage = null;
+        let selectedPayment = null;
+        let userBalance = 1250; // Пример баланса пользователя
+
         try {
             tg = window.Telegram?.WebApp;
             if (tg) {
                 tg.ready();
-                tg.expand(); // Раскрываем на весь экран
-                tg.enableClosingConfirmation(); // Подтверждение закрытия
+                tg.expand();
+                tg.enableClosingConfirmation();
 
-                // Настройка главной кнопки
-                tg.MainButton.text = "Продолжить в боте";
-                tg.MainButton.onClick(() => {
-                    tg.close();
-                });
+                // Получаем реальный баланс из данных пользователя
+                if (tg.initDataUnsafe?.user) {
+                    // Здесь можно запросить баланс через бота
+                    console.log('User:', tg.initDataUnsafe.user);
+                }
             }
         } catch (e) {
             console.log('Вне Telegram WebApp');
         }
 
-        // АССОРТИМЕНТ
-        const offers = [
-            { stars: 50, price: 75 },
-            { stars: 100, price: 145 },
-            { stars: 250, price: 370 },
-            { stars: 500, price: 730 },
-            { stars: 1000, price: 1450 },
-            { stars: 5000, price: 7200 }
+        // Ассортимент
+        const packages = [
+            { stars: 50, price: 75, popular: false },
+            { stars: 100, price: 145, popular: false },
+            { stars: 250, price: 370, popular: true },
+            { stars: 500, price: 730, popular: false },
+            { stars: 1000, price: 1450, popular: false },
+            { stars: 5000, price: 7200, popular: true, best: true }
         ];
 
-        // ОТРИСОВКА
-        const grid = document.getElementById('main-grid');
-        const statusEl = document.getElementById('statusMessage');
-        const footerEl = document.getElementById('footer');
+        // Отрисовка пакетов
+        const packagesGrid = document.getElementById('packagesGrid');
 
-        offers.forEach(item => {
+        packages.forEach(pkg => {
             const card = document.createElement('div');
-            card.className = 'card';
+            card.className = 'package-card';
+            card.setAttribute('data-stars', pkg.stars);
+            card.setAttribute('data-price', pkg.price);
+
+            let badgeHtml = '';
+            if (pkg.popular) {
+                badgeHtml = '<div class="package-badge popular">🔥</div>';
+            }
+            if (pkg.best) {
+                badgeHtml = '<div class="package-badge best">👑</div>';
+            }
+
             card.innerHTML = `
-                <span class="stars">${item.stars} ⭐</span>
-                <span class="price">${item.price} ₽</span>
+                ${badgeHtml}
+                <div class="package-stars">${pkg.stars} ⭐</div>
+                <div class="package-price">${pkg.price} ₽</div>
             `;
 
-            card.onclick = function() {
-                // Данные для отправки
-                const data = JSON.stringify({
-                    stars: item.stars,
-                    price: item.price,
-                    action: 'buy'
-                });
-
-                // Отправка через Telegram WebApp
-                if (tg && tg.sendData) {
-                    tg.sendData(data); // Отправляем в бот
-
-                    // Показываем статус
-                    statusEl.textContent = `✅ Заказ: ${item.stars}⭐ на ${item.price}₽ отправлен!`;
-                    statusEl.classList.add('visible');
-
-                    // Вибрация (если поддерживается)
-                    if (tg.HapticFeedback) {
-                        tg.HapticFeedback.impactOccurred('medium');
-                    }
-                } else {
-                    // Режим отладки вне Telegram
-                    statusEl.textContent = `🔄 Тест: ${item.stars}⭐ за ${item.price}₽ (только в Telegram)`;
-                    statusEl.classList.add('visible');
-                    alert(`Демо: ${item.stars} звезд за ${item.price}₽\nОткройте через бота для реальной покупки!`);
-                }
-            };
-
-            grid.appendChild(card);
+            card.onclick = () => selectPackage(pkg.stars, pkg.price, card);
+            packagesGrid.appendChild(card);
         });
 
-        // Обновляем тему при изменении (Telegram может менять тему динамически)
+        // Выбор пакета
+        function selectPackage(stars, price, element) {
+            // Снимаем выделение со всех карточек
+            document.querySelectorAll('.package-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Выделяем выбранную
+            element.classList.add('selected');
+
+            selectedPackage = { stars, price };
+
+            // Обновляем сумму заказа
+            document.getElementById('orderSummary').style.display = 'block';
+            document.getElementById('selectedPackage').textContent = `${stars} ⭐`;
+            document.getElementById('selectedPrice').textContent = `${price} ₽`;
+            document.getElementById('totalAmount').textContent = `${price} ₽`;
+
+            // Активируем кнопку оплаты если выбран способ оплаты
+            updatePayButton();
+
+            // Показываем статус
+            showStatus(`Выбрано: ${stars}⭐ за ${price}₽`, 'info');
+
+            // Тактильный отклик
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        // Выбор способа оплаты
+        window.selectPayment = function(method) {
+            document.querySelectorAll('.payment-method').forEach(m => {
+                m.classList.remove('selected');
+            });
+
+            document.querySelector(`[data-method="${method}"]`).classList.add('selected');
+            selectedPayment = method;
+
+            updatePayButton();
+
+            // Тактильный отклик
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        // Обновление кнопки оплаты
+        function updatePayButton() {
+            const payButton = document.getElementById('payButton');
+            payButton.disabled = !(selectedPackage && selectedPayment);
+        }
+
+        // Показ статуса
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message visible';
+
+            if (type === 'success') {
+                statusEl.classList.add('success');
+            } else if (type === 'error') {
+                statusEl.classList.add('error');
+            }
+
+            setTimeout(() => {
+                statusEl.classList.remove('visible');
+            }, 3000);
+        }
+
+        // Обработка оплаты
+        window.processPayment = function() {
+            if (!selectedPackage || !selectedPayment) return;
+
+            const payButton = document.getElementById('payButton');
+            payButton.disabled = true;
+            payButton.textContent = '⏳ Обработка...';
+
+            // Имитация обработки платежа
+            setTimeout(() => {
+                // Данные для отправки в бот
+                const orderData = {
+                    action: 'purchase',
+                    stars: selectedPackage.stars,
+                    price: selectedPackage.price,
+                    payment: selectedPayment,
+                    user_id: tg?.initDataUnsafe?.user?.id || 0,
+                    timestamp: Date.now()
+                };
+
+                // Отправка в бот
+                if (tg && tg.sendData) {
+                    tg.sendData(JSON.stringify(orderData));
+
+                    // Показываем модальное окно успеха
+                    document.getElementById('modalText').textContent =
+                        `Пакет ${selectedPackage.stars}⭐ на сумму ${selectedPackage.price}₽ оплачен через ${getPaymentName(selectedPayment)}`;
+                    document.getElementById('successModal').classList.add('visible');
+
+                    // Обновляем баланс (пример)
+                    userBalance += selectedPackage.stars;
+                    document.getElementById('balanceValue').textContent = userBalance;
+
+                    showStatus('✅ Заказ успешно оформлен!', 'success');
+                } else {
+                    // Демо-режим
+                    alert(`ДЕМО: Покупка ${selectedPackage.stars}⭐ за ${selectedPackage.price}₽ через ${getPaymentName(selectedPayment)}`);
+                    showStatus('🔄 Демо-режим (только в Telegram)', 'info');
+                }
+
+                payButton.disabled = false;
+                payButton.textContent = '💳 Оплатить';
+
+                // Тактильный отклик
+                if (tg?.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
+
+            }, 1500);
+        }
+
+        // Закрытие модального окна
+        window.closeModal = function() {
+            document.getElementById('successModal').classList.remove('visible');
+
+            // Сброс выбора
+            selectedPackage = null;
+            selectedPayment = null;
+            document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+            document.getElementById('orderSummary').style.display = 'none';
+            document.getElementById('payButton').disabled = true;
+        }
+
+        // Получение названия способа оплаты
+        function getPaymentName(method) {
+            const names = {
+                crypto: 'Crypto Bot',
+                lava: 'LAVA',
+                stars: 'Telegram Stars'
+            };
+            return names[method] || method;
+        }
+
+        // Обновление темы Telegram
         if (tg) {
             tg.onEvent('themeChanged', function() {
                 document.body.style.backgroundColor = tg.themeParams.bg_color || '#1c1c1e';
-                document.body.style.color = tg.themeParams.text_color || 'white';
+                document.body.style.color = tg.themeParams.text_color || '#ffffff';
             });
         }
 
-        // Если не в Telegram, показываем подсказку
+        // Загрузка демо-баланса
+        document.getElementById('balanceValue').textContent = userBalance;
+
+        // Если не в Telegram
         if (!tg) {
-            statusEl.textContent = '🔔 Откройте через бота в Telegram для покупки';
-            statusEl.classList.add('visible');
-            footerEl.textContent = 'Режим предпросмотра';
+            document.getElementById('footer').innerHTML = '@StarMarket24Bot • Режим предпросмотра';
         }
     </script>
 </body>
