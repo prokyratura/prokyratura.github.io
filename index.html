@@ -14,16 +14,17 @@
         .card.selected { border-color: var(--tg-theme-button-color, #34c759); }
         .stars { font-size: 24px; font-weight: 700; display: block; }
         .price { color: var(--tg-theme-button-color, #34c759); font-size: 20px; font-weight: 700; }
-        .price-usdt { color: var(--tg-theme-hint-color, #8e8e93); font-size: 14px; margin-top: 4px; }
-        .payment { display: flex; gap: 12px; margin: 20px 0; }
-        .method { flex: 1; background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 12px; padding: 12px; text-align: center; border: 2px solid transparent; cursor: pointer; }
-        .method.selected { border-color: var(--tg-theme-button-color, #34c759); }
-        .recipient { background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 12px; padding: 12px; margin: 16px 0; display: flex; gap: 8px; }
+        .recipient { background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 12px; padding: 12px; margin: 16px 0; display: none; gap: 8px; }
+        .recipient.visible { display: flex; }
         .recipient input { background: none; border: none; color: var(--tg-theme-text-color, #fff); flex: 1; outline: none; }
-        .btn { background: var(--tg-theme-button-color, #34c759); color: var(--tg-theme-button-text-color, #fff); border: none; border-radius: 12px; padding: 16px; font-size: 18px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 20px; }
+        .btn { background: var(--tg-theme-button-color, #34c759); color: var(--tg-theme-button-text-color, #fff); border: none; border-radius: 12px; padding: 16px; font-size: 18px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 20px; display: none; }
+        .btn.visible { display: block; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .hidden { display: none; }
-        .error { color: #ff3b30; margin-top: 8px; text-align: center; }
+        .error { color: #ff3b30; margin-top: 8px; text-align: center; display: none; }
+        .error.visible { display: block; }
+        .payment-info { background: var(--tg-theme-secondary-bg-color, #2c2c2e); border-radius: 12px; padding: 12px; margin: 16px 0; display: none; text-align: center; }
+        .payment-info.visible { display: block; }
+        .payment-method { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--tg-theme-button-color, #34c759); }
     </style>
 </head>
 <body>
@@ -31,125 +32,89 @@
 
     <div class="grid" id="packages"></div>
 
-    <div class="recipient hidden" id="recipientBlock">
+    <div class="recipient" id="recipientBlock">
         <span>👤 @</span>
-        <input type="text" id="recipient" placeholder="username">
+        <input type="text" id="recipient" placeholder="username" autocomplete="off">
     </div>
 
-    <div class="payment hidden" id="paymentBlock"></div>
+    <div class="payment-info" id="paymentInfo">
+        <div class="payment-method">
+            <span>💳 ROBOKASSA</span>
+        </div>
+        <small>СБП, карты РФ, электронные кошельки</small>
+    </div>
 
-    <div class="error hidden" id="errorMsg"></div>
+    <div class="error" id="errorMsg"></div>
 
-    <button class="btn hidden" id="payBtn">💳 Оплатить</button>
+    <button class="btn" id="payBtn">💳 Оплатить через ROBOKASSA</button>
 
     <script>
         console.log('🚀 Star Market 24 приложение загружено');
 
-        // Инициализация Telegram WebApp
         const tg = window.Telegram?.WebApp;
         if (tg) {
             console.log('✅ Telegram WebApp доступен');
             tg.ready();
             tg.expand();
-            tg.MainButton.text = 'Закрыть';
-            tg.MainButton.onClick(() => tg.close());
-        } else {
-            console.log('❌ Telegram WebApp НЕ доступен (режим разработки)');
         }
 
-        // Данные
         const packages = [
-            { stars: 50, rub: 75, usdt: 0.83 },
-            { stars: 100, rub: 145, usdt: 1.61 },
-            { stars: 250, rub: 370, usdt: 4.11 },
-            { stars: 500, rub: 730, usdt: 8.11 },
-            { stars: 1000, rub: 1450, usdt: 16.11 },
-            { stars: 5000, rub: 7200, usdt: 80.00 }
+            { stars: 50, rub: 75 },
+            { stars: 100, rub: 145 },
+            { stars: 250, rub: 370 },
+            { stars: 500, rub: 730 },
+            { stars: 1000, rub: 1450 },
+            { stars: 5000, rub: 7200 }
         ];
 
         let selectedPackage = null;
-        let selectedPayment = null;
 
         const packagesGrid = document.getElementById('packages');
         const recipientBlock = document.getElementById('recipientBlock');
-        const paymentBlock = document.getElementById('paymentBlock');
+        const paymentInfo = document.getElementById('paymentInfo');
         const payBtn = document.getElementById('payBtn');
         const errorMsg = document.getElementById('errorMsg');
         const recipientInput = document.getElementById('recipient');
 
-        // Отрисовка пакетов
         packages.forEach(pkg => {
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
                 <span class="stars">${pkg.stars} ⭐</span>
                 <span class="price">${pkg.rub} ₽</span>
-                <div class="price-usdt">≈ ${pkg.usdt} USDT</div>
             `;
             card.onclick = () => {
                 document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
                 selectedPackage = pkg;
-                recipientBlock.classList.remove('hidden');
-                paymentBlock.classList.remove('hidden');
-                payBtn.classList.remove('hidden');
-                renderPaymentMethods();
+                recipientBlock.classList.add('visible');
+                paymentInfo.classList.add('visible');
+                payBtn.classList.add('visible');
                 console.log('✅ Выбран пакет:', pkg);
             };
             packagesGrid.appendChild(card);
         });
 
-        function renderPaymentMethods() {
-            paymentBlock.innerHTML = '';
-
-            const methods = [
-                { id: 'crypto', name: '💰 Crypto Pay', desc: 'USDT' },
-                { id: 'lava', name: '💳 LAVA', desc: 'Рубли' }
-            ];
-
-            methods.forEach(m => {
-                const div = document.createElement('div');
-                div.className = 'method';
-                div.innerHTML = `<div>${m.name}</div><small>${m.desc}</small>`;
-                div.onclick = () => {
-                    document.querySelectorAll('.method').forEach(el => el.classList.remove('selected'));
-                    div.classList.add('selected');
-                    selectedPayment = m.id;
-                    console.log('✅ Выбран способ оплаты:', m.id);
-                };
-                paymentBlock.appendChild(div);
-            });
-        }
-
         payBtn.onclick = function() {
-            errorMsg.classList.add('hidden');
+            errorMsg.classList.remove('visible');
 
             if (!selectedPackage) {
                 errorMsg.textContent = '❌ Выберите пакет';
-                errorMsg.classList.remove('hidden');
-                return;
-            }
-
-            if (!selectedPayment) {
-                errorMsg.textContent = '❌ Выберите способ оплаты';
-                errorMsg.classList.remove('hidden');
+                errorMsg.classList.add('visible');
                 return;
             }
 
             const recipient = recipientInput.value.trim();
             if (!recipient) {
                 errorMsg.textContent = '❌ Введите username получателя';
-                errorMsg.classList.remove('hidden');
+                errorMsg.classList.add('visible');
                 return;
             }
 
-            // Формируем данные
             const data = {
                 action: 'create_invoice',
                 stars: selectedPackage.stars,
                 price_rub: selectedPackage.rub,
-                price_usdt: selectedPackage.usdt,
-                payment_method: selectedPayment,
                 recipient: recipient.replace('@', '')
             };
 
@@ -157,7 +122,7 @@
 
             if (tg && tg.sendData) {
                 tg.sendData(JSON.stringify(data));
-                console.log('✅ Данные отправлены, закрываем приложение');
+                console.log('✅ Данные отправлены');
 
                 payBtn.disabled = true;
                 payBtn.textContent = '✅ Отправлено!';
@@ -166,9 +131,9 @@
                     tg.close();
                 }, 1000);
             } else {
-                console.log('⚠️ Режим разработки:', data);
+                console.log('⚠️ Демо-режим:', data);
                 errorMsg.textContent = '⚠️ Демо-режим (не в Telegram)';
-                errorMsg.classList.remove('hidden');
+                errorMsg.classList.add('visible');
             }
         };
     </script>
