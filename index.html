@@ -6,6 +6,7 @@
     <title>Star Market 24 ✦ Premium Stars</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* Все стили остаются такими же */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -228,7 +229,85 @@
             margin-top: 4px;
         }
 
-        /* Профиль */
+        /* Модальное окно для ввода получателя */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(44, 44, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 24px;
+            width: 100%;
+            max-width: 340px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-input {
+            background: rgba(28, 28, 30, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px;
+            width: 100%;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-input:focus {
+            border-color: #ffd700;
+            outline: none;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .modal-button.confirm {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #000;
+        }
+
+        .modal-button.cancel {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        /* Остальные стили */
         .profile-header {
             text-align: center;
             margin-bottom: 30px;
@@ -266,16 +345,6 @@
             font-size: 16px;
         }
 
-        .profile-level-badge {
-            display: inline-block;
-            background: rgba(255, 215, 0, 0.2);
-            border: 1px solid #ffd700;
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 12px;
-            color: #ffd700;
-        }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -303,7 +372,6 @@
             margin-top: 4px;
         }
 
-        /* Достижения */
         .achievements-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -318,7 +386,6 @@
             padding: 15px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
         }
 
         .achievement-card.earned {
@@ -326,29 +393,6 @@
             background: rgba(255, 215, 0, 0.1);
         }
 
-        .achievement-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .achievement-name {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .achievement-desc {
-            font-size: 11px;
-            color: rgba(255,255,255,0.5);
-        }
-
-        .achievement-reward {
-            font-size: 10px;
-            color: #ffd700;
-            margin-top: 4px;
-        }
-
-        /* Кнопки */
         .action-button {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #000;
@@ -394,14 +438,50 @@
             to { opacity: 1; }
         }
 
-        /* Адаптивность */
-        @media (max-width: 380px) {
-            .star-card .amount {
-                font-size: 24px;
-            }
-            .achievements-grid {
-                grid-template-columns: 1fr;
-            }
+        .bonus-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .premium-card {
+            background: linear-gradient(135deg, rgba(135, 116, 225, 0.2), rgba(108, 92, 231, 0.2));
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .premium-card:hover {
+            transform: translateX(5px);
+        }
+
+        .calculator-section {
+            background: rgba(44, 44, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .level-progress {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .level-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffaa00);
+            transition: width 0.5s;
         }
     </style>
 </head>
@@ -423,7 +503,7 @@
         </div>
 
         <!-- Ежедневный бонус -->
-        <div class="bonus-card" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.1)); border-radius: 24px; padding: 20px; margin-bottom: 24px;">
+        <div class="bonus-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div>
                     <span style="font-size: 14px; opacity: 0.8;">🎁 ЕЖЕДНЕВНЫЙ БОНУС</span>
@@ -452,7 +532,7 @@
         </div>
 
         <!-- Калькулятор -->
-        <div style="background: rgba(44, 44, 46, 0.3); backdrop-filter: blur(10px); border-radius: 24px; padding: 20px; margin-top: 20px;">
+        <div class="calculator-section">
             <h3 style="margin-bottom: 12px;">🧮 Калькулятор</h3>
             <div style="display: flex; gap: 10px;">
                 <div style="flex: 1; background: rgba(28, 28, 30, 0.6); border-radius: 16px; padding: 14px;">
@@ -472,7 +552,7 @@
         </div>
 
         <div style="display: grid; gap: 16px;">
-            <div class="premium-card" data-months="3" style="background: linear-gradient(135deg, rgba(135, 116, 225, 0.2), rgba(108, 92, 231, 0.2)); border-radius: 24px; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s ease;">
+            <div class="premium-card" data-months="3">
                 <div>
                     <h3 style="font-size: 20px; font-weight: 700;">3 месяца</h3>
                     <p style="color: #8774e1;">🔥 Стартовый</p>
@@ -480,7 +560,7 @@
                 <div style="font-size: 24px; font-weight: 800; color: #ffd700;">899 ₽</div>
             </div>
 
-            <div class="premium-card" data-months="6" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.2)); border-radius: 24px; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s ease; border: 2px solid #ffd700;">
+            <div class="premium-card" data-months="6" style="border: 2px solid #ffd700;">
                 <div>
                     <h3 style="font-size: 20px; font-weight: 700;">6 месяцев</h3>
                     <p style="color: #ffd700;">⭐ Популярный</p>
@@ -488,7 +568,7 @@
                 <div style="font-size: 24px; font-weight: 800; color: #ffd700;">1699 ₽</div>
             </div>
 
-            <div class="premium-card" data-months="12" style="background: linear-gradient(135deg, rgba(135, 116, 225, 0.2), rgba(108, 92, 231, 0.2)); border-radius: 24px; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s ease;">
+            <div class="premium-card" data-months="12">
                 <div>
                     <h3 style="font-size: 20px; font-weight: 700;">12 месяцев</h3>
                     <p style="color: #8774e1;">👑 Выгодный</p>
@@ -510,12 +590,9 @@
         </div>
 
         <div class="profile-header">
-            <div class="profile-avatar" id="profileAvatar">
-                <img id="avatarImg" src="" alt="" style="display: none;">
-            </div>
+            <div class="profile-avatar" id="profileAvatar">👤</div>
             <div class="profile-name" id="profileName">Загрузка...</div>
             <div class="profile-username" id="profileUsername">@загрузка</div>
-            <div class="profile-level-badge" id="profileLevel">⭐ Уровень 1</div>
         </div>
 
         <div class="stats-grid">
@@ -539,8 +616,8 @@
                 <span style="font-weight: 700;">УРОВЕНЬ <span id="userLevel">1</span></span>
                 <span style="color: #ffd700;">✨ <span id="userExp">0</span>/<span id="nextLevelExp">100</span></span>
             </div>
-            <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 10px; overflow: hidden;">
-                <div id="levelProgress" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ffd700, #ffaa00); transition: width 0.5s;"></div>
+            <div class="level-progress">
+                <div class="level-progress-fill" id="levelProgress" style="width: 0%;"></div>
             </div>
         </div>
 
@@ -550,9 +627,7 @@
                 <span style="font-weight: 700;">🏆 Достижения</span>
                 <span style="color: #ffd700;" id="achievementsCount">0/10</span>
             </div>
-            <div class="achievements-grid" id="achievementsGrid">
-                <!-- Достижения будут добавлены через JS -->
-            </div>
+            <div class="achievements-grid" id="achievementsGrid"></div>
         </div>
     </div>
 
@@ -566,7 +641,7 @@
         <div style="background: rgba(44, 44, 46, 0.3); border-radius: 24px; padding: 20px;">
             <div style="margin-bottom: 20px;">
                 <h3 style="margin-bottom: 8px;">❓ Как купить звезды?</h3>
-                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Выберите пакет, укажите получателя и оплатите. Звезды придут мгновенно.</p>
+                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Нажмите на пакет, введите получателя и оплатите. Звезды придут мгновенно.</p>
             </div>
             <div style="margin-bottom: 20px;">
                 <h3 style="margin-bottom: 8px;">❓ Как получить бонус?</h3>
@@ -578,7 +653,7 @@
             </div>
             <div style="margin-bottom: 20px;">
                 <h3 style="margin-bottom: 8px;">❓ Есть поддержка?</h3>
-                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Конечно! Пишите @StarMarket24Bot в Telegram</p>
+                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Пишите @StarMarket24Bot в Telegram</p>
             </div>
         </div>
 
@@ -607,6 +682,18 @@
         </div>
     </div>
 
+    <!-- Модальное окно для ввода получателя -->
+    <div id="recipientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">⭐ Получатель</div>
+            <input type="text" id="recipientInput" class="modal-input" placeholder="@username" autocomplete="off">
+            <div class="modal-buttons">
+                <div class="modal-button confirm" id="confirmPurchase">Продолжить</div>
+                <div class="modal-button cancel" id="cancelPurchase">Отмена</div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Инициализация Telegram WebApp
         const tg = window.Telegram?.WebApp;
@@ -624,25 +711,24 @@
 
         // Реальные достижения
         const achievements = [
-            { id: 1, name: 'Первая покупка', desc: 'Купите звезды впервые', icon: '🎯', exp: 50, stars: 5, condition: (data) => data.purchases >= 1 },
-            { id: 2, name: 'VIP клиент', desc: 'Потратьте 5000₽', icon: '👑', exp: 200, stars: 25, condition: (data) => data.spent >= 5000 },
-            { id: 3, name: 'Реферальный магнат', desc: 'Пригласите 5 друзей', icon: '👥', exp: 300, stars: 50, condition: (data) => data.referrals >= 5 },
-            { id: 4, name: 'Недельный огонь', desc: '7 дней бонусов подряд', icon: '🔥', exp: 100, stars: 15, condition: (data) => data.streak >= 7 },
-            { id: 5, name: 'Крупный покупатель', desc: 'Купите 5000⭐ за раз', icon: '💰', exp: 150, stars: 30, condition: (data) => data.maxPurchase >= 5000 },
-            { id: 6, name: 'Premium пользователь', desc: 'Купите Telegram Premium', icon: '💎', exp: 200, condition: (data) => data.hasPremium },
-            { id: 7, name: 'Опытный', desc: 'Достигните 10 уровня', icon: '📈', exp: 100, stars: 20, condition: (data) => data.level >= 10 },
-            { id: 8, name: 'Профессионал', desc: 'Достигните 25 уровня', icon: '🚀', exp: 300, stars: 50, condition: (data) => data.level >= 25 },
-            { id: 9, name: 'Легенда', desc: 'Достигните 50 уровня', icon: '👑', exp: 1000, stars: 200, condition: (data) => data.level >= 50 },
-            { id: 10, name: 'Социальный', desc: 'Пригласите 10 друзей', icon: '🌐', exp: 400, stars: 75, condition: (data) => data.referrals >= 10 }
+            { id: 1, name: 'Первая покупка', desc: 'Купите звезды впервые', icon: '🎯', condition: (data) => data.purchases >= 1 },
+            { id: 2, name: 'VIP клиент', desc: 'Потратьте 5000₽', icon: '👑', condition: (data) => data.spent >= 5000 },
+            { id: 3, name: 'Реферальный магнат', desc: 'Пригласите 5 друзей', icon: '👥', condition: (data) => data.referrals >= 5 },
+            { id: 4, name: 'Недельный огонь', desc: '7 дней бонусов подряд', icon: '🔥', condition: (data) => data.streak >= 7 },
+            { id: 5, name: 'Крупный покупатель', desc: 'Купите 5000⭐ за раз', icon: '💰', condition: (data) => data.maxPurchase >= 5000 },
+            { id: 6, name: 'Premium пользователь', desc: 'Купите Telegram Premium', icon: '💎', condition: (data) => data.hasPremium },
+            { id: 7, name: 'Опытный', desc: 'Достигните 10 уровня', icon: '📈', condition: (data) => data.level >= 10 },
+            { id: 8, name: 'Профессионал', desc: 'Достигните 25 уровня', icon: '🚀', condition: (data) => data.level >= 25 },
+            { id: 9, name: 'Легенда', desc: 'Достигните 50 уровня', icon: '👑', condition: (data) => data.level >= 50 },
+            { id: 10, name: 'Социальный', desc: 'Пригласите 10 друзей', icon: '🌐', condition: (data) => data.referrals >= 10 }
         ];
 
-        // Реальные данные пользователя (в реальности приходят из бота)
+        // Реальные данные пользователя
         let userData = {
             id: user.id || 0,
             firstName: user.first_name || 'Пользователь',
             lastName: user.last_name || '',
             username: user.username || 'username',
-            photoUrl: user.photo_url || null,
             purchases: 5,
             stars: 1250,
             spent: 1875,
@@ -655,86 +741,6 @@
             hasPremium: false
         };
 
-        // Функция загрузки фото профиля
-        function loadProfilePhoto() {
-            const avatarDiv = document.getElementById('profileAvatar');
-            const avatarImg = document.getElementById('avatarImg');
-
-            if (userData.photoUrl) {
-                avatarImg.src = userData.photoUrl;
-                avatarImg.style.display = 'block';
-                avatarDiv.innerHTML = ''; // Очищаем
-                avatarDiv.appendChild(avatarImg);
-            } else {
-                // Показываем первую букву имени
-                avatarDiv.innerHTML = userData.firstName.charAt(0) || '👤';
-                avatarImg.style.display = 'none';
-            }
-        }
-
-        // Обновление профиля
-        function updateProfile() {
-            document.getElementById('headerBalance').textContent = userData.stars;
-
-            // Имя (первая буква заглавная)
-            const fullName = [userData.firstName, userData.lastName].filter(Boolean).join(' ');
-            document.getElementById('profileName').textContent = fullName || 'Пользователь';
-
-            // Username
-            document.getElementById('profileUsername').textContent = userData.username ? '@' + userData.username : '@username';
-
-            // Уровень
-            document.getElementById('profileLevel').textContent = `⭐ Уровень ${userData.level}`;
-
-            // Статистика
-            document.getElementById('statPurchases').textContent = userData.purchases;
-            document.getElementById('statStars').textContent = userData.stars;
-            document.getElementById('statSpent').textContent = userData.spent + '₽';
-
-            // Прогресс уровня
-            document.getElementById('userLevel').textContent = userData.level;
-            document.getElementById('userExp').textContent = userData.exp;
-            document.getElementById('nextLevelExp').textContent = userData.nextExp;
-
-            const progress = (userData.exp / userData.nextExp) * 100;
-            document.getElementById('levelProgress').style.width = progress + '%';
-
-            // Загружаем фото
-            loadProfilePhoto();
-
-            // Обновляем достижения
-            updateAchievements();
-        }
-
-        // Обновление достижений
-        function updateAchievements() {
-            const earned = achievements.filter(a => a.condition(userData));
-            const grid = document.getElementById('achievementsGrid');
-            const count = document.getElementById('achievementsCount');
-
-            count.textContent = `${earned.length}/${achievements.length}`;
-            grid.innerHTML = '';
-
-            achievements.forEach(ach => {
-                const isEarned = earned.includes(ach);
-                const card = document.createElement('div');
-                card.className = `achievement-card ${isEarned ? 'earned' : ''}`;
-
-                let rewardText = '';
-                if (ach.stars) rewardText += `+${ach.stars}⭐ `;
-                if (ach.exp) rewardText += `+${ach.exp}✨`;
-
-                card.innerHTML = `
-                    <div class="achievement-icon">${ach.icon}</div>
-                    <div class="achievement-name">${ach.name}</div>
-                    <div class="achievement-desc">${ach.desc}</div>
-                    ${isEarned ? '<div class="achievement-reward">' + rewardText + '</div>' : ''}
-                `;
-
-                grid.appendChild(card);
-            });
-        }
-
         // Состояние приложения
         let state = {
             currentSection: 'stars',
@@ -742,7 +748,7 @@
             premiumMonths: null
         };
 
-        // Навигация
+        // Элементы
         const sections = {
             stars: document.getElementById('starsSection'),
             premium: document.getElementById('premiumSection'),
@@ -751,7 +757,12 @@
         };
 
         const navItems = document.querySelectorAll('.nav-item');
+        const modal = document.getElementById('recipientModal');
+        const recipientInput = document.getElementById('recipientInput');
+        const confirmBtn = document.getElementById('confirmPurchase');
+        const cancelBtn = document.getElementById('cancelPurchase');
 
+        // Навигация
         navItems.forEach(item => {
             item.onclick = () => {
                 const section = item.dataset.section;
@@ -803,28 +814,78 @@
                 ${pkg.popular ? '<div class="bonus">🔥 Популярное</div>' : ''}
             `;
 
-            card.onclick = () => selectPackage(pkg);
+            card.onclick = () => {
+                state.selectedPackage = pkg;
+                modal.classList.add('active');
+                recipientInput.value = '';
+                recipientInput.focus();
+            };
+
             return card;
         }
 
-        function selectPackage(pkg) {
-            state.selectedPackage = pkg;
+        // Подтверждение покупки
+        confirmBtn.onclick = () => {
+            const recipient = recipientInput.value.trim();
 
-            if (tg?.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
+            if (!recipient) {
+                showNotification('Введите username получателя', 'error');
+                return;
             }
 
+            modal.classList.remove('active');
+
             const data = {
-                action: 'select_package',
-                stars: pkg.stars,
-                price: pkg.rub
+                action: 'create_invoice',
+                stars: state.selectedPackage.stars,
+                price: state.selectedPackage.rub,
+                recipient: recipient.replace('@', '')
             };
 
             if (tg?.sendData) {
                 tg.sendData(JSON.stringify(data));
-                showNotification(`Выбрано: ${pkg.stars}⭐ за ${pkg.rub}₽`, 'info');
+                showNotification('⏳ Создание платежа...', 'info');
+            } else {
+                // Демо-режим
+                showNotification(`✅ ДЕМО: ${state.selectedPackage.stars}⭐ для @${recipient}`, 'success');
             }
-        }
+
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+        };
+
+        // Отмена покупки
+        cancelBtn.onclick = () => {
+            modal.classList.remove('active');
+            state.selectedPackage = null;
+        };
+
+        // Калькулятор
+        document.getElementById('calculateBtn').onclick = () => {
+            const stars = parseInt(document.getElementById('calculatorInput').value);
+            const result = document.getElementById('calculatorResult');
+
+            if (!stars || stars < 1) {
+                result.innerHTML = '❌ Введите количество звезд';
+                return;
+            }
+
+            // Расчет цены
+            let price;
+            if (stars <= 50) price = stars * 1.5;
+            else if (stars <= 100) price = stars * 1.45;
+            else if (stars <= 500) price = stars * 1.48;
+            else price = stars * 1.4;
+
+            const roundedPrice = Math.round(price);
+
+            result.innerHTML = `
+                <div style="font-size: 24px; font-weight: 800; color: #ffd700;">${roundedPrice} ₽</div>
+                <div style="font-size: 14px; color: rgba(255,255,255,0.7);">за ${stars} ⭐</div>
+                <div style="font-size: 12px; color: #34c759; margin-top: 8px;">✨ цена за 1⭐: ${(price/stars).toFixed(2)} ₽</div>
+            `;
+        };
 
         // Premium покупка
         document.querySelectorAll('.premium-card').forEach(card => {
@@ -833,7 +894,7 @@
 
                 document.querySelectorAll('.premium-card').forEach(c => {
                     c.style.transform = 'scale(1)';
-                    c.style.border = 'none';
+                    c.style.border = '1px solid rgba(255,255,255,0.1)';
                 });
 
                 this.style.transform = 'scale(1.02)';
@@ -843,7 +904,7 @@
             };
         });
 
-        document.getElementById('buyPremiumBtn').onclick = function() {
+        document.getElementById('buyPremiumBtn').onclick = () => {
             if (!state.premiumMonths) {
                 showNotification('Выберите срок подписки', 'error');
                 return;
@@ -854,14 +915,15 @@
 
             const data = {
                 action: 'buy_premium',
-                months: state.premiumMonths,
+                months: parseInt(state.premiumMonths),
                 price: price
             };
 
             if (tg?.sendData) {
                 tg.sendData(JSON.stringify(data));
-                this.textContent = '⏳ ОБРАБОТКА...';
-                this.disabled = true;
+                showNotification('⏳ Создание заказа...', 'info');
+            } else {
+                showNotification(`✅ ДЕМО: Premium ${state.premiumMonths} мес. за ${price}₽`, 'success');
             }
         };
 
@@ -873,46 +935,56 @@
                 tg.sendData(JSON.stringify(data));
                 this.disabled = true;
                 this.textContent = '⏳ ПОЛУЧЕНИЕ...';
+            } else {
+                // Демо-режим
+                const bonus = (Math.random() * 0.4 + 0.1).toFixed(2);
+                document.getElementById('bonusAmount').textContent = bonus + ' ⭐';
+                document.getElementById('bonusStreak').textContent = (userData.streak + 1);
+                showNotification(`🎁 Получено ${bonus}⭐!`, 'success');
             }
         };
 
-        // Калькулятор
-        document.getElementById('calculateBtn').onclick = function() {
-            const stars = parseInt(document.getElementById('calculatorInput').value);
+        // Обновление профиля
+        function updateProfile() {
+            document.getElementById('headerBalance').textContent = userData.stars;
 
-            if (!stars || stars < 1) {
-                document.getElementById('calculatorResult').innerHTML = '❌ Введите число';
-                return;
-            }
+            const fullName = [userData.firstName, userData.lastName].filter(Boolean).join(' ');
+            document.getElementById('profileName').textContent = fullName || 'Пользователь';
+            document.getElementById('profileUsername').textContent = userData.username ? '@' + userData.username : '@username';
 
-            const data = {
-                action: 'calculate_price',
-                stars: stars
-            };
+            document.getElementById('statPurchases').textContent = userData.purchases;
+            document.getElementById('statStars').textContent = userData.stars;
+            document.getElementById('statSpent').textContent = userData.spent + '₽';
 
-            if (tg?.sendData) {
-                tg.sendData(JSON.stringify(data));
-                document.getElementById('calculatorResult').innerHTML = '⏳ РАСЧЕТ...';
-            } else {
-                demoCalculate(stars);
-            }
-        };
+            document.getElementById('userLevel').textContent = userData.level;
+            document.getElementById('userExp').textContent = userData.exp;
+            document.getElementById('nextLevelExp').textContent = userData.nextExp;
 
-        function demoCalculate(stars) {
-            if (stars <= 50) {
-                document.getElementById('calculatorResult').innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.5)} ₽`;
-            } else if (stars <= 100) {
-                document.getElementById('calculatorResult').innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.45)} ₽`;
-            } else if (stars <= 500) {
-                document.getElementById('calculatorResult').innerHTML = `💰 ${stars}⭐ = ${Math.round(stars * 1.48)} ₽<br><small style="color: #ffd700;">ОПТОВАЯ ЦЕНА</small>`;
-            } else {
-                const price = stars * 1.4;
-                const discount = stars * 1.5 - price;
-                document.getElementById('calculatorResult').innerHTML = `
-                    💰 ${stars}⭐ = ${Math.round(price)} ₽<br>
-                    <span style="color: #34c759;">🎉 Экономия ${Math.round(discount)} ₽</span>
+            const progress = (userData.exp / userData.nextExp) * 100;
+            document.getElementById('levelProgress').style.width = progress + '%';
+
+            updateAchievements();
+        }
+
+        function updateAchievements() {
+            const earned = achievements.filter(a => a.condition(userData));
+            const grid = document.getElementById('achievementsGrid');
+            const count = document.getElementById('achievementsCount');
+
+            count.textContent = `${earned.length}/${achievements.length}`;
+            grid.innerHTML = '';
+
+            achievements.forEach(ach => {
+                const isEarned = earned.includes(ach);
+                const card = document.createElement('div');
+                card.className = `achievement-card ${isEarned ? 'earned' : ''}`;
+                card.innerHTML = `
+                    <div style="font-size: 24px; margin-bottom: 8px;">${ach.icon}</div>
+                    <div style="font-size: 12px; font-weight: 600; margin-bottom: 4px;">${ach.name}</div>
+                    <div style="font-size: 10px; color: rgba(255,255,255,0.5);">${ach.desc}</div>
                 `;
-            }
+                grid.appendChild(card);
+            });
         }
 
         // Уведомления
@@ -937,40 +1009,24 @@
             notification.textContent = text;
             document.body.appendChild(notification);
 
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
+            setTimeout(() => notification.remove(), 3000);
         }
-
-        // Загружаем данные при старте
-        updateProfile();
 
         // Стили для анимаций
         const style = document.createElement('style');
         style.textContent = `
             @keyframes slideDown {
-                from {
-                    opacity: 0;
-                    transform: translate(-50%, -20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translate(-50%, 0);
-                }
+                from { opacity: 0; transform: translate(-50%, -20px); }
+                to { opacity: 1; transform: translate(-50%, 0); }
             }
-
             @keyframes fadeOut {
-                to {
-                    opacity: 0;
-                    transform: translate(-50%, -10px);
-                }
-            }
-
-            .hidden {
-                display: none !important;
+                to { opacity: 0; transform: translate(-50%, -10px); }
             }
         `;
         document.head.appendChild(style);
+
+        // Загружаем данные
+        updateProfile();
 
         console.log('✅ Star Market 24 готов к работе');
     </script>
