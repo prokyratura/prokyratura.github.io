@@ -1569,47 +1569,61 @@
         }
 
         // Загрузка подарков
-        async function loadGifts() {
-            const loader = document.getElementById('giftsLoader');
-            const grid = document.getElementById('giftsGrid');
-            const noMessage = document.getElementById('noGiftsMessage');
+async function loadGifts() {
+    const loader = document.getElementById('giftsLoader');
+    const grid = document.getElementById('giftsGrid');
+    const noMessage = document.getElementById('noGiftsMessage');
 
-            loader.style.display = 'block';
-            grid.innerHTML = '';
-            noMessage.style.display = 'none';
+    loader.style.display = 'block';
+    grid.innerHTML = '';
+    noMessage.style.display = 'none';
 
-            // ВРЕМЕННО: используем демо-данные для теста
-            setTimeout(() => {
-                state.allGifts = generateDemoGifts();
-                updateGiftsDisplay();
-                updateGiftsStats();
+    // Формируем запрос к боту
+    const data = {
+        action: 'get_gifts',
+        gift_name: document.getElementById('giftSearch').value,
+        model: document.getElementById('modelFilter').value,
+        backdrop: document.getElementById('backdropFilter').value,
+        limit: 50
+    };
+
+    if (tg?.sendData) {
+        console.log('📤 Отправка запроса на подарки:', data);
+        tg.sendData(JSON.stringify(data));
+
+        // Таймаут на случай ошибки (если бот не ответит за 10 секунд)
+        setTimeout(() => {
+            if (state.allGifts.length === 0) {
                 loader.style.display = 'none';
-            }, 1000);
-
-            // РЕАЛЬНЫЙ ЗАПРОС (раскомментируй, когда заработает API)
-            /*
-            const data = {
-                action: 'get_gifts',
-                gift_name: document.getElementById('giftSearch').value,
-                model: document.getElementById('modelFilter').value,
-                backdrop: document.getElementById('backdropFilter').value,
-                limit: 50
-            };
-
-            if (tg?.sendData) {
-                console.log('📤 Отправка запроса на подарки:', data);
-                tg.sendData(JSON.stringify(data));
-            } else {
-                console.log('⚠️ Не в Telegram, используем демо-данные');
-                setTimeout(() => {
-                    state.allGifts = generateDemoGifts();
-                    updateGiftsDisplay();
-                    updateGiftsStats();
-                    loader.style.display = 'none';
-                }, 1000);
+                noMessage.style.display = 'block';
+                noMessage.innerHTML = '<i>🎁</i><span>Временные проблемы с загрузкой</span>';
             }
-            */
-        }
+        }, 10000);
+    } else {
+        // Если не в Telegram, показываем демо
+        setTimeout(() => {
+            state.allGifts = generateDemoGifts();
+            updateGiftsDisplay();
+            updateGiftsStats();
+            loader.style.display = 'none';
+        }, 1000);
+    }
+}
+
+// Обработчик ответа от бота
+window.handleGiftsResponse = function(data) {
+    console.log('📥 Получен ответ с подарками:', data);
+    if (data.gifts) {
+        state.allGifts = data.gifts;
+        updateGiftsDisplay();
+        updateGiftsStats();
+        document.getElementById('giftsLoader').style.display = 'none';
+    } else if (data.error) {
+        console.error('Ошибка загрузки подарков:', data.error);
+        document.getElementById('noGiftsMessage').style.display = 'block';
+        document.getElementById('giftsLoader').style.display = 'none';
+    }
+};
 
         // Обновление статистики подарков
         function updateGiftsStats() {
@@ -1892,5 +1906,34 @@
 
         console.log('✅ Star Market 24 готов к работе с Portals!');
     </script>
+
+    <!-- ========== НОВЫЙ ОБРАБОТЧИК ДЛЯ ПОРТАЛС ========== -->
+    <script>
+        // Обработчик ответов от бота
+        window.TelegramWebApp = window.TelegramWebApp || {};
+        window.TelegramWebApp.receiveData = function(data) {
+            console.log('📩 Получены данные от бота:', data);
+            if (data.gifts) {
+                if (window.handleGiftsResponse) {
+                    window.handleGiftsResponse(data);
+                } else {
+                    console.log('handleGiftsResponse не найдена, но данные получены:', data);
+                    // Если функция еще не объявлена, сохраняем данные
+                    window.pendingGiftsData = data;
+                }
+            }
+        };
+
+        // Проверяем, не пришли ли данные до объявления обработчика
+        if (window.pendingGiftsData) {
+            console.log('📦 Обрабатываем отложенные данные:', window.pendingGiftsData);
+            if (window.handleGiftsResponse) {
+                window.handleGiftsResponse(window.pendingGiftsData);
+            }
+            window.pendingGiftsData = null;
+        }
+    </script>
+</body>
+</html>
 </body>
 </html>
