@@ -9,8 +9,6 @@
         :root {
             --bg-color: var(--tg-theme-bg-color, #1c1c1e);
             --text-color: var(--tg-theme-text-color, #ffffff);
-            --hint-color: var(--tg-theme-hint-color, #8e8e93);
-            --button-color: var(--tg-theme-button-color, #2481cc);
             --secondary-bg: var(--tg-theme-secondary-bg-color, #2c2c2e);
         }
 
@@ -19,51 +17,32 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0; padding: 20px; text-align: center;
-            -webkit-user-select: none;
         }
 
-        h2 { font-size: 22px; margin-bottom: 5px; }
-        .subtitle { color: var(--hint-color); font-size: 14px; margin-bottom: 25px; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
 
         .card {
             background-color: var(--secondary-bg);
-            padding: 20px;
-            border-radius: 16px;
+            padding: 20px; border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            cursor: pointer; transition: transform 0.1s;
+            display: flex; flex-direction: column; align-items: center;
         }
 
         .card:active { transform: scale(0.95); background-color: rgba(255,255,255,0.1); }
-
         .stars-count { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
-        .price { color: #34c759; font-weight: bold; font-size: 16px; }
+        .price { color: #34c759; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <h2>⭐ Купить Звезды</h2>
-    <p class="subtitle">Выберите пакет для пополнения</p>
-
     <div class="grid" id="main-grid"></div>
 
     <script>
-        // Безопасная инициализация
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
 
         const offers = [
             { stars: 50, price: 75 }, { stars: 100, price: 145 },
@@ -82,15 +61,16 @@
             `;
 
             card.onclick = function() {
+                // Прямая отправка данных боту
                 const data = JSON.stringify({
                     stars: item.stars,
                     price: item.price
                 });
 
-                if (tg && tg.sendData) {
-                    tg.sendData(data); // Работает в Telegram
+                if (tg.sendData) {
+                    tg.sendData(data); // Закрывает Mini App и отправляет JSON
                 } else {
-                    alert("Вы выбрали " + item.stars + " звезд за " + item.price + "₽.\nВ Telegram боте здесь начнется оформление заказа.");
+                    alert("Откройте через кнопку меню в боте!");
                 }
             };
             grid.appendChild(card);
