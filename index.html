@@ -6,7 +6,6 @@
     <title>Star Market 24 ✦ Premium Stars</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* ========== СТИЛИ ========== */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -108,17 +107,9 @@
             gap: 8px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .balance-widget:hover {
-            transform: scale(1.05);
-            background: rgba(255, 215, 0, 0.25);
-        }
-
-        .balance-widget span {
-            color: #ffd700;
-        }
+        .balance-widget span { color: #ffd700; }
 
         /* Центр уведомлений */
         .notifications-center {
@@ -127,11 +118,7 @@
             cursor: pointer;
         }
 
-        .notifications-icon {
-            font-size: 24px;
-            position: relative;
-        }
-
+        .notifications-icon { font-size: 24px; position: relative; }
         .notifications-badge {
             position: absolute;
             top: -5px;
@@ -144,7 +131,6 @@
             min-width: 15px;
             text-align: center;
         }
-
         .notifications-panel {
             position: absolute;
             top: 40px;
@@ -158,46 +144,19 @@
             z-index: 1000;
             display: none;
         }
-
-        .notifications-panel.show {
-            display: block;
-        }
-
+        .notifications-panel.show { display: block; }
         .notification-item {
             padding: 12px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             cursor: pointer;
-            transition: all 0.3s ease;
         }
-
-        .notification-item:hover {
-            background: rgba(255, 215, 0, 0.1);
-        }
-
         .notification-item.unread {
             background: rgba(255, 215, 0, 0.05);
             border-left: 3px solid #ffd700;
         }
-
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-
-        .notification-title {
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .notification-text {
-            font-size: 12px;
-            color: rgba(255,255,255,0.7);
-        }
-
-        .notification-time {
-            font-size: 10px;
-            color: rgba(255,255,255,0.4);
-            margin-top: 4px;
-        }
+        .notification-title { font-weight: 700; margin-bottom: 4px; }
+        .notification-text { font-size: 12px; color: rgba(255,255,255,0.7); }
+        .notification-time { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 4px; }
 
         /* Уровень со скидкой */
         .level-badge {
@@ -212,13 +171,6 @@
             margin-bottom: 15px;
         }
 
-        .level-badge span {
-            background: rgba(0,0,0,0.2);
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-
         /* Прогресс реферального процента */
         .referral-progress {
             background: rgba(44, 44, 46, 0.4);
@@ -226,7 +178,6 @@
             padding: 15px;
             margin-bottom: 15px;
         }
-
         .referral-progress-bar {
             height: 8px;
             background: rgba(255,255,255,0.1);
@@ -234,11 +185,9 @@
             margin: 10px 0;
             overflow: hidden;
         }
-
         .referral-progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #ffd700, #ffaa00);
-            border-radius: 4px;
             transition: width 0.5s;
         }
 
@@ -250,14 +199,12 @@
             right: 0;
             background: rgba(20, 20, 30, 0.8);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-around;
             padding: 12px 16px;
             z-index: 1000;
         }
-
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -269,37 +216,15 @@
             transition: all 0.3s ease;
             flex: 1;
         }
-
-        .nav-item.active {
-            color: #ffd700;
-        }
-
-        .nav-item i {
-            font-size: 24px;
-            font-style: normal;
-        }
-
-        .nav-item:hover {
-            color: #ffd700;
-            transform: translateY(-2px);
-        }
+        .nav-item.active { color: #ffd700; }
+        .nav-item i { font-size: 24px; font-style: normal; }
+        .nav-item:hover { color: #ffd700; transform: translateY(-2px); }
 
         /* Контейнеры разделов */
-        .section-container {
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
+        .section-container { display: none; animation: fadeIn 0.5s ease-out; }
+        .section-container.active { display: block; }
 
-        .section-container.active {
-            display: block;
-        }
-
-        /* Карточка раздела */
-        .section-header {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
+        .section-header { margin-bottom: 20px; }
         .section-header h2 {
             font-size: 28px;
             font-weight: 800;
@@ -308,20 +233,15 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 4px;
         }
+        .section-header p { color: rgba(255,255,255,0.5); font-size: 14px; }
 
-        .section-header p {
-            color: rgba(255,255,255,0.5);
-            font-size: 14px;
-        }
-
-        /* Сетка пакетов звезд */
+        /* Сетка пакетов */
         .packages-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             margin-bottom: 20px;
         }
-
         .package-card {
             background: rgba(44, 44, 46, 0.4);
             backdrop-filter: blur(5px);
@@ -331,27 +251,11 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            animation: cardAppear 0.5s ease-out backwards;
             position: relative;
         }
-
-        .package-card:hover {
-            transform: translateY(-5px);
-            border-color: #ffd700;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
-        }
-
-        .package-card .stars {
-            font-size: 28px;
-            font-weight: 800;
-            color: #ffd700;
-        }
-
-        .package-card .price {
-            font-size: 18px;
-            color: #fff;
-            margin-top: 8px;
-        }
+        .package-card:hover { transform: translateY(-5px); border-color: #ffd700; box-shadow: 0 10px 30px rgba(255,215,0,0.2); }
+        .package-card .stars { font-size: 28px; font-weight: 800; color: #ffd700; }
+        .package-card .price { font-size: 18px; color: #fff; margin-top: 8px; }
 
         /* Кастомный ввод */
         .custom-input-section {
@@ -361,22 +265,8 @@
             padding: 20px;
             margin-bottom: 20px;
         }
-
-        .custom-input-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .custom-input-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
+        .custom-input-title { font-size: 18px; font-weight: 600; margin-bottom: 15px; display: flex; gap: 8px; }
+        .custom-input-container { display: flex; gap: 10px; margin-bottom: 15px; }
         .custom-input-field {
             flex: 1;
             background: rgba(28, 28, 30, 0.6);
@@ -387,11 +277,7 @@
             font-size: 18px;
             outline: none;
         }
-
-        .custom-input-field:focus {
-            border-color: #ffd700;
-        }
-
+        .custom-input-field:focus { border-color: #ffd700; }
         .custom-calculate-btn {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #000;
@@ -400,13 +286,7 @@
             padding: 0 25px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
-
-        .custom-calculate-btn:hover {
-            transform: scale(1.05);
-        }
-
         .custom-price-display {
             text-align: center;
             padding: 15px;
@@ -416,21 +296,8 @@
             font-weight: 800;
             color: #ffd700;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
-
-        .custom-price-display:hover {
-            transform: scale(1.02);
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        .quick-amounts {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
+        .quick-amounts { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
         .quick-amount {
             flex: 1;
             min-width: 60px;
@@ -440,15 +307,10 @@
             padding: 10px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
+        .quick-amount:hover { background: rgba(255, 215, 0, 0.2); border-color: #ffd700; }
 
-        .quick-amount:hover {
-            background: rgba(255, 215, 0, 0.2);
-            border-color: #ffd700;
-        }
-
-        /* Модальное окно для ввода получателя */
+        /* Модальное окно */
         .modal {
             position: fixed;
             top: 0;
@@ -463,29 +325,16 @@
             z-index: 2000;
             padding: 20px;
         }
-
-        .modal.active {
-            display: flex;
-        }
-
+        .modal.active { display: flex; }
         .modal-content {
             background: rgba(44, 44, 46, 0.95);
-            backdrop-filter: blur(10px);
             border-radius: 32px;
             padding: 24px;
             width: 100%;
             max-width: 340px;
             border: 1px solid rgba(255, 215, 0, 0.3);
         }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #ffd700;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
+        .modal-title { font-size: 24px; font-weight: 800; color: #ffd700; margin-bottom: 20px; text-align: center; }
         .modal-package {
             background: rgba(255, 215, 0, 0.1);
             border-radius: 16px;
@@ -493,24 +342,9 @@
             margin-bottom: 20px;
             text-align: center;
         }
-
-        .modal-package .stars {
-            font-size: 32px;
-            font-weight: 800;
-            color: #ffd700;
-        }
-
-        .modal-package .price {
-            font-size: 20px;
-            color: #fff;
-        }
-
-        .modal-recipient {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
+        .modal-package .stars { font-size: 32px; font-weight: 800; color: #ffd700; }
+        .modal-package .price { font-size: 20px; color: #fff; }
+        .modal-recipient { display: flex; gap: 10px; margin-bottom: 20px; }
         .modal-input {
             flex: 1;
             background: rgba(28, 28, 30, 0.8);
@@ -520,12 +354,7 @@
             color: #fff;
             font-size: 16px;
         }
-
-        .modal-input:focus {
-            border-color: #ffd700;
-            outline: none;
-        }
-
+        .modal-input:focus { border-color: #ffd700; outline: none; }
         .modal-self-btn {
             background: rgba(255, 215, 0, 0.2);
             border: 1px solid #ffd700;
@@ -534,20 +363,23 @@
             color: #ffd700;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
             white-space: nowrap;
         }
-
-        .modal-self-btn:hover {
-            background: #ffd700;
-            color: #000;
+        .payment-methods-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        .payment-method-btn {
+            flex: 1;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
         }
+        .payment-method-btn.selected { border-color: #ffd700; background: rgba(255, 215, 0, 0.2); }
+        .payment-method-icon { font-size: 24px; margin-bottom: 4px; }
+        .payment-method-name { font-size: 12px; font-weight: 600; }
 
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
+        .modal-buttons { display: flex; gap: 12px; }
         .modal-button {
             flex: 1;
             padding: 16px;
@@ -556,16 +388,8 @@
             cursor: pointer;
             text-align: center;
         }
-
-        .modal-button.confirm {
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: #000;
-        }
-
-        .modal-button.cancel {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-        }
+        .modal-button.confirm { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
+        .modal-button.cancel { background: rgba(255,255,255,0.1); color: #fff; }
 
         /* Premium карточки */
         .premium-card {
@@ -580,160 +404,29 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 12px;
         }
+        .premium-card.selected { border: 2px solid #ffd700; background: rgba(255, 215, 0, 0.1); }
 
-        .premium-card:hover {
-            transform: translateX(5px);
-            border-color: #ffd700;
-        }
-
-        .premium-card.selected {
-            border: 2px solid #ffd700;
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        /* История покупок */
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .history-header {
-            display: grid;
-            grid-template-columns: 100px 100px 80px 60px 100px 100px;
-            gap: 10px;
-            padding: 10px;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 12px;
-            margin-bottom: 10px;
-        }
-
-        .history-row {
-            display: grid;
-            grid-template-columns: 100px 100px 80px 60px 100px 100px;
-            gap: 10px;
-            padding: 10px;
-            background: rgba(44, 44, 46, 0.3);
-            border-radius: 12px;
-            margin-bottom: 8px;
-            align-items: center;
-            font-size: 12px;
-        }
-
-        .status-paid { color: #34c759; }
-        .status-pending { color: #ffd700; }
-        .status-cancelled { color: #ff3b30; }
-
-        .order-action {
-            padding: 5px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 11px;
-            text-align: center;
-        }
-
-        .order-action.cancel { background: rgba(255, 59, 48, 0.2); color: #ff3b30; }
-        .order-action.support { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
-        .order-action.repeat { background: rgba(52, 199, 89, 0.2); color: #34c759; }
-
-        /* Сетка подарков Portals */
-        .gifts-grid {
+        /* NFT сетка */
+        .nft-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             margin-bottom: 20px;
         }
-
-        .gift-card {
+        .nft-card {
             background: rgba(44, 44, 46, 0.4);
             backdrop-filter: blur(5px);
             border-radius: 24px;
             padding: 20px;
             text-align: center;
-            border: 2px solid transparent;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
-            position: relative;
         }
-
-        .gift-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
-        }
-
-        .gift-rarity {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .gift-rarity.common {
-            background: rgba(160, 160, 160, 0.2);
-            color: #a0a0a0;
-            border: 1px solid #a0a0a0;
-        }
-        .gift-rarity.rare {
-            background: rgba(0, 112, 221, 0.2);
-            color: #0070dd;
-            border: 1px solid #0070dd;
-        }
-        .gift-rarity.epic {
-            background: rgba(163, 53, 238, 0.2);
-            color: #a335ee;
-            border: 1px solid #a335ee;
-        }
-        .gift-rarity.legendary {
-            background: rgba(255, 128, 0, 0.2);
-            color: #ff8000;
-            border: 1px solid #ff8000;
-        }
-
-        .gift-name {
-            font-size: 16px;
-            font-weight: 700;
-            margin: 10px 0 5px;
-        }
-
-        .gift-collection {
-            font-size: 12px;
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 10px;
-        }
-
-        .gift-attributes {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 10px 0;
-            font-size: 20px;
-        }
-
-        .gift-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffd700;
-            margin: 10px 0;
-        }
-
-        .gift-price-ton {
-            font-size: 14px;
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 10px;
-        }
-
-        .gift-count {
-            font-size: 11px;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 10px;
-        }
-
-        .gift-buy-btn {
+        .nft-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2); border-color: #ffd700; }
+        .nft-name { font-size: 16px; font-weight: 700; margin: 10px 0; }
+        .nft-price { font-size: 18px; font-weight: 700; color: #ffd700; margin: 10px 0; }
+        .nft-seller { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+        .nft-buy-btn {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #000;
             border: none;
@@ -742,35 +435,17 @@
             width: 100%;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .gift-buy-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-        }
-
-        /* Фильтры Portals */
+        /* Фильтры */
         .filters-section {
             background: rgba(44, 44, 46, 0.3);
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 20px;
         }
-
-        .filter-group {
-            margin-bottom: 15px;
-        }
-
-        .filter-label {
-            color: #ffd700;
-            font-size: 12px;
-            display: block;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
+        .filter-group { margin-bottom: 15px; }
+        .filter-label { color: #ffd700; font-size: 12px; display: block; margin-bottom: 8px; text-transform: uppercase; }
         .filter-select {
             width: 100%;
             padding: 12px;
@@ -782,25 +457,8 @@
             cursor: pointer;
         }
 
-        .filter-select:focus {
-            outline: none;
-            border-color: #ffd700;
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 15px;
-            font-size: 12px;
-            color: rgba(255,255,255,0.5);
-            margin-top: 10px;
-        }
-
         /* Профиль */
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
+        .profile-header { text-align: center; margin-bottom: 30px; }
         .profile-avatar {
             width: 100px;
             height: 100px;
@@ -814,51 +472,20 @@
             border: 3px solid rgba(255, 215, 0, 0.5);
             overflow: hidden;
         }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .profile-username {
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-bottom: 25px;
         }
-
         .stat-card {
             background: rgba(44, 44, 46, 0.4);
-            backdrop-filter: blur(5px);
             border-radius: 16px;
             padding: 15px;
             text-align: center;
         }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 800;
-            color: #ffd700;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: rgba(255,255,255,0.5);
-            margin-top: 4px;
-        }
+        .stat-value { font-size: 24px; font-weight: 800; color: #ffd700; }
+        .stat-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
 
         .level-progress {
             background: rgba(255,255,255,0.1);
@@ -866,7 +493,6 @@
             height: 10px;
             overflow: hidden;
         }
-
         .level-progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #ffd700, #ffaa00);
@@ -879,20 +505,14 @@
             gap: 12px;
             margin-top: 15px;
         }
-
         .achievement-card {
             background: rgba(44, 44, 46, 0.4);
-            backdrop-filter: blur(5px);
             border-radius: 16px;
             padding: 15px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        .achievement-card.earned {
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.1);
-        }
+        .achievement-card.earned { border-color: #ffd700; background: rgba(255, 215, 0, 0.1); }
 
         .action-button {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
@@ -904,15 +524,8 @@
             font-weight: 700;
             width: 100%;
             cursor: pointer;
-            transition: all 0.3s ease;
             margin-bottom: 12px;
         }
-
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-        }
-
         .action-button.secondary {
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
@@ -928,45 +541,10 @@
             animation: spin 1s linear infinite;
             margin: 30px auto;
         }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .error-message {
-            text-align: center;
-            padding: 40px 20px;
-            color: rgba(255,255,255,0.5);
-            font-size: 16px;
-        }
-
-        .error-message i {
-            font-size: 48px;
-            display: block;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        @keyframes cardAppear {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
+        .hidden { display: none !important; }
+        .error-message { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.5); font-size: 16px; }
         .bonus-card {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.1));
             backdrop-filter: blur(10px);
@@ -975,397 +553,272 @@
             padding: 20px;
             margin-bottom: 24px;
         }
+        .vpn-card {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .progress-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+        .progress-modal.active { display: flex; }
+        .progress-content {
+            background: rgba(44, 44, 46, 0.95);
+            border-radius: 32px;
+            padding: 30px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+        }
+        .progress-bar-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            height: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffaa00);
+            transition: width 0.5s ease;
+        }
+        .activation-reminder {
+            position: fixed;
+            bottom: 80px;
+            left: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            border-radius: 16px;
+            padding: 16px;
+            z-index: 1000;
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (max-width: 380px) {
-            .package-card .stars {
-                font-size: 24px;
-            }
-            .quick-amounts {
-                flex-wrap: wrap;
-            }
-            .gifts-grid {
-                grid-template-columns: 1fr;
-            }
+            .package-card .stars { font-size: 24px; }
+            .nft-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Верхняя панель -->
     <div class="top-bar">
         <div class="logo">✦ STAR</div>
         <div style="display: flex; align-items: center; gap: 10px;">
-            <!-- Центр уведомлений -->
             <div class="notifications-center" id="notificationsCenter">
                 <div class="notifications-icon">🔔</div>
                 <div class="notifications-badge" id="notificationsBadge">0</div>
                 <div class="notifications-panel" id="notificationsPanel"></div>
             </div>
-            <div class="balance-widget" id="balanceWidget">
-                <span>⭐</span>
-                <span id="headerBalance">0</span>
-            </div>
+            <div class="balance-widget"><span>⭐</span><span id="headerBalance">0</span></div>
         </div>
     </div>
 
-    <!-- Уровень со скидкой -->
-    <div class="level-badge" id="levelBadge">
-        ✦ УРОВЕНЬ <span id="userLevelBadge">1</span>
-        <span>🔥 СКИДКА <span id="userDiscount">0%</span></span>
-    </div>
+    <div class="level-badge" id="levelBadge">✦ УРОВЕНЬ <span id="userLevelBadge">1</span> <span>🔥 СКИДКА <span id="userDiscount">0%</span></span></div>
 
-    <!-- Раздел ЗВЕЗДЫ -->
+    <!-- ЗВЕЗДЫ -->
     <div id="starsSection" class="section-container active">
-        <div class="section-header">
-            <h2>✨ Звезды</h2>
-            <p>Купить Telegram Stars</p>
-        </div>
-
-        <!-- Ежедневный бонус -->
+        <div class="section-header"><h2>✨ Звезды</h2><p>Купить Telegram Stars</p></div>
         <div class="bonus-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div>
-                    <span style="font-size: 14px; opacity: 0.8;">🎁 ЕЖЕДНЕВНЫЙ БОНУС</span>
-                    <div style="font-size: 28px; font-weight: 800; color: #ffd700;" id="bonusAmount">0.0 ⭐</div>
-                </div>
-                <div style="text-align: right;">
-                    <span style="font-size: 14px; opacity: 0.8;">🔥 STREAK</span>
-                    <div style="font-size: 24px; font-weight: 700;" id="bonusStreak">0</div>
-                </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div><span style="font-size: 14px;">🎁 ЕЖЕДНЕВНЫЙ БОНУС</span><div style="font-size: 28px; font-weight: 800; color: #ffd700;" id="bonusAmount">0.0 ⭐</div></div>
+                <div><span style="font-size: 14px;">🔥 STREAK</span><div style="font-size: 24px; font-weight: 700;" id="bonusStreak">0</div></div>
             </div>
-            <button id="claimBonusBtn" class="action-button" style="margin-bottom: 0;">
-                🎁 ЗАБРАТЬ БОНУС
-            </button>
+            <button id="claimBonusBtn" class="action-button" style="margin-bottom: 0;">🎁 ЗАБРАТЬ БОНУС</button>
         </div>
-
-        <!-- Пакеты звезд -->
-        <div style="margin-bottom: 20px;">
-            <h3 style="margin-bottom: 12px;">📦 Пакеты звезд</h3>
-            <div class="packages-grid" id="allPackages"></div>
-        </div>
-
-        <!-- Кастомный ввод -->
+        <div><h3 style="margin-bottom: 12px;">📦 Пакеты звезд</h3><div class="packages-grid" id="allPackages"></div></div>
         <div class="custom-input-section">
-            <div class="custom-input-title">
-                <span>✏️</span> Свое количество
-            </div>
+            <div class="custom-input-title"><span>✏️</span> Свое количество</div>
             <div class="custom-input-container">
                 <input type="number" id="customStarsInput" class="custom-input-field" placeholder="Введите количество звезд" min="1" value="150">
                 <button id="calculateCustomBtn" class="custom-calculate-btn">=</button>
             </div>
-
             <div class="quick-amounts">
-                <div class="quick-amount" data-stars="75">75⭐</div>
-                <div class="quick-amount" data-stars="150">150⭐</div>
-                <div class="quick-amount" data-stars="300">300⭐</div>
-                <div class="quick-amount" data-stars="750">750⭐</div>
+                <div class="quick-amount" data-stars="75">75⭐</div><div class="quick-amount" data-stars="150">150⭐</div>
+                <div class="quick-amount" data-stars="300">300⭐</div><div class="quick-amount" data-stars="750">750⭐</div>
                 <div class="quick-amount" data-stars="1500">1500⭐</div>
             </div>
-
-            <div id="customPriceDisplay" class="custom-price-display">
-                💰 Рассчитать стоимость
-                <small>нажмите для покупки</small>
-            </div>
+            <div id="customPriceDisplay" class="custom-price-display">💰 Рассчитать стоимость<small>нажмите для покупки</small></div>
         </div>
     </div>
 
-    <!-- Раздел PREMIUM -->
+    <!-- PREMIUM -->
     <div id="premiumSection" class="section-container">
-        <div class="section-header">
-            <h2>💎 Premium</h2>
-            <p>Telegram Premium подписка</p>
-        </div>
-
-        <div class="premium-card" data-months="3">
-            <div>
-                <h3 style="font-size: 20px; font-weight: 700;">3 месяца</h3>
-                <p style="color: #8774e1;">🔥 Стартовый</p>
-            </div>
-            <div style="font-size: 24px; font-weight: 800; color: #ffd700;">899 ₽</div>
-        </div>
-
-        <div class="premium-card" data-months="6">
-            <div>
-                <h3 style="font-size: 20px; font-weight: 700;">6 месяцев</h3>
-                <p style="color: #ffd700;">⭐ Популярный</p>
-            </div>
-            <div style="font-size: 24px; font-weight: 800; color: #ffd700;">1699 ₽</div>
-        </div>
-
-        <div class="premium-card" data-months="12">
-            <div>
-                <h3 style="font-size: 20px; font-weight: 700;">12 месяцев</h3>
-                <p style="color: #8774e1;">👑 Выгодный</p>
-            </div>
-            <div style="font-size: 24px; font-weight: 800; color: #ffd700;">2999 ₽</div>
-        </div>
-
-        <button id="buyPremiumBtn" class="action-button" style="margin-top: 20px;">
-            💎 КУПИТЬ PREMIUM
-        </button>
+        <div class="section-header"><h2>💎 Premium</h2><p>Telegram Premium подписка</p></div>
+        <div class="premium-card" data-months="3"><div><h3>3 месяца</h3><p style="color:#8774e1;">🔥 Стартовый</p></div><div style="font-size:24px;color:#ffd700;">899 ₽</div></div>
+        <div class="premium-card" data-months="6"><div><h3>6 месяцев</h3><p style="color:#ffd700;">⭐ Популярный</p></div><div style="font-size:24px;color:#ffd700;">1699 ₽</div></div>
+        <div class="premium-card" data-months="12"><div><h3>12 месяцев</h3><p style="color:#8774e1;">👑 Выгодный</p></div><div style="font-size:24px;color:#ffd700;">2999 ₽</div></div>
+        <button id="buyPremiumBtn" class="action-button">💎 КУПИТЬ PREMIUM</button>
     </div>
 
-    <!-- Раздел ПОДАРКИ (Portals) -->
-    <div id="giftsSection" class="section-container">
-        <div class="section-header">
-            <h2>🎁 Подарки</h2>
-            <p>Коллекционные предметы из Portals</p>
+    <!-- NFT МАРКЕТ -->
+    <div id="nftSection" class="section-container">
+        <div class="section-header"><h2>🖼️ NFT Маркет</h2><p>Покупка и продажа коллекционных подарков</p></div>
+        <div class="bonus-card">
+            <div style="font-weight:700; margin-bottom:10px;">📌 Как продать NFT?</div>
+            <ol style="margin-left:20px; font-size:14px;">
+                <li>Отправьте команду /sell в боте</li>
+                <li>Перешлите подарок боту (кнопкой "Подарить")</li>
+                <li>Укажите цену в рублях</li>
+                <li>NFT появится на витрине!</li>
+            </ol>
+            <div style="margin-top:10px; font-size:12px; color:#ffd700;">💰 Комиссия: 5% от суммы продажи</div>
         </div>
-
-        <!-- Фильтры -->
         <div class="filters-section">
-            <div class="filter-group">
-                <label class="filter-label">🔍 ПОИСК</label>
-                <input type="text" id="giftSearch" class="filter-select" placeholder="Название подарка...">
-            </div>
-
-            <div class="filter-group">
-                <label class="filter-label">🎨 МОДЕЛЬ</label>
-                <select id="modelFilter" class="filter-select">
-                    <option value="">Все модели</option>
-                    <option value="wizard">🧙 Wizard</option>
-                    <option value="dragon">🐉 Dragon</option>
-                    <option value="pepe">🐸 Pepe</option>
-                    <option value="skull">💀 Skull</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label class="filter-label">✨ ФОН</label>
-                <select id="backdropFilter" class="filter-select">
-                    <option value="">Все фоны</option>
-                    <option value="gold">🌟 Gold</option>
-                    <option value="silver">⚪ Silver</option>
-                    <option value="space">🌌 Space</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label class="filter-label">📊 СОРТИРОВКА</label>
-                <select id="sortFilter" class="filter-select">
-                    <option value="default">По умолчанию</option>
-                    <option value="price_asc">💰 Цена (сначала дешевые)</option>
-                    <option value="price_desc">💰 Цена (сначала дорогие)</option>
-                    <option value="name_asc">📝 По названию</option>
-                </select>
-            </div>
-
-            <div class="stats-row">
-                <span>📦 Всего: <span id="totalGiftsCount">0</span></span>
-                <span>💰 От <span id="minPrice">0</span> до <span id="maxPrice">0</span> ₽</span>
-            </div>
+            <div class="filter-group"><label class="filter-label">🔍 ПОИСК</label><input type="text" id="nftSearch" class="filter-select" placeholder="Название NFT..."></div>
+            <div class="filter-group"><label class="filter-label">📊 СОРТИРОВКА</label><select id="nftSort" class="filter-select"><option value="default">По умолчанию</option><option value="price_asc">💰 Цена (сначала дешевые)</option><option value="price_desc">💰 Цена (сначала дорогие)</option></select></div>
         </div>
-
-        <!-- Индикатор загрузки -->
-        <div id="giftsLoader" class="loader" style="display: none;"></div>
-
-        <!-- Сообщение об ошибке/отсутствии подарков -->
-        <div id="noGiftsMessage" class="error-message" style="display: none;">
-            <i>🎁</i>
-            <span>На данный момент подарки отсутствуют</span>
-        </div>
-
-        <!-- Сетка подарков -->
-        <div class="gifts-grid" id="giftsGrid"></div>
+        <div id="nftGrid" class="nft-grid"></div>
+        <div id="nftLoader" class="loader" style="display: none;"></div>
+        <div id="noNft" class="error-message" style="display: none;"><i>🖼️</i><span>Нет NFT на продаже</span><span style="font-size:12px;">Будьте первым! Продайте свой подарок через /sell</span></div>
     </div>
 
-    <!-- Раздел ПРОФИЛЬ -->
+    <!-- VPN -->
+    <div id="vpnSection" class="section-container">
+        <div class="section-header"><h2>🔒 Avocado VPN</h2><p>Анонимный и быстрый VPN</p></div>
+        <div class="vpn-card"><div style="display:flex; align-items:center; gap:15px;"><div style="font-size:48px;">🥑</div><div><div style="font-weight:700;">Avocado VPN</div><div style="font-size:12px;">Безлимитный трафик • Высокая скорость</div></div></div></div>
+        <div style="background:rgba(44,44,46,0.3); border-radius:24px; padding:20px; margin-bottom:20px;">
+            <div class="section-title" style="font-size:16px;">📖 Как активировать:</div>
+            <ol style="margin-top:10px; padding-left:20px; font-size:14px;"><li>Нажмите кнопку "Получить реферальную ссылку"</li><li>Перейдите в @vpn_omni_bot и нажмите Start</li><li>Скопируйте свою реферальную ссылку</li><li>Вставьте ссылку в поле ниже</li><li>Выберите сумму (10₽ = 30 дней)</li><li>Выберите способ оплаты</li><li>Оплатите</li><li>VPN активируется автоматически!</li></ol>
+        </div>
+        <button id="getVpnLinkBtn" class="action-button">🔗 ПОЛУЧИТЬ РЕФЕРАЛЬНУЮ ССЫЛКУ</button>
+        <div id="referralInputBlock" style="display:none; margin-top:20px;">
+            <div class="input-block"><div class="input-label">🔗 Вставьте реферальную ссылку</div><div class="input-field"><span>🔗</span><input type="text" id="referralLinkInput" placeholder="https://t.me/vpn_omni_bot?start=..."></div></div>
+            <div class="custom-input-section">
+                <div class="custom-input-title"><span>💰</span> Сумма (10₽ = 30 дней)</div>
+                <div class="quick-amounts"><div class="quick-amount vpn-amount" data-amount="10">10 ₽ (30 дней)</div><div class="quick-amount vpn-amount" data-amount="20">20 ₽ (60 дней)</div><div class="quick-amount vpn-amount" data-amount="50">50 ₽ (150 дней)</div><div class="quick-amount vpn-amount" data-amount="100">100 ₽ (300 дней)</div></div>
+                <div class="custom-input-container"><input type="number" id="vpnAmountInput" class="custom-input-field" placeholder="Сумма" min="10" step="10" value="10"><button id="calculateVpnBtn" class="custom-calculate-btn">=</button></div>
+                <div id="vpnDaysDisplay" class="custom-price-display">💰 10 ₽ = 30 дней<small>1 ₽ = 3 дня</small></div>
+            </div>
+            <div class="input-label">💳 Способ оплаты</div>
+            <div class="payment-methods-row" id="vpnPaymentMethods">
+                <div class="payment-method-btn" data-method="robokassa"><div class="payment-method-icon">💳</div><div class="payment-method-name">ROBOKASSA</div></div>
+                <div class="payment-method-btn" data-method="tonkeeper"><div class="payment-method-icon">💎</div><div class="payment-method-name">TON Keeper</div></div>
+            </div>
+            <button id="buyVpnBtn" class="action-button" style="margin-top:20px;">🔒 ОПЛАТИТЬ И АКТИВИРОВАТЬ</button>
+        </div>
+        <div style="background:rgba(44,44,46,0.3); border-radius:24px; padding:20px; margin-top:20px;">
+            <div class="section-title" style="font-size:16px;">❓ Почему VPN такой дешевый?</div>
+            <div style="margin-top:10px; font-size:14px;">
+                <p>🥑 <strong>Как это работает:</strong></p>
+                <ol style="margin-top:10px; padding-left:20px;">
+                    <li>Вы переходите в @vpn_omni_bot</li>
+                    <li>Копируете свою реферальную ссылку</li>
+                    <li>Вставляете ссылку в нашего бота</li>
+                    <li>Выбираете сумму (10₽ = 30 дней)</li>
+                    <li>Оплачиваете</li>
+                    <li>Мы активируем вам VPN через реферальную систему</li>
+                </ol>
+                <p style="margin-top:15px;">🎯 За счёт реферальной программы мы даём VPN по такой низкой цене!</p>
+                <p style="margin-top:10px; font-size:12px;">💰 1 рубль = 3 дня VPN</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПРОФИЛЬ -->
     <div id="profileSection" class="section-container">
-        <div class="section-header">
-            <h2>👤 Профиль</h2>
-            <p>Ваша статистика и достижения</p>
-        </div>
-
-        <div class="profile-header">
-            <div class="profile-avatar" id="profileAvatar">👤</div>
-            <div class="profile-name" id="profileName">Загрузка...</div>
-            <div class="profile-username" id="profileUsername">@загрузка</div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value" id="statPurchases">0</div>
-                <div class="stat-label">Покупок</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statStars">0</div>
-                <div class="stat-label">Звезд</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statSpent">0₽</div>
-                <div class="stat-label">Потрачено</div>
-            </div>
-        </div>
-
-        <!-- Прогресс уровня -->
-        <div style="background: rgba(44, 44, 46, 0.3); border-radius: 24px; padding: 20px; margin-bottom: 20px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                <span style="font-weight: 700;">УРОВЕНЬ <span id="userLevel">1</span></span>
-                <span style="color: #ffd700;">✨ <span id="userExp">0</span>/<span id="nextLevelExp">100</span></span>
-            </div>
-            <div class="level-progress">
-                <div class="level-progress-fill" id="levelProgress" style="width: 0%;"></div>
-            </div>
-        </div>
-
-        <!-- Реферальная статистика -->
-        <div class="referral-progress">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                <span>👥 Реферальный процент</span>
-                <span style="color: #ffd700;" id="referralPercent">2%</span>
-            </div>
-            <div class="referral-progress-bar">
-                <div class="referral-progress-fill" id="referralProgress" style="width: 0%;"></div>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.5);">
-                <span>Заработано: <span id="referralEarned">0₽</span></span>
-                <span>До след. уровня: <span id="referralNext">0₽</span></span>
-            </div>
-        </div>
-
-        <!-- Достижения -->
-        <div style="background: rgba(44, 44, 46, 0.3); border-radius: 24px; padding: 20px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                <span style="font-weight: 700;">🏆 Достижения</span>
-                <span style="color: #ffd700;" id="achievementsCount">0/10</span>
-            </div>
-            <div class="achievements-grid" id="achievementsGrid"></div>
-        </div>
+        <div class="section-header"><h2>👤 Профиль</h2><p>Ваша статистика и достижения</p></div>
+        <div class="profile-header"><div class="profile-avatar" id="profileAvatar">👤</div><div class="profile-name" id="profileName">Загрузка...</div><div class="profile-username" id="profileUsername">@загрузка</div></div>
+        <div class="stats-grid"><div class="stat-card"><div class="stat-value" id="statPurchases">0</div><div class="stat-label">Покупок</div></div><div class="stat-card"><div class="stat-value" id="statStars">0</div><div class="stat-label">Звезд</div></div><div class="stat-card"><div class="stat-value" id="statSpent">0₽</div><div class="stat-label">Потрачено</div></div></div>
+        <div style="background:rgba(44,44,46,0.3); border-radius:24px; padding:20px; margin-bottom:20px;"><div style="display:flex; justify-content:space-between;"><span>УРОВЕНЬ <span id="userLevel">1</span></span><span>✨ <span id="userExp">0</span>/<span id="nextLevelExp">100</span></span></div><div class="level-progress"><div class="level-progress-fill" id="levelProgress" style="width:0%"></div></div></div>
+        <div class="referral-progress"><div style="display:flex; justify-content:space-between;"><span>👥 Реферальный процент</span><span id="referralPercent">2%</span></div><div class="referral-progress-bar"><div class="referral-progress-fill" id="referralProgress" style="width:0%"></div></div><div style="display:flex; justify-content:space-between;"><span>Заработано: <span id="referralEarned">0₽</span></span><span>До след. уровня: <span id="referralNext">0₽</span></span></div></div>
+        <div style="background:rgba(44,44,46,0.3); border-radius:24px; padding:20px;"><div style="display:flex; justify-content:space-between;"><span>🏆 Достижения</span><span id="achievementsCount">0/10</span></div><div class="achievements-grid" id="achievementsGrid"></div></div>
     </div>
 
-    <!-- Раздел ПОМОЩЬ -->
+    <!-- ПОМОЩЬ -->
     <div id="helpSection" class="section-container">
-        <div class="section-header">
-            <h2>❓ Помощь</h2>
-            <p>Частые вопросы</p>
+        <div class="section-header"><h2>❓ Помощь</h2><p>Частые вопросы</p></div>
+        <div style="background:rgba(44,44,46,0.3); border-radius:24px; padding:20px;">
+            <div style="margin-bottom:20px;"><h3>❓ Как купить звезды?</h3><p>Выберите пакет, укажите получателя, выберите способ оплаты и оплатите.</p></div>
+            <div style="margin-bottom:20px;"><h3>❓ Как получить скидку?</h3><p>Повышайте уровень! За каждый уровень дается скидка до 25%.</p></div>
+            <div style="margin-bottom:20px;"><h3>❓ Как работает реферальная программа?</h3><p>Приглашайте друзей и получайте 2-10% от их покупок звездами.</p></div>
+            <div style="margin-bottom:20px;"><h3>🔒 Почему VPN такой дешевый?</h3><p>Мы используем реферальную программу Avocado VPN. 10₽ = 30 дней.</p></div>
         </div>
-
-        <div style="background: rgba(44, 44, 46, 0.3); border-radius: 24px; padding: 20px;">
-            <div style="margin-bottom: 20px;">
-                <h3 style="margin-bottom: 8px;">❓ Как купить звезды?</h3>
-                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Выберите готовый пакет или введите свое количество. Укажите получателя и оплатите.</p>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <h3 style="margin-bottom: 8px;">❓ Как получить скидку?</h3>
-                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Повышайте уровень! За каждый уровень дается скидка до 25%. Также мы дарим скидку 10% на первый заказ.</p>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <h3 style="margin-bottom: 8px;">❓ Как работает реферальная программа?</h3>
-                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Приглашайте друзей и получайте 2-10% от их покупок звездами. Процент растет с оборотом!</p>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <h3 style="margin-bottom: 8px;">❓ Что такое подарки?</h3>
-                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Уникальные коллекционные предметы из маркетплейса Portals. Каждый подарок имеет свои атрибуты: модель, фон, символ.</p>
-            </div>
-        </div>
-
-        <button class="action-button secondary" style="margin-top: 20px;" onclick="tg?.openLink('https://t.me/StarMarket24Bot')">
-            📞 СВЯЗАТЬСЯ
-        </button>
+        <button class="action-button secondary" onclick="tg?.openLink('https://t.me/StarMarket24Bot')">📞 СВЯЗАТЬСЯ</button>
     </div>
 
-    <!-- Нижняя навигация (5 разделов) -->
+    <!-- Нижняя навигация -->
     <div class="bottom-nav">
-        <div class="nav-item active" data-section="stars">
-            <i>✨</i>
-            <span>Звезды</span>
-        </div>
-        <div class="nav-item" data-section="premium">
-            <i>💎</i>
-            <span>Premium</span>
-        </div>
-        <div class="nav-item" data-section="gifts">
-            <i>🎁</i>
-            <span>Подарки</span>
-        </div>
-        <div class="nav-item" data-section="profile">
-            <i>👤</i>
-            <span>Профиль</span>
-        </div>
-        <div class="nav-item" data-section="help">
-            <i>❓</i>
-            <span>Помощь</span>
-        </div>
+        <div class="nav-item active" data-section="stars"><i>✨</i><span>Звезды</span></div>
+        <div class="nav-item" data-section="premium"><i>💎</i><span>Premium</span></div>
+        <div class="nav-item" data-section="nft"><i>🖼️</i><span>NFT</span></div>
+        <div class="nav-item" data-section="vpn"><i>🔒</i><span>VPN</span></div>
+        <div class="nav-item" data-section="profile"><i>👤</i><span>Профиль</span></div>
+        <div class="nav-item" data-section="help"><i>❓</i><span>Помощь</span></div>
     </div>
 
-    <!-- Модальное окно для ввода получателя -->
+    <!-- Модальное окно получателя -->
     <div id="recipientModal" class="modal">
         <div class="modal-content">
             <div class="modal-title">⭐ Получатель</div>
             <div class="modal-package" id="modalPackage"></div>
-
-            <div class="modal-recipient">
-                <input type="text" id="recipientInput" class="modal-input" placeholder="@username" autocomplete="off">
-                <div class="modal-self-btn" id="selfBtn">👤 Себе</div>
+            <div class="modal-recipient"><input type="text" id="recipientInput" class="modal-input" placeholder="@username"><div class="modal-self-btn" id="selfBtn">👤 Себе</div></div>
+            <div class="input-label">💳 Способ оплаты</div>
+            <div class="payment-methods-row" id="paymentMethodsRow">
+                <div class="payment-method-btn selected" data-method="robokassa"><div class="payment-method-icon">💳</div><div class="payment-method-name">ROBOKASSA</div></div>
+                <div class="payment-method-btn" data-method="tonkeeper"><div class="payment-method-icon">💎</div><div class="payment-method-name">TON Keeper</div></div>
             </div>
-
-            <div class="modal-buttons">
-                <div class="modal-button confirm" id="confirmPurchase">Продолжить</div>
-                <div class="modal-button cancel" id="cancelPurchase">Отмена</div>
-            </div>
+            <div class="modal-buttons"><div class="modal-button confirm" id="confirmPurchase">Продолжить</div><div class="modal-button cancel" id="cancelPurchase">Отмена</div></div>
         </div>
     </div>
 
-    <script>
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
-        const tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.ready();
-            tg.expand();
-            tg.MainButton.text = "Закрыть";
-            tg.MainButton.onClick(() => tg.close());
-        }
+    <!-- Прогресс-бар накрутки -->
+    <div id="progressModal" class="progress-modal">
+        <div class="progress-content">
+            <div class="modal-title">🔄 Накрутка рефералов</div>
+            <div class="loader"></div>
+            <div id="progressStatus">Подготовка...</div>
+            <div class="progress-bar-container"><div id="progressBarFill" class="progress-bar-fill"></div></div>
+            <div id="progressPercent">0%</div>
+            <div class="modal-buttons"><div class="modal-button confirm" id="closeProgressBtn" style="display:none;">✅ Готово</div></div>
+        </div>
+    </div>
 
-        // Данные пользователя из Telegram
+    <!-- Напоминание об активации VPN -->
+    <div id="activationReminder" class="activation-reminder">
+        <div style="display:flex; align-items:center; gap:12px;"><span style="font-size:32px;">🔔</span><div style="flex:1;"><div style="font-weight:700;">Накрутка завершена!</div><div>Перейдите в @vpn_omni_bot и активируйте VPN</div></div><button id="closeReminderBtn" style="background:none; border:none; font-size:20px;">✖️</button></div>
+    </div>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) { tg.ready(); tg.expand(); tg.MainButton.text = "Закрыть"; tg.MainButton.onClick(() => tg.close()); }
         const user = tg?.initDataUnsafe?.user || {};
 
-        // Цены на звезды
         const packages = [
-            { stars: 50, rub: 79 },
-            { stars: 75, rub: 119 },
-            { stars: 100, rub: 159 },
-            { stars: 150, rub: 239 },
-            { stars: 250, rub: 399 },
-            { stars: 350, rub: 549 },
-            { stars: 500, rub: 799 },
-            { stars: 750, rub: 1199 },
-            { stars: 1000, rub: 1599 },
-            { stars: 1500, rub: 2399 },
-            { stars: 2500, rub: 3999 },
-            { stars: 5000, rub: 7999 },
-            { stars: 10000, rub: 15999 }
+            { stars: 50, rub: 79 }, { stars: 75, rub: 119 }, { stars: 100, rub: 159 },
+            { stars: 150, rub: 239 }, { stars: 250, rub: 399 }, { stars: 350, rub: 549 },
+            { stars: 500, rub: 799 }, { stars: 750, rub: 1199 }, { stars: 1000, rub: 1599 },
+            { stars: 1500, rub: 2399 }, { stars: 2500, rub: 3999 }, { stars: 5000, rub: 7999 }, { stars: 10000, rub: 15999 }
         ];
 
-        // Состояние приложения
         let state = {
-            currentSection: 'stars',
-            selectedPackage: null,
-            customStars: null,
-            customPrice: null,
-            premiumMonths: null,
-            allGifts: [],
-            userData: {
-                purchases: 5,
-                stars: 1250,
-                spent: 1875,
-                level: 7,
-                exp: 45,
-                nextExp: 100,
-                discount: 2,
-                referralPercent: 2,
-                referralEarned: 1750,
-                referralNext: 3250
-            }
+            currentSection: 'stars', selectedPackage: null, customStars: null, customPrice: null,
+            premiumMonths: null, nftGifts: [], selectedPaymentMethod: 'robokassa', vpnSelectedPaymentMethod: 'robokassa',
+            userData: { purchases: 0, stars: 0, spent: 0, level: 1, exp: 0, nextExp: 100, discount: 0, referralPercent: 2, referralEarned: 0, referralNext: 0 }
         };
 
-        // Элементы DOM
         const sections = {
-            stars: document.getElementById('starsSection'),
-            premium: document.getElementById('premiumSection'),
-            gifts: document.getElementById('giftsSection'),
-            profile: document.getElementById('profileSection'),
-            help: document.getElementById('helpSection')
+            stars: document.getElementById('starsSection'), premium: document.getElementById('premiumSection'),
+            nft: document.getElementById('nftSection'), vpn: document.getElementById('vpnSection'),
+            profile: document.getElementById('profileSection'), help: document.getElementById('helpSection')
         };
-
         const navItems = document.querySelectorAll('.nav-item');
         const modal = document.getElementById('recipientModal');
         const modalPackage = document.getElementById('modalPackage');
@@ -1375,565 +828,202 @@
         const selfBtn = document.getElementById('selfBtn');
         const customPriceDisplay = document.getElementById('customPriceDisplay');
 
-        // ========== НАВИГАЦИЯ ==========
         navItems.forEach(item => {
             item.onclick = () => {
                 const section = item.dataset.section;
-                navItems.forEach(nav => nav.classList.remove('active'));
+                navItems.forEach(n => n.classList.remove('active'));
                 item.classList.add('active');
                 Object.values(sections).forEach(s => s.classList.remove('active'));
                 sections[section].classList.add('active');
                 state.currentSection = section;
-
-                // Загружаем подарки при открытии раздела
-                if (section === 'gifts' && state.allGifts.length === 0) {
-                    loadGifts();
-                }
-
-                if (tg?.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('light');
-                }
+                if (section === 'nft') loadNftGifts();
+                if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
             };
         });
 
-        // Кнопка "Купить себе"
-        selfBtn.onclick = () => {
-            if (user.username) {
-                recipientInput.value = '@' + user.username;
-            } else {
-                showNotification('Не удалось определить ваш username', 'error');
-            }
-        };
-
-        // ========== ЗВЕЗДЫ ==========
-        const allGrid = document.getElementById('allPackages');
-
-        function createPackageCard(pkg) {
-            const card = document.createElement('div');
-            card.className = 'package-card';
-            card.innerHTML = `
-                <div class="stars">${pkg.stars} ⭐</div>
-                <div class="price">${pkg.rub} ₽</div>
-            `;
-
-            card.onclick = () => {
-                state.selectedPackage = pkg;
-                state.customStars = null;
-                modalPackage.innerHTML = `
-                    <div class="stars">${pkg.stars} ⭐</div>
-                    <div class="price">${pkg.rub} ₽</div>
-                `;
-                modal.classList.add('active');
-                recipientInput.focus();
+        document.querySelectorAll('#paymentMethodsRow .payment-method-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('#paymentMethodsRow .payment-method-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                state.selectedPaymentMethod = btn.dataset.method;
             };
+        });
 
+        selfBtn.onclick = () => { if (user.username) recipientInput.value = '@' + user.username; else showNotification('Не удалось определить username', 'error'); };
+
+        // Звезды
+        const allGrid = document.getElementById('allPackages');
+        function createPackageCard(pkg) {
+            const card = document.createElement('div'); card.className = 'package-card';
+            card.innerHTML = `<div class="stars">${pkg.stars} ⭐</div><div class="price">${pkg.rub} ₽</div>`;
+            card.onclick = () => { state.selectedPackage = pkg; state.customStars = null; modalPackage.innerHTML = `<div class="stars">${pkg.stars} ⭐</div><div class="price">${pkg.rub} ₽</div>`; modal.classList.add('active'); recipientInput.focus(); };
             return card;
         }
+        packages.forEach(pkg => allGrid.appendChild(createPackageCard(pkg)));
 
-        packages.forEach(pkg => {
-            allGrid.appendChild(createPackageCard(pkg));
-        });
-
-        // Кастомный ввод
         const customStarsInput = document.getElementById('customStarsInput');
         const calculateCustomBtn = document.getElementById('calculateCustomBtn');
-
         function calculatePrice(stars) {
-            stars = parseInt(stars);
             if (stars < 1) return null;
-
-            const closest = packages.reduce((prev, curr) => {
-                return (Math.abs(curr.stars - stars) < Math.abs(prev.stars - stars) ? curr : prev);
-            });
-
-            const pricePerStar = closest.rub / closest.stars;
-            return Math.round(stars * pricePerStar);
+            const closest = packages.reduce((p,c) => Math.abs(c.stars - stars) < Math.abs(p.stars - stars) ? c : p);
+            return Math.round(stars * (closest.rub / closest.stars));
         }
-
         function updateCustomPrice() {
             const stars = parseInt(customStarsInput.value);
-            if (!stars || stars < 1) {
-                customPriceDisplay.innerHTML = '❌ Введите количество';
-                return;
-            }
-
+            if (!stars || stars < 1) { customPriceDisplay.innerHTML = '❌ Введите количество'; return; }
             const price = calculatePrice(stars);
-
-            customPriceDisplay.innerHTML = `
-                ${price} ₽
-                <small>${stars} ⭐ • ${(price/stars).toFixed(2)} ₽/⭐</small>
-            `;
-
-            state.customStars = stars;
-            state.customPrice = price;
+            customPriceDisplay.innerHTML = `${price} ₽<small>${stars} ⭐ • ${(price/stars).toFixed(2)} ₽/⭐</small>`;
+            state.customStars = stars; state.customPrice = price;
         }
-
         calculateCustomBtn.onclick = updateCustomPrice;
-
         customPriceDisplay.onclick = () => {
-            if (!state.customStars || !state.customPrice) {
-                updateCustomPrice();
-                if (!state.customStars) return;
-            }
-
-            modalPackage.innerHTML = `
-                <div class="stars">${state.customStars} ⭐</div>
-                <div class="price">${state.customPrice} ₽</div>
-                <div style="font-size:12px; color:#34c759;">✨ Свой пакет</div>
-            `;
-            modal.classList.add('active');
-            recipientInput.focus();
+            if (!state.customStars || !state.customPrice) { updateCustomPrice(); if (!state.customStars) return; }
+            modalPackage.innerHTML = `<div class="stars">${state.customStars} ⭐</div><div class="price">${state.customPrice} ₽</div><div style="font-size:12px;color:#34c759;">✨ Свой пакет</div>`;
+            modal.classList.add('active'); recipientInput.focus();
         };
+        document.querySelectorAll('.quick-amount').forEach(btn => { btn.onclick = () => { customStarsInput.value = btn.dataset.stars; updateCustomPrice(); }; });
 
-        document.querySelectorAll('.quick-amount').forEach(btn => {
-            btn.onclick = () => {
-                const stars = parseInt(btn.dataset.stars);
-                customStarsInput.value = stars;
-                updateCustomPrice();
-            };
-        });
-
-        // Подтверждение покупки
         confirmBtn.onclick = () => {
             const recipient = recipientInput.value.trim();
-
-            if (!recipient) {
-                showNotification('Введите username получателя', 'error');
-                return;
-            }
-
+            if (!recipient) { showNotification('Введите получателя', 'error'); return; }
             modal.classList.remove('active');
-
             const stars = state.selectedPackage ? state.selectedPackage.stars : state.customStars;
             const price = state.selectedPackage ? state.selectedPackage.rub : state.customPrice;
-
-            const data = {
-                action: 'create_invoice',
-                stars: stars,
-                price: price,
-                recipient: recipient.replace('@', ''),
-                type: state.selectedPackage ? 'package' : 'custom'
-            };
-
-            if (tg?.sendData) {
-                tg.sendData(JSON.stringify(data));
-                showNotification('⏳ Создание платежа...', 'info');
-            } else {
-                showNotification(`✅ ДЕМО: ${stars}⭐ для @${recipient} за ${price}₽`, 'success');
-            }
-
+            const data = { action: 'create_invoice', stars, price_rub: price, recipient: recipient.replace('@', ''), payment_method: state.selectedPaymentMethod };
+            if (tg?.sendData) { tg.sendData(JSON.stringify(data)); showNotification('⏳ Создание платежа...', 'info'); }
+            else showNotification(`ДЕМО: ${stars}⭐ для @${recipient} за ${price}₽`, 'info');
             state.selectedPackage = null;
-
-            if (tg?.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
         };
+        cancelBtn.onclick = () => { modal.classList.remove('active'); state.selectedPackage = null; state.customStars = null; };
 
-        cancelBtn.onclick = () => {
-            modal.classList.remove('active');
-            state.selectedPackage = null;
-            state.customStars = null;
-        };
-
-        // ========== ПОДАРКИ (Portals) ==========
-
-        // Генерация демо-подарков (для теста, пока API не работает)
-        function generateDemoGifts() {
-            const gifts = [];
-            const rarities = ['common', 'rare', 'epic', 'legendary'];
-            const models = ['wizard', 'dragon', 'pepe', 'skull'];
-            const backdrops = ['gold', 'silver', 'space'];
-
-            for (let i = 0; i < 20; i++) {
-                const rarity = rarities[Math.floor(Math.random() * rarities.length)];
-                const price = rarity === 'common' ? Math.floor(Math.random() * 1000) + 500 :
-                             rarity === 'rare' ? Math.floor(Math.random() * 4000) + 2000 :
-                             rarity === 'epic' ? Math.floor(Math.random() * 10000) + 5000 :
-                             Math.floor(Math.random() * 40000) + 10000;
-
-                gifts.push({
-                    id: `gift-${i}`,
-                    name: `Collection #${i+1}`,
-                    collection: 'Demo Collection',
-                    emoji: '🎁',
-                    rarity: rarity,
-                    price_rub: price,
-                    price_ton: Math.round(price / 85 / 1.43 * 100) / 100,
-                    model: models[Math.floor(Math.random() * models.length)],
-                    backdrop: backdrops[Math.floor(Math.random() * backdrops.length)],
-                    count: Math.floor(Math.random() * 100) + 1
-                });
-            }
-
-            return gifts;
+        // NFT
+        async function loadNftGifts() {
+            const loader = document.getElementById('nftLoader'), grid = document.getElementById('nftGrid'), no = document.getElementById('noNft');
+            loader.style.display = 'block'; grid.innerHTML = ''; no.style.display = 'none';
+            const data = { action: 'get_active_gifts' };
+            if (tg?.sendData) { tg.sendData(JSON.stringify(data)); }
+            else { loader.style.display = 'none'; no.style.display = 'block'; no.innerHTML = '<i>🖼️</i><span>Откройте магазин через Telegram</span>'; }
         }
-
-        // Загрузка подарков
-async function loadGifts() {
-    const loader = document.getElementById('giftsLoader');
-    const grid = document.getElementById('giftsGrid');
-    const noMessage = document.getElementById('noGiftsMessage');
-
-    loader.style.display = 'block';
-    grid.innerHTML = '';
-    noMessage.style.display = 'none';
-
-    // Формируем запрос к боту
-    const data = {
-        action: 'get_gifts',
-        gift_name: document.getElementById('giftSearch').value,
-        model: document.getElementById('modelFilter').value,
-        backdrop: document.getElementById('backdropFilter').value,
-        limit: 50
-    };
-
-    if (tg?.sendData) {
-        console.log('📤 Отправка запроса на подарки:', data);
-        tg.sendData(JSON.stringify(data));
-
-        // Таймаут на случай ошибки (если бот не ответит за 10 секунд)
-        setTimeout(() => {
-            if (state.allGifts.length === 0) {
-                loader.style.display = 'none';
-                noMessage.style.display = 'block';
-                noMessage.innerHTML = '<i>🎁</i><span>Временные проблемы с загрузкой</span>';
-            }
-        }, 10000);
-    } else {
-        // Если не в Telegram, показываем демо
-        setTimeout(() => {
-            state.allGifts = generateDemoGifts();
-            updateGiftsDisplay();
-            updateGiftsStats();
-            loader.style.display = 'none';
-        }, 1000);
-    }
-}
-
-// Обработчик ответа от бота
-window.handleGiftsResponse = function(data) {
-    console.log('📥 Получен ответ с подарками:', data);
-    if (data.gifts) {
-        state.allGifts = data.gifts;
-        updateGiftsDisplay();
-        updateGiftsStats();
-        document.getElementById('giftsLoader').style.display = 'none';
-    } else if (data.error) {
-        console.error('Ошибка загрузки подарков:', data.error);
-        document.getElementById('noGiftsMessage').style.display = 'block';
-        document.getElementById('giftsLoader').style.display = 'none';
-    }
-};
-
-        // Обновление статистики подарков
-        function updateGiftsStats() {
-            const prices = state.allGifts.map(g => g.price_rub);
-            const minPrice = Math.min(...prices);
-            const maxPrice = Math.max(...prices);
-
-            document.getElementById('totalGiftsCount').textContent = state.allGifts.length;
-            document.getElementById('minPrice').textContent = minPrice;
-            document.getElementById('maxPrice').textContent = maxPrice;
-        }
-
-        // Фильтрация подарков
-        function filterGifts() {
-            let filtered = [...state.allGifts];
-
-            const searchTerm = document.getElementById('giftSearch').value.toLowerCase();
-            if (searchTerm) {
-                filtered = filtered.filter(g => g.name.toLowerCase().includes(searchTerm));
-            }
-
-            const model = document.getElementById('modelFilter').value;
-            if (model) {
-                filtered = filtered.filter(g => g.model === model);
-            }
-
-            const backdrop = document.getElementById('backdropFilter').value;
-            if (backdrop) {
-                filtered = filtered.filter(g => g.backdrop === backdrop);
-            }
-
-            const sort = document.getElementById('sortFilter').value;
-            switch(sort) {
-                case 'price_asc':
-                    filtered.sort((a, b) => a.price_rub - b.price_rub);
-                    break;
-                case 'price_desc':
-                    filtered.sort((a, b) => b.price_rub - a.price_rub);
-                    break;
-                case 'name_asc':
-                    filtered.sort((a, b) => a.name.localeCompare(b.name));
-                    break;
-            }
-
-            return filtered;
-        }
-
-        // Обновление отображения подарков
-        function updateGiftsDisplay() {
-            const grid = document.getElementById('giftsGrid');
-            const noMessage = document.getElementById('noGiftsMessage');
-
-            if (state.allGifts.length === 0) {
-                grid.innerHTML = '';
-                noMessage.style.display = 'block';
-                return;
-            }
-
-            const filtered = filterGifts();
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '';
-                noMessage.style.display = 'block';
-                noMessage.innerHTML = '<i>🎁</i><span>По вашему запросу ничего не найдено</span>';
-                return;
-            }
-
-            noMessage.style.display = 'none';
-            grid.innerHTML = '';
-
-            filtered.forEach(gift => {
-                const card = document.createElement('div');
-                card.className = 'gift-card';
-
-                card.innerHTML = `
-                    <div class="gift-rarity ${gift.rarity}">${gift.rarity}</div>
-                    <div style="font-size: 48px; margin: 10px 0;">${gift.emoji}</div>
-                    <div class="gift-name">${gift.name}</div>
-                    <div class="gift-collection">${gift.collection}</div>
-                    <div class="gift-attributes">
-                        <span title="Модель">${gift.model || '✨'}</span>
-                        <span title="Фон">${gift.backdrop || '🎨'}</span>
-                    </div>
-                    <div class="gift-price">${gift.price_rub.toLocaleString()} ₽</div>
-                    <div class="gift-price-ton">≈ ${gift.price_ton} TON</div>
-                    <div class="gift-count">📦 В наличии: ${gift.count}</div>
-                    <button class="gift-buy-btn" onclick="buyGift('${gift.id}', '${gift.name}', ${gift.price_rub})">
-                        Купить подарок
-                    </button>
-                `;
-
+        function displayNftGifts(gifts) {
+            const grid = document.getElementById('nftGrid'), no = document.getElementById('noNft');
+            if (!gifts || gifts.length === 0) { grid.innerHTML = ''; no.style.display = 'block'; return; }
+            no.style.display = 'none'; grid.innerHTML = '';
+            gifts.forEach(g => {
+                const card = document.createElement('div'); card.className = 'nft-card';
+                card.innerHTML = `<div style="font-size:32px;">🎁</div><div class="nft-name">${g.gift_name}</div><div class="nft-seller">👤 ${g.seller_username ? '@' + g.seller_username : 'пользователь'}</div><div class="nft-price">${g.price_rub} ₽</div><div style="font-size:11px;">≈ ${g.price_ton} TON</div><button class="nft-buy-btn" onclick="buyNft(${g.id})">Купить NFT</button>`;
                 grid.appendChild(card);
             });
         }
-
-        // Покупка подарка
-        window.buyGift = function(giftId, giftName, price) {
-            const data = {
-                action: 'buy_gift',
-                gift_id: giftId,
-                name: giftName,
-                price: price
-            };
-
-            if (tg?.sendData) {
-                tg.sendData(JSON.stringify(data));
-                showNotification(`⏳ Покупка ${giftName}...`, 'info');
-            } else {
-                showNotification(`✅ ДЕМО: Покупка ${giftName}`, 'success');
-            }
+        window.buyNft = (id) => {
+            const gift = state.nftGifts.find(g => g.id === id);
+            if (!gift) return;
+            const data = { action: 'buy_gift', gift_id: id, gift_name: gift.gift_name, price: gift.price_rub, payment_method: 'robokassa' };
+            if (tg?.sendData) { tg.sendData(JSON.stringify(data)); showNotification(`⏳ Покупка ${gift.gift_name}...`, 'info'); }
+            else showNotification(`ДЕМО: Покупка ${gift.gift_name} за ${gift.price_rub}₽`, 'info');
         };
-
-        // Обработчик ответа от бота
+        document.getElementById('nftSearch')?.addEventListener('input', () => { if (state.nftGifts.length) filterNft(); });
+        document.getElementById('nftSort')?.addEventListener('change', () => { if (state.nftGifts.length) filterNft(); });
+        function filterNft() {
+            let filtered = [...state.nftGifts];
+            const search = document.getElementById('nftSearch').value.toLowerCase();
+            if (search) filtered = filtered.filter(g => g.gift_name.toLowerCase().includes(search));
+            const sort = document.getElementById('nftSort').value;
+            if (sort === 'price_asc') filtered.sort((a,b) => a.price_rub - b.price_rub);
+            if (sort === 'price_desc') filtered.sort((a,b) => b.price_rub - a.price_rub);
+            displayNftGifts(filtered);
+        }
         window.handleGiftsResponse = function(data) {
-            console.log('📥 Получен ответ с подарками:', data);
-            if (data.gifts) {
-                state.allGifts = data.gifts;
-                updateGiftsDisplay();
-                updateGiftsStats();
-                document.getElementById('giftsLoader').style.display = 'none';
-            } else if (data.error) {
-                console.error('Ошибка загрузки подарков:', data.error);
-                document.getElementById('noGiftsMessage').style.display = 'block';
-                document.getElementById('giftsLoader').style.display = 'none';
-            }
+            if (data.gifts) { state.nftGifts = data.gifts; filterNft(); document.getElementById('nftLoader').style.display = 'none'; }
         };
 
-        // Обработчики фильтров
-        document.getElementById('giftSearch').addEventListener('input', updateGiftsDisplay);
-        document.getElementById('modelFilter').addEventListener('change', updateGiftsDisplay);
-        document.getElementById('backdropFilter').addEventListener('change', updateGiftsDisplay);
-        document.getElementById('sortFilter').addEventListener('change', updateGiftsDisplay);
-
-        // ========== PREMIUM ==========
-        document.querySelectorAll('.premium-card').forEach(card => {
-            card.onclick = function() {
-                const months = this.dataset.months;
-
-                document.querySelectorAll('.premium-card').forEach(c => {
-                    c.classList.remove('selected');
-                });
-
-                this.classList.add('selected');
-                state.premiumMonths = months;
-            };
+        // VPN
+        let vpnProgressInterval = null;
+        function startProgressSimulation() {
+            const modal = document.getElementById('progressModal'), fill = document.getElementById('progressBarFill'), percent = document.getElementById('progressPercent'), status = document.getElementById('progressStatus'), closeBtn = document.getElementById('closeProgressBtn');
+            modal.classList.add('active'); let progress = 0; status.textContent = '🚀 Запуск накрутки...';
+            vpnProgressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    clearInterval(vpnProgressInterval); progress = 100;
+                    status.textContent = '✅ Накрутка завершена!';
+                    closeBtn.style.display = 'block';
+                    setTimeout(() => { modal.classList.remove('active'); showActivationReminder(); }, 2000);
+                } else {
+                    if (progress < 30) status.textContent = '📡 Подключение...';
+                    else if (progress < 60) status.textContent = '🔄 Накрутка...';
+                    else if (progress < 90) status.textContent = '⚡ Обработка...';
+                    else status.textContent = '🎉 Почти готово!';
+                }
+                fill.style.width = Math.min(progress,100)+'%'; percent.textContent = Math.floor(Math.min(progress,100))+'%';
+            }, 300);
+            closeBtn.onclick = () => { modal.classList.remove('active'); if (vpnProgressInterval) clearInterval(vpnProgressInterval); };
+        }
+        function showActivationReminder() { const r = document.getElementById('activationReminder'); r.style.display = 'block'; setTimeout(() => r.style.display = 'none', 30000); }
+        document.getElementById('closeReminderBtn')?.addEventListener('click', () => document.getElementById('activationReminder').style.display = 'none');
+        document.getElementById('getVpnLinkBtn')?.addEventListener('click', () => { tg?.openLink('https://t.me/vpn_omni_bot'); document.getElementById('referralInputBlock').style.display = 'block'; showNotification('📋 Перейдите в @vpn_omni_bot и скопируйте реферальную ссылку', 'info'); });
+        function updateVpnPrice() { const amount = parseInt(document.getElementById('vpnAmountInput')?.value) || 10; const days = amount * 3; document.getElementById('vpnDaysDisplay').innerHTML = `💰 ${amount} ₽ = ${days} дней<small>1 ₽ = 3 дня</small>`; }
+        document.querySelectorAll('.vpn-amount').forEach(btn => { btn.onclick = () => { document.getElementById('vpnAmountInput').value = btn.dataset.amount; updateVpnPrice(); }; });
+        document.getElementById('vpnAmountInput')?.addEventListener('input', updateVpnPrice);
+        document.getElementById('calculateVpnBtn')?.addEventListener('click', updateVpnPrice);
+        document.querySelectorAll('#vpnPaymentMethods .payment-method-btn').forEach(btn => {
+            btn.onclick = () => { document.querySelectorAll('#vpnPaymentMethods .payment-method-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); state.vpnSelectedPaymentMethod = btn.dataset.method; };
+        });
+        document.getElementById('buyVpnBtn')?.addEventListener('click', () => {
+            const referralLink = document.getElementById('referralLinkInput').value.trim();
+            const amount = parseInt(document.getElementById('vpnAmountInput').value) || 10;
+            if (!referralLink || !referralLink.includes('vpn_omni_bot')) { showNotification('❌ Вставьте реферальную ссылку', 'error'); return; }
+            const data = { action: 'buy_vpn', referral_link: referralLink, amount, days: amount * 3, payment_method: state.vpnSelectedPaymentMethod };
+            if (tg?.sendData) { tg.sendData(JSON.stringify(data)); showNotification('⏳ Создание платежа...', 'info'); }
+            else { startProgressSimulation(); showNotification('ДЕМО: VPN активирован', 'info'); }
         });
 
-        document.getElementById('buyPremiumBtn').onclick = () => {
-            if (!state.premiumMonths) {
-                showNotification('Выберите срок подписки', 'error');
-                return;
-            }
+        // Premium
+        document.querySelectorAll('.premium-card').forEach(c => { c.onclick = function() { document.querySelectorAll('.premium-card').forEach(p => p.classList.remove('selected')); this.classList.add('selected'); state.premiumMonths = this.dataset.months; }; });
+        document.getElementById('buyPremiumBtn')?.addEventListener('click', () => {
+            if (!state.premiumMonths) { showNotification('Выберите срок', 'error'); return; }
+            const prices = {3:899,6:1699,12:2999};
+            const data = { action: 'buy_premium', months: parseInt(state.premiumMonths), price: prices[state.premiumMonths], payment_method: 'robokassa' };
+            if (tg?.sendData) tg.sendData(JSON.stringify(data));
+            else showNotification(`ДЕМО: Premium ${state.premiumMonths} мес. за ${prices[state.premiumMonths]}₽`, 'info');
+        });
 
-            const prices = { 3: 899, 6: 1699, 12: 2999 };
-            const price = prices[state.premiumMonths];
-
-            const data = {
-                action: 'buy_premium',
-                months: parseInt(state.premiumMonths),
-                price: price
-            };
-
-            if (tg?.sendData) {
-                tg.sendData(JSON.stringify(data));
-                showNotification('⏳ Создание заказа...', 'info');
-            } else {
-                showNotification(`✅ ДЕМО: Premium ${state.premiumMonths} мес. за ${price}₽`, 'success');
-            }
-        };
-
-        // ========== ЕЖЕДНЕВНЫЙ БОНУС ==========
-        document.getElementById('claimBonusBtn').onclick = function() {
+        // Бонус
+        document.getElementById('claimBonusBtn')?.addEventListener('click', function() {
             const data = { action: 'claim_bonus' };
-
-            if (tg?.sendData) {
-                tg.sendData(JSON.stringify(data));
-                this.disabled = true;
-                this.textContent = '⏳ ПОЛУЧЕНИЕ...';
-            } else {
-                const bonus = (Math.random() * 0.4 + 0.1).toFixed(2);
-                document.getElementById('bonusAmount').textContent = bonus + ' ⭐';
-                document.getElementById('bonusStreak').textContent = parseInt(document.getElementById('bonusStreak').textContent || '0') + 1;
-                showNotification(`🎁 Получено ${bonus}⭐!`, 'success');
-            }
-        };
-
-        // ========== УВЕДОМЛЕНИЯ ==========
-        document.getElementById('notificationsCenter').onclick = (e) => {
-            e.stopPropagation();
-            document.getElementById('notificationsPanel').classList.toggle('show');
-        };
-
-        document.addEventListener('click', () => {
-            document.getElementById('notificationsPanel').classList.remove('show');
+            if (tg?.sendData) { tg.sendData(JSON.stringify(data)); this.disabled = true; this.textContent = '⏳ ПОЛУЧЕНИЕ...'; }
+            else { const bonus = (Math.random()*0.4+0.1).toFixed(2); document.getElementById('bonusAmount').textContent = bonus+' ⭐'; document.getElementById('bonusStreak').textContent = parseInt(document.getElementById('bonusStreak').textContent||'0')+1; showNotification(`🎁 Получено ${bonus}⭐!`,'success'); }
         });
 
-        // ========== ПРОФИЛЬ ==========
+        // Уведомления
+        document.getElementById('notificationsCenter')?.addEventListener('click', e => { e.stopPropagation(); document.getElementById('notificationsPanel').classList.toggle('show'); });
+        document.addEventListener('click', () => document.getElementById('notificationsPanel')?.classList.remove('show'));
+
         function updateProfile() {
             document.getElementById('headerBalance').textContent = state.userData.stars;
             document.getElementById('profileName').textContent = user.first_name || 'Пользователь';
-            document.getElementById('profileUsername').textContent = user.username ? '@' + user.username : '@username';
-
+            document.getElementById('profileUsername').textContent = user.username ? '@'+user.username : '@username';
             document.getElementById('statPurchases').textContent = state.userData.purchases;
             document.getElementById('statStars').textContent = state.userData.stars;
-            document.getElementById('statSpent').textContent = state.userData.spent + '₽';
-
-            document.getElementById('userLevelBadge').textContent = state.userData.level;
-            document.getElementById('userDiscount').textContent = state.userData.discount + '%';
+            document.getElementById('statSpent').textContent = state.userData.spent+'₽';
+            document.getElementById('userLevel').textContent = state.userData.level;
+            document.getElementById('userDiscount').textContent = state.userData.discount+'%';
             document.getElementById('userExp').textContent = state.userData.exp;
             document.getElementById('nextLevelExp').textContent = state.userData.nextExp;
-
-            const progress = (state.userData.exp / state.userData.nextExp) * 100;
-            document.getElementById('levelProgress').style.width = progress + '%';
-
-            document.getElementById('referralPercent').textContent = state.userData.referralPercent + '%';
-            document.getElementById('referralEarned').textContent = state.userData.referralEarned + '₽';
-            document.getElementById('referralNext').textContent = state.userData.referralNext + '₽';
-
-            const referralProgress = (state.userData.referralEarned / (state.userData.referralEarned + state.userData.referralNext)) * 100;
-            document.getElementById('referralProgress').style.width = referralProgress + '%';
-
-            // Достижения
-            const achievementsGrid = document.getElementById('achievementsGrid');
-            achievementsGrid.innerHTML = '';
-            const achievements = ['Первая покупка', 'VIP клиент', 'Реферальный магнат'];
-            achievements.forEach((ach, i) => {
-                const card = document.createElement('div');
-                card.className = 'achievement-card earned';
-                card.innerHTML = `
-                    <div style="font-size: 24px;">🏆</div>
-                    <div style="font-size: 12px;">${ach}</div>
-                `;
-                achievementsGrid.appendChild(card);
-            });
-            document.getElementById('achievementsCount').textContent = `3/${achievements.length}`;
+            document.getElementById('levelProgress').style.width = (state.userData.exp/state.userData.nextExp*100)+'%';
+            document.getElementById('referralPercent').textContent = state.userData.referralPercent+'%';
+            document.getElementById('referralEarned').textContent = state.userData.referralEarned+'₽';
+            document.getElementById('referralNext').textContent = state.userData.referralNext+'₽';
+            document.getElementById('referralProgress').style.width = (state.userData.referralEarned/(state.userData.referralEarned+state.userData.referralNext)*100)+'%';
         }
-
-        // ========== УВЕДОМЛЕНИЯ ==========
-        function showNotification(text, type = 'info') {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: ${type === 'success' ? '#34c759' : type === 'error' ? '#ff3b30' : 'rgba(0,0,0,0.8)'};
-                color: white;
-                padding: 12px 24px;
-                border-radius: 30px;
-                font-size: 14px;
-                font-weight: 500;
-                z-index: 1000;
-                animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255,255,255,0.1);
-            `;
-            notification.textContent = text;
-            document.body.appendChild(notification);
-
-            setTimeout(() => notification.remove(), 3000);
+        function showNotification(text, type='info') {
+            const n = document.createElement('div'); n.style.cssText = `position:fixed; top:20px; left:50%; transform:translateX(-50%); background:${type==='success'?'#34c759':type==='error'?'#ff3b30':'rgba(0,0,0,0.8)'}; color:white; padding:12px 24px; border-radius:30px; font-size:14px; z-index:1000; animation:slideDown 0.3s ease, fadeOut 0.3s ease 2.7s;`;
+            n.textContent = text; document.body.appendChild(n); setTimeout(()=>n.remove(),3000);
         }
-
-        // Стили для анимаций
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideDown {
-                from { opacity: 0; transform: translate(-50%, -20px); }
-                to { opacity: 1; transform: translate(-50%, 0); }
-            }
-            @keyframes fadeOut {
-                to { opacity: 0; transform: translate(-50%, -10px); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
-        updateProfile();
-        customStarsInput.value = "150";
-        updateCustomPrice();
-
-        console.log('✅ Star Market 24 готов к работе с Portals!');
+        const style = document.createElement('style'); style.textContent = `@keyframes slideDown{from{opacity:0;transform:translate(-50%,-20px);}to{opacity:1;transform:translate(-50%,0);}}@keyframes fadeOut{to{opacity:0;transform:translate(-50%,-10px);}}`; document.head.appendChild(style);
+        updateProfile(); customStarsInput.value = "150"; updateCustomPrice(); updateVpnPrice();
+        window.handlePaymentResponse = (d) => { if(d.success && d.payment_url) tg?.openLink(d.payment_url); };
+        window.handleVpnActivation = (d) => { if(d.success && d.need_referral) showNotification('Введите реферальную ссылку','info'); else if(d.success && d.activated) showNotification('✅ VPN активирован!','success'); };
+        console.log('✅ Star Market 24 готов');
     </script>
-
-    <!-- ========== НОВЫЙ ОБРАБОТЧИК ДЛЯ ПОРТАЛС ========== -->
-    <script>
-        // Обработчик ответов от бота
-        window.TelegramWebApp = window.TelegramWebApp || {};
-        window.TelegramWebApp.receiveData = function(data) {
-            console.log('📩 Получены данные от бота:', data);
-            if (data.gifts) {
-                if (window.handleGiftsResponse) {
-                    window.handleGiftsResponse(data);
-                } else {
-                    console.log('handleGiftsResponse не найдена, но данные получены:', data);
-                    // Если функция еще не объявлена, сохраняем данные
-                    window.pendingGiftsData = data;
-                }
-            }
-        };
-
-        // Проверяем, не пришли ли данные до объявления обработчика
-        if (window.pendingGiftsData) {
-            console.log('📦 Обрабатываем отложенные данные:', window.pendingGiftsData);
-            if (window.handleGiftsResponse) {
-                window.handleGiftsResponse(window.pendingGiftsData);
-            }
-            window.pendingGiftsData = null;
-        }
-    </script>
-</body>
-</html>
 </body>
 </html>
